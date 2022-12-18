@@ -1,0 +1,449 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{105b7015-40a8-444b-b949-16a72f825800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Checksum">
+      <UniqueIdentifier>{bcaaaad8-87f2-4afd-aa69-0b3437478399}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Crypto">
+      <UniqueIdentifier>{9494e15e-70e6-49e8-9dc3-1f98ab879fb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hash32">
+      <UniqueIdentifier>{9d43d81e-f90f-43f6-9bb7-dc3c29419dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hash64">
+      <UniqueIdentifier>{189e8f06-38d5-4a30-ae2a-6adb067d55df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hash128">
+      <UniqueIdentifier>{eab29080-6558-42cd-a4e0-7a5de2b4c86e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KDF">
+      <UniqueIdentifier>{a0bb7f97-244b-431d-9ba9-6ae505a4542a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MAC">
+      <UniqueIdentifier>{50be13a5-8726-4a7f-8a99-53c59b6a7abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XOF">
+      <UniqueIdentifier>{26f160ce-0a55-4790-8fe9-93d891717716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NullDigest">
+      <UniqueIdentifier>{a52b0770-17f1-4a70-988b-53f9d5898c79}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HashlibPlus.Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base\Blake2BTestVectors.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Blake2STestVectors.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\Blake3TestVectors.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\TestConstants.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Checksum\Test_Adler32.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\Test_CRC.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\Test_Crc32Castagnoli.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\Test_Crc32PKZip.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Blake2B.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Blake2BP.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Blake2S.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Blake2SP.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Blake3.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Gost.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_GOST3411_2012_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_GOST3411_2012_512.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Grindahl256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Grindahl512.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_HAS160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_3_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_3_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_3_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_3_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_3_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_4_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_4_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_4_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_4_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_4_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_5_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_5_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_5_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_5_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Haval_5_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Keccak_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Keccak_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Keccak_288.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Keccak_384.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Keccak_512.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_MD2.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_MD4.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_MD5.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Panama.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_RadioGatun32.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_RadioGatun64.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_RIPEMD.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_RIPEMD128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_RIPEMD160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_RIPEMD256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_RIPEMD320.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA0.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA1.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA2_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA2_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA2_384.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA2_512.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA2_512_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA2_512_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA3_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA3_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA3_384.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_SHA3_512.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Snefru_8_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Snefru_8_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_3_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_3_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_3_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_4_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_4_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_4_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_5_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_5_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger_5_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_3_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_3_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_3_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_4_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_4_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_4_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_5_128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_5_160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_Tiger2_5_192.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Test_WhirlPool.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_AP.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_Bernstein.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_Bernstein1.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_BKDR.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_DEK.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_DJB.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_ELF.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_FNV.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_FNV1a.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_Jenkins3.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_JS.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_Murmur2.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_MurmurHash3_x86_32.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_OneAtTime.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_PJW.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_Rotating.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_RS.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_SDBM.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_ShiftAndXor.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_SuperFast.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Test_XXHash32.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\Test_FNV1a.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\Test_FNV64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\Test_Murmur2_64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\Test_SipHash64_2_4.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\Test_XXHash64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\Test_PBKDF_Blake3.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\Test_PBKDF_Scrypt.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\Test_PBKDF2_HMAC.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\Test_PBKDFArgon2.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash128\Test_MurmurHash3_x64_128.h">
+      <Filter>Hash128</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash128\Test_MurmurHash3_x86_128.h">
+      <Filter>Hash128</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash128\Test_SipHash128_2_4.h">
+      <Filter>Hash128</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\Test_Blake2BMAC.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\Test_Blake2SMAC.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\Test_KMAC128.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\Test_KMAC256.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\Test_MD5_HMAC.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_Blake2XB.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_Blake2XS.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_Blake3XOF.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_CShake_128.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_CShake_256.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_KMAC128XOF.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_KMAC256XOF.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_Shake_128.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="XOF\Test_Shake_256.h">
+      <Filter>XOF</Filter>
+    </ClInclude>
+    <ClInclude Include="NullDigest\Test_NullDigest.h">
+      <Filter>NullDigest</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HashlibPlus.Test.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="BitConverter.obj" />
+    <Object Include="Blake2BParams.obj" />
+    <Object Include="Blake2SParams.obj" />
+    <Object Include="HashFactory.obj" />
+  </ItemGroup>
+</Project>

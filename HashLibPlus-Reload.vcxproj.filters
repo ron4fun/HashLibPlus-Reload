@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{1239b027-c358-48c3-90a3-308828632d51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Checksum">
+      <UniqueIdentifier>{5e196648-0244-4e23-b9bc-825ab24c8124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ebf2f0f9-ed6c-4700-946d-eb1e2dd3cf52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NullDigest">
+      <UniqueIdentifier>{250c7603-e508-4fbe-8e8d-932aa0267b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interfaces">
+      <UniqueIdentifier>{c7ac4101-a089-4679-854e-48de7c2c070a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hash32">
+      <UniqueIdentifier>{aabbc340-757a-4d00-8720-eeb981c4c1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hash64">
+      <UniqueIdentifier>{1e0c2bce-ae1f-4246-a454-fb6f3924ef18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hash128">
+      <UniqueIdentifier>{987d4241-f1db-46e8-bda3-97d8bae4c63d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MAC">
+      <UniqueIdentifier>{65bf844e-e644-4476-9edc-d3d7d7260f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Crypto">
+      <UniqueIdentifier>{0c234245-77d7-4826-880a-28534e8e06ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interfaces\IBlake2SConfigurations">
+      <UniqueIdentifier>{85a45fd8-c3eb-4431-98b2-dcacc033f73e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interfaces\IBlake2BConfigurations">
+      <UniqueIdentifier>{26d08786-5522-4afb-9d3c-c437a89ff20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enum">
+      <UniqueIdentifier>{cdb74991-ee5b-4eb3-8251-c80e102aa1c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Params">
+      <UniqueIdentifier>{4ef1eaa1-faef-4ecd-952d-08e6ad05da10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Nullable">
+      <UniqueIdentifier>{4431deef-a41e-417c-8877-fe7e4c5a728f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KDF">
+      <UniqueIdentifier>{3c298a82-a277-481b-b339-3e12eb99f7a6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HashLibPlus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\BitConverter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\HashFactory.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Params\Blake2SParams.cpp">
+      <Filter>Params</Filter>
+    </ClCompile>
+    <ClCompile Include="Params\Blake2BParams.cpp">
+      <Filter>Params</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base\Hash.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\HashBuffer.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\HashCryptoNotBuildIn.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\HashFactory.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\HashResult.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\MultipleTransformNonBlock.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\Adler32.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\CRC.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\CRC16.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\CRC32.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\CRC32Fast.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="Checksum\CRC64.h">
+      <Filter>Checksum</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\KDFNotBuildIn.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\PBKDF_Argon2NotBuildIn.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\PBKDF_Blake3NotBuildIn.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\PBKDF_ScryptNotBuildIn.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="KDF\PBKDF2_HMACNotBuildIn.h">
+      <Filter>KDF</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Blake2B.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Blake2BP.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Blake2S.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Blake2SP.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Blake3.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Gost.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\GOST3411_2012.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Grindahl256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Grindahl512.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\HAS160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Haval.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\MD2.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\MD4.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\MD5.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\MDBase.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Panama.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\RadioGatun32.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\RadioGatun64.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\RIPEMD.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\RIPEMD128.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\RIPEMD160.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\RIPEMD256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\RIPEMD320.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA0.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA1.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_256Base.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_384.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_512.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_512_224.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_512_256.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA2_512Base.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\SHA3.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Snefru.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Tiger.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\Tiger2.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\WhirlPool.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\ICRC.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IHash.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IHashInfo.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IHashResult.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IIHash.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IKDF.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IBlake2SConfigurations\IBlake2SConfig.h">
+      <Filter>Interfaces\IBlake2SConfigurations</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IBlake2SConfigurations\IBlake2STreeConfig.h">
+      <Filter>Interfaces\IBlake2SConfigurations</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IBlake2BConfigurations\IBlake2BConfig.h">
+      <Filter>Interfaces\IBlake2BConfigurations</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IBlake2BConfigurations\IBlake2BTreeConfig.h">
+      <Filter>Interfaces\IBlake2BConfigurations</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\AP.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Bernstein.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Bernstein1.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\BKDR.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\DEK.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\DJB.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\ELF.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\FNV1a_32.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\FNV32.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Jenkins3.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\JS.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Murmur2_32.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\MurmurHash3_x86_32.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\OneAtTime.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\PJW.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\Rotating.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\RS.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\SDBM.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\ShiftAndXor.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\SuperFast.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash32\XXHash32.h">
+      <Filter>Hash32</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum\Argon2Type.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum\Argon2Version.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum\HashRounds.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum\HashSize.h">
+      <Filter>Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\FNV1a_64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\FNV1a64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\FNV64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\Murmur2_64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\SipHash64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash64\XXHash64.h">
+      <Filter>Hash64</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash128\MurmurHash3_x64_128.h">
+      <Filter>Hash128</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash128\MurmurHash3_x86_128.h">
+      <Filter>Hash128</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash128\SipHash128.h">
+      <Filter>Hash128</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\Blake2BMACNotBuiltIn.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\Blake2SMACNotBuiltIn.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\HMACNotBuildInAdapter.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="MAC\KMACNotBuildInAdapter.h">
+      <Filter>MAC</Filter>
+    </ClInclude>
+    <ClInclude Include="Nullable\Nullable.h">
+      <Filter>Nullable</Filter>
+    </ClInclude>
+    <ClInclude Include="NullDigest\NullDigest.h">
+      <Filter>NullDigest</Filter>
+    </ClInclude>
+    <ClInclude Include="Params\Argon2Parameters.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="Params\Blake2BParams.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="Params\Blake2SParams.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="Params\Blake2XBParams.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="Params\Blake2XSParams.h">
+      <Filter>Params</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\ArrayUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\BitConverter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Bits.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Converters.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\HashLibTypes.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

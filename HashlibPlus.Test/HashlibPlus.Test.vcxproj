@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{A0A8DDA7-1456-4791-8876-B307DA55334D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>HashlibPlusTest</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Telepat\Documents\GitHub\HashLibPlus-Reload\HashlibPlus.Test\x64\Release;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\Telepat\Documents\GitHub\HashLibPlus-Reload\HashlibPlus.Test\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="HashlibPlus.Test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base\Blake2BTestVectors.h" />
+    <ClInclude Include="Base\Blake2STestVectors.h" />
+    <ClInclude Include="Base\Blake3TestVectors.h" />
+    <ClInclude Include="Base\TestConstants.h" />
+    <ClInclude Include="Checksum\Test_Adler32.h" />
+    <ClInclude Include="Checksum\Test_CRC.h" />
+    <ClInclude Include="Checksum\Test_Crc32Castagnoli.h" />
+    <ClInclude Include="Checksum\Test_Crc32PKZip.h" />
+    <ClInclude Include="Crypto\Test_Blake2B.h" />
+    <ClInclude Include="Crypto\Test_Blake2BP.h" />
+    <ClInclude Include="Crypto\Test_Blake2S.h" />
+    <ClInclude Include="Crypto\Test_Blake2SP.h" />
+    <ClInclude Include="Crypto\Test_Blake3.h" />
+    <ClInclude Include="Crypto\Test_Gost.h" />
+    <ClInclude Include="Crypto\Test_GOST3411_2012_256.h" />
+    <ClInclude Include="Crypto\Test_GOST3411_2012_512.h" />
+    <ClInclude Include="Crypto\Test_Grindahl256.h" />
+    <ClInclude Include="Crypto\Test_Grindahl512.h" />
+    <ClInclude Include="Crypto\Test_HAS160.h" />
+    <ClInclude Include="Crypto\Test_Haval_3_128.h" />
+    <ClInclude Include="Crypto\Test_Haval_3_160.h" />
+    <ClInclude Include="Crypto\Test_Haval_3_192.h" />
+    <ClInclude Include="Crypto\Test_Haval_3_224.h" />
+    <ClInclude Include="Crypto\Test_Haval_3_256.h" />
+    <ClInclude Include="Crypto\Test_Haval_4_128.h" />
+    <ClInclude Include="Crypto\Test_Haval_4_160.h" />
+    <ClInclude Include="Crypto\Test_Haval_4_192.h" />
+    <ClInclude Include="Crypto\Test_Haval_4_224.h" />
+    <ClInclude Include="Crypto\Test_Haval_4_256.h" />
+    <ClInclude Include="Crypto\Test_Haval_5_128.h" />
+    <ClInclude Include="Crypto\Test_Haval_5_160.h" />
+    <ClInclude Include="Crypto\Test_Haval_5_192.h" />
+    <ClInclude Include="Crypto\Test_Haval_5_224.h" />
+    <ClInclude Include="Crypto\Test_Haval_5_256.h" />
+    <ClInclude Include="Crypto\Test_Keccak_224.h" />
+    <ClInclude Include="Crypto\Test_Keccak_256.h" />
+    <ClInclude Include="Crypto\Test_Keccak_288.h" />
+    <ClInclude Include="Crypto\Test_Keccak_384.h" />
+    <ClInclude Include="Crypto\Test_Keccak_512.h" />
+    <ClInclude Include="Crypto\Test_MD2.h" />
+    <ClInclude Include="Crypto\Test_MD4.h" />
+    <ClInclude Include="Crypto\Test_MD5.h" />
+    <ClInclude Include="Crypto\Test_Panama.h" />
+    <ClInclude Include="Crypto\Test_RadioGatun32.h" />
+    <ClInclude Include="Crypto\Test_RadioGatun64.h" />
+    <ClInclude Include="Crypto\Test_RIPEMD.h" />
+    <ClInclude Include="Crypto\Test_RIPEMD128.h" />
+    <ClInclude Include="Crypto\Test_RIPEMD160.h" />
+    <ClInclude Include="Crypto\Test_RIPEMD256.h" />
+    <ClInclude Include="Crypto\Test_RIPEMD320.h" />
+    <ClInclude Include="Crypto\Test_SHA0.h" />
+    <ClInclude Include="Crypto\Test_SHA1.h" />
+    <ClInclude Include="Crypto\Test_SHA2_224.h" />
+    <ClInclude Include="Crypto\Test_SHA2_256.h" />
+    <ClInclude Include="Crypto\Test_SHA2_384.h" />
+    <ClInclude Include="Crypto\Test_SHA2_512.h" />
+    <ClInclude Include="Crypto\Test_SHA2_512_224.h" />
+    <ClInclude Include="Crypto\Test_SHA2_512_256.h" />
+    <ClInclude Include="Crypto\Test_SHA3_224.h" />
+    <ClInclude Include="Crypto\Test_SHA3_256.h" />
+    <ClInclude Include="Crypto\Test_SHA3_384.h" />
+    <ClInclude Include="Crypto\Test_SHA3_512.h" />
+    <ClInclude Include="Crypto\Test_Snefru_8_128.h" />
+    <ClInclude Include="Crypto\Test_Snefru_8_256.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_3_128.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_3_160.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_3_192.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_4_128.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_4_160.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_4_192.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_5_128.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_5_160.h" />
+    <ClInclude Include="Crypto\Test_Tiger2_5_192.h" />
+    <ClInclude Include="Crypto\Test_Tiger_3_128.h" />
+    <ClInclude Include="Crypto\Test_Tiger_3_160.h" />
+    <ClInclude Include="Crypto\Test_Tiger_3_192.h" />
+    <ClInclude Include="Crypto\Test_Tiger_4_128.h" />
+    <ClInclude Include="Crypto\Test_Tiger_4_160.h" />
+    <ClInclude Include="Crypto\Test_Tiger_4_192.h" />
+    <ClInclude Include="Crypto\Test_Tiger_5_128.h" />
+    <ClInclude Include="Crypto\Test_Tiger_5_160.h" />
+    <ClInclude Include="Crypto\Test_Tiger_5_192.h" />
+    <ClInclude Include="Crypto\Test_WhirlPool.h" />
+    <ClInclude Include="Hash128\Test_MurmurHash3_x64_128.h" />
+    <ClInclude Include="Hash128\Test_MurmurHash3_x86_128.h" />
+    <ClInclude Include="Hash128\Test_SipHash128_2_4.h" />
+    <ClInclude Include="Hash32\Test_AP.h" />
+    <ClInclude Include="Hash32\Test_Bernstein.h" />
+    <ClInclude Include="Hash32\Test_Bernstein1.h" />
+    <ClInclude Include="Hash32\Test_BKDR.h" />
+    <ClInclude Include="Hash32\Test_DEK.h" />
+    <ClInclude Include="Hash32\Test_DJB.h" />
+    <ClInclude Include="Hash32\Test_ELF.h" />
+    <ClInclude Include="Hash32\Test_FNV.h" />
+    <ClInclude Include="Hash32\Test_FNV1a.h" />
+    <ClInclude Include="Hash32\Test_Jenkins3.h" />
+    <ClInclude Include="Hash32\Test_JS.h" />
+    <ClInclude Include="Hash32\Test_Murmur2.h" />
+    <ClInclude Include="Hash32\Test_MurmurHash3_x86_32.h" />
+    <ClInclude Include="Hash32\Test_OneAtTime.h" />
+    <ClInclude Include="Hash32\Test_PJW.h" />
+    <ClInclude Include="Hash32\Test_Rotating.h" />
+    <ClInclude Include="Hash32\Test_RS.h" />
+    <ClInclude Include="Hash32\Test_SDBM.h" />
+    <ClInclude Include="Hash32\Test_ShiftAndXor.h" />
+    <ClInclude Include="Hash32\Test_SuperFast.h" />
+    <ClInclude Include="Hash32\Test_XXHash32.h" />
+    <ClInclude Include="Hash64\Test_FNV1a.h" />
+    <ClInclude Include="Hash64\Test_FNV64.h" />
+    <ClInclude Include="Hash64\Test_Murmur2_64.h" />
+    <ClInclude Include="Hash64\Test_SipHash64_2_4.h" />
+    <ClInclude Include="Hash64\Test_XXHash64.h" />
+    <ClInclude Include="KDF\Test_PBKDF2_HMAC.h" />
+    <ClInclude Include="KDF\Test_PBKDFArgon2.h" />
+    <ClInclude Include="KDF\Test_PBKDF_Blake3.h" />
+    <ClInclude Include="KDF\Test_PBKDF_Scrypt.h" />
+    <ClInclude Include="MAC\Test_Blake2BMAC.h" />
+    <ClInclude Include="MAC\Test_Blake2SMAC.h" />
+    <ClInclude Include="MAC\Test_KMAC128.h" />
+    <ClInclude Include="MAC\Test_KMAC256.h" />
+    <ClInclude Include="MAC\Test_MD5_HMAC.h" />
+    <ClInclude Include="NullDigest\Test_NullDigest.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="XOF\Test_Blake2XB.h" />
+    <ClInclude Include="XOF\Test_Blake2XS.h" />
+    <ClInclude Include="XOF\Test_Blake3XOF.h" />
+    <ClInclude Include="XOF\Test_CShake_128.h" />
+    <ClInclude Include="XOF\Test_CShake_256.h" />
+    <ClInclude Include="XOF\Test_KMAC128XOF.h" />
+    <ClInclude Include="XOF\Test_KMAC256XOF.h" />
+    <ClInclude Include="XOF\Test_Shake_128.h" />
+    <ClInclude Include="XOF\Test_Shake_256.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HashlibPlus.Test.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="BitConverter.obj" />
+    <Object Include="Blake2BParams.obj" />
+    <Object Include="Blake2SParams.obj" />
+    <Object Include="HashFactory.obj" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
