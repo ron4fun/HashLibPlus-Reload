@@ -25,11 +25,8 @@
 
 #include "../../Utils/HashLibTypes.h"
 
-class IIBlake2BConfig;
 
-typedef shared_ptr<IIBlake2BConfig> IBlake2BConfig;
-
-class IIBlake2BConfig
+class IBlake2BConfig
 {
 public:
 	virtual HashLibByteArray GetPersonalization() const = 0;
@@ -41,7 +38,7 @@ public:
 	virtual Int32 GetHashSize() const = 0;
 	virtual void SetHashSize(const Int32 value) = 0;
 
-	virtual IBlake2BConfig Clone() const = 0;
+	virtual IBlake2BConfig& Clone() const = 0;
 
 	virtual void Clear() = 0;
 

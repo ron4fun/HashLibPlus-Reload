@@ -24,9 +24,9 @@
 #pragma once
 
 #include "../Utils/Converters.h"
-#include "../Interfaces/IHashResult.h"
 
-class HashResult : public virtual IIHashResult
+
+class HashResult final
 {
 private:
 	static const char* ImpossibleRepresentationInt32;
@@ -102,9 +102,9 @@ public:
 		return *this;
 	} // end funcion operator=
 
-	virtual bool CompareTo(const IHashResult& a_hashResult) const
+	bool CompareTo(const IHashResult& a_hashResult) const
 	{
-		return HashResult::SlowEquals(a_hashResult->GetBytes(), _hash);
+		return HashResult::SlowEquals(a_hashResult.GetBytes(), _hash);
 	} // end function CompareTo
 
 	bool operator==(const HashResult& a_hashResult) const
@@ -112,12 +112,12 @@ public:
 		return HashResult::SlowEquals(a_hashResult.GetBytes(), _hash);
 	} // end function operator==
 
-	virtual HashLibByteArray GetBytes() const
+	HashLibByteArray GetBytes() const
 	{
 		return _hash;
 	} // end function GetBytesAsVector
 
-	virtual inline Int32 GetHashCode() const
+	inline Int32 GetHashCode() const
 	{
 		HashLibByteArray TempHolder = HashLibByteArray(_hash);
 
@@ -137,7 +137,7 @@ public:
 		return LResult;
 	} // end function GetHashCode
 
-	virtual inline Int32 GetInt32() const
+	inline Int32 GetInt32() const
 	{
 		if (_hash.size() != 4)
 		{
@@ -148,7 +148,7 @@ public:
 			(Int32(_hash[2]) << 8) | Int32(_hash[3]);
 	} // end function GetInt32
 
-	virtual inline byte GetUInt8() const
+	inline byte GetUInt8() const
 	{
 		if (_hash.size() != 1)
 		{
@@ -158,7 +158,7 @@ public:
 		return _hash[0];
 	} // end function GetUInt8
 
-	virtual inline  UInt16 GetUInt16() const
+	inline  UInt16 GetUInt16() const
 	{
 		if (_hash.size() != 2)
 		{
@@ -168,7 +168,7 @@ public:
 		return (UInt16(_hash[0]) << 8) | UInt16(_hash[1]);
 	} // end function GetUInt16
 
-	virtual inline UInt32 GetUInt32() const
+	inline UInt32 GetUInt32() const
 	{
 		if (_hash.size() != 4)
 		{
@@ -179,7 +179,7 @@ public:
 			(UInt32(_hash[2]) << 8) | UInt32(_hash[3]);
 	} // end function GetUInt32
 
-	virtual inline UInt64 GetUInt64() const
+	inline UInt64 GetUInt64() const
 	{
 		if (_hash.size() != 8)
 		{
@@ -204,7 +204,7 @@ public:
 		return diff == 0;
 	} // end function SlowEquals
 
-	virtual inline string ToString(const bool a_group = false) const
+	inline string ToString(const bool a_group = false) const
 	{
 		return Converters::ConvertBytesToHexString(_hash, a_group);
 	} // end function ToString

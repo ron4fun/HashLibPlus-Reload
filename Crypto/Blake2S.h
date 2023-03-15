@@ -36,19 +36,22 @@
 #include "../Utils/Utils.h"
 #include "../Utils/ArrayUtils.h"
 
-class Blake2S : public Hash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+
+class Blake2S : public Hash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
-	Blake2S() {}
+	Blake2S() 
+		: _treeConfig(Blake2BTreeConfig(true))
+	{}
 
-	Blake2S(const IBlake2SConfig a_Config, const IBlake2STreeConfig a_TreeConfig = nullptr,
+	Blake2S(const Blake2SConfig& a_Config, const Blake2STreeConfig& a_TreeConfig,
 		bool a_DoTransformKeyBlock = true) 
-		: Hash(a_Config ? a_Config->GetHashSize() : throw ArgumentNullHashLibException("config"), BlockSizeInBytes)
+		: Hash(a_Config.GetHashSize(), BlockSizeInBytes)
 	{
 		_name = __func__;
 
-		_config = a_Config->Clone();
-		_treeConfig = a_TreeConfig ? a_TreeConfig->Clone() : nullptr;
+		_config = a_Config;
+		_treeConfig = a_TreeConfig;
 		_doTransformKeyBlock = a_DoTransformKeyBlock;
 		
 		_state.resize(8);
@@ -70,8 +73,8 @@ public:
 		_finalizationFlag0 = blake2._finalizationFlag0;
 		_finalizationFlag1 = blake2._finalizationFlag1;
 		
-		_treeConfig = blake2._treeConfig ? blake2._treeConfig->Clone() : nullptr;
-		_config = blake2._config->Clone();
+		_treeConfig = blake2._treeConfig;
+		_config = blake2._config;
 
 		_doTransformKeyBlock = blake2._doTransformKeyBlock;
 
@@ -82,13 +85,8 @@ public:
 	}
 
 	Blake2S CloneInternal() const
-	{
-		IBlake2STreeConfig treeConfig = nullptr;
-		
-		if (_treeConfig)
-			treeConfig = _treeConfig->Clone();
-		
-		Blake2S result= Blake2S(_config, treeConfig, _doTransformKeyBlock);
+	{		
+		Blake2S result = Blake2S(_config, _treeConfig, _doTransformKeyBlock);
 		result._m = _m;
 		result._state = _state;
 		result._buffer = _buffer;
@@ -102,12 +100,13 @@ public:
 		return result;
 	}
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		return make_shared<Blake2S>(CloneInternal());
+		Blake2S* hash = new Blake2S(CloneInternal());
+		return *hash;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		Int32 Idx;
 		HashLibByteArray Block;
@@ -159,7 +158,7 @@ public:
 		}
 	}
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_data_length)
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_data_length) override
 	{
 		Int32 offset, bufferRemaining;
 		Int32 data_length = a_data_length;
@@ -197,7 +196,7 @@ public:
 
 	}
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
 		HashLibByteArray tempRes;
 
@@ -207,7 +206,7 @@ public:
 
 		Converters::le32_copy(&_state[0], 0, &tempRes[0], 0, (Int32)tempRes.size());
 
-		IHashResult result = make_shared<HashResult>(tempRes);
+		HashResult* result = new <HashResult>(tempRes);
 
 		Initialize();
 
@@ -1502,7 +1501,7 @@ protected:
 const char* Blake2S::InvalidConfigLength = "Config length must be 8 words";
 
 
-class Blake2XS : public Blake2S, public virtual IIXOF
+class Blake2XS final : public Blake2S, public IXOF
 {
 protected:
 	static const char* InvalidXofSize;
@@ -1675,27 +1674,27 @@ public:
 	{
 		// Xof Cloning
 		Blake2XS HashInstance = Blake2XS(make_shared<Blake2XSConfig>(_config, _treeConfig));
-		HashInstance.SetXOFSizeInBits(GetXOFSizeInBits());
+		HashInstance->SetXOFSizeInBits(GetXOFSizeInBits());
 
 		// Blake2XS Cloning
-		HashInstance._digestPosition = _digestPosition;
-		HashInstance._outputConfig = _outputConfig->Clone();
-		HashInstance._rootHashDigest = _rootHashDigest;
-		HashInstance._xofBuffer = _xofBuffer;
-		HashInstance._finalized = _finalized;
+		HashInstance->_digestPosition = _digestPosition;
+		HashInstance->_outputConfig = _outputConfig->Clone();
+		HashInstance->_rootHashDigest = _rootHashDigest;
+		HashInstance->_xofBuffer = _xofBuffer;
+		HashInstance->_finalized = _finalized;
 
 		// Internal Blake2S Cloning
-		HashInstance._m = _m;
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer;
+		HashInstance->_m = _m;
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer;
 
-		HashInstance._filledBufferCount = _filledBufferCount;
-		HashInstance._counter0 = _counter0;
-		HashInstance._counter1 = _counter1;
-		HashInstance._finalizationFlag0 = _finalizationFlag0;
-		HashInstance._finalizationFlag1 = _finalizationFlag1;
+		HashInstance->_filledBufferCount = _filledBufferCount;
+		HashInstance->_counter0 = _counter0;
+		HashInstance->_counter1 = _counter1;
+		HashInstance->_finalizationFlag0 = _finalizationFlag0;
+		HashInstance->_finalizationFlag1 = _finalizationFlag1;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
 		return HashInstance;
 	} //

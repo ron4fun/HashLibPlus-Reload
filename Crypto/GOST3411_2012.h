@@ -28,10 +28,10 @@
 #include "../Utils/Utils.h"
 
 
-class GOST3411_2012 : public Hash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class GOST3411_2012 : public Hash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_bOff = 64;
 
@@ -43,8 +43,8 @@ public:
 		ArrayUtils::zeroFill(_block);
 	} // end function Initialize
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 _a_index, 
-		const Int32 _a_data_length)
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 _a_index, 
+		const Int32 _a_data_length) override
 	{
 		Int32 a_index = _a_index, a_data_length = _a_data_length;
 
@@ -76,7 +76,7 @@ public:
 
 	}
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
 		HashLibByteArray tempRes;
 		size_t lenM, i;
@@ -106,11 +106,11 @@ public:
 		tempRes.resize(64);
 		memmove(&tempRes[0], &_tmp[0], 64 * sizeof(byte));
 
-		IHashResult result = make_shared<HashResult>(tempRes);
+		HashResult* result = new HashResult(tempRes);
 
 		Initialize();
 
-		return result;
+		return *result;
 	}
 
 protected:
@@ -1606,7 +1606,7 @@ HashLibMatrixUInt64Array GOST3411_2012::T = HashLibMatrixUInt64Array
 	});
 
 
-class GOST3411_2012_256 : public GOST3411_2012
+class GOST3411_2012_256 final : public GOST3411_2012
 {
 public:
 	GOST3411_2012_256()
@@ -1615,36 +1615,42 @@ public:
 		_name = __func__;
 	}
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		GOST3411_2012_256 HashInstance = GOST3411_2012_256();
-		HashInstance._iv = _iv;
-		HashInstance._n = _n;
-		HashInstance._sigma = _sigma;
-		HashInstance._ki = _ki;
-		HashInstance._m = _m;
-		HashInstance._h = _h;
-		HashInstance._tmp = _tmp;
-		HashInstance._block = _block;
-		HashInstance._bOff = _bOff;
+		GOST3411_2012_256* HashInstance = new GOST3411_2012_256();
+		HashInstance->_iv = _iv;
+		HashInstance->_n = _n;
+		HashInstance->_sigma = _sigma;
+		HashInstance->_ki = _ki;
+		HashInstance->_m = _m;
+		HashInstance->_h = _h;
+		HashInstance->_tmp = _tmp;
+		HashInstance->_block = _block;
+		HashInstance->_bOff = _bOff;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<GOST3411_2012_256>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
 		HashLibByteArray output, tempRes;
 
-		output = GOST3411_2012::TransformFinal()->GetBytes();
+		IHashResult* r1 = nullptr;
+		*r1 = GOST3411_2012::TransformFinal();
+
+		output = r1->GetBytes();
+
+		delete r1;
+
 		tempRes.resize(_hash_size);
 
 		memmove(&tempRes[0], &output[32], 32 * sizeof(byte));
 
-		IHashResult result = make_shared<HashResult>(tempRes);
+		IHashResult* result = new HashResult(tempRes);
 
-		return result;
+		return *result;
 	}
 
 private:
@@ -1659,7 +1665,7 @@ HashLibByteArray GOST3411_2012_256::IV_256 = HashLibByteArray({ 0x01, 0x01, 0x01
 	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 });
 
 
-class GOST3411_2012_512 : public GOST3411_2012
+class GOST3411_2012_512 final : public GOST3411_2012
 {
 public:
 	GOST3411_2012_512()
@@ -1668,22 +1674,22 @@ public:
 		_name = __func__;
 	}
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		GOST3411_2012_512 HashInstance = GOST3411_2012_512();
-		HashInstance._iv = _iv;
-		HashInstance._n = _n;
-		HashInstance._sigma = _sigma;
-		HashInstance._ki = _ki;
-		HashInstance._m = _m;
-		HashInstance._h = _h;
-		HashInstance._tmp = _tmp;
-		HashInstance._block = _block;
-		HashInstance._bOff = _bOff;
+		GOST3411_2012_512* HashInstance = new GOST3411_2012_512();
+		HashInstance->_iv = _iv;
+		HashInstance->_n = _n;
+		HashInstance->_sigma = _sigma;
+		HashInstance->_ki = _ki;
+		HashInstance->_m = _m;
+		HashInstance->_h = _h;
+		HashInstance->_tmp = _tmp;
+		HashInstance->_block = _block;
+		HashInstance->_bOff = _bOff;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<GOST3411_2012_512>(HashInstance);
+		return *HashInstance;
 	}
 
 private:

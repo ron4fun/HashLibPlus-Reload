@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class RadioGatun32 : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class RadioGatun32 final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	RadioGatun32()
@@ -41,20 +41,20 @@ public:
 
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		RadioGatun32 HashInstance = RadioGatun32();
-		HashInstance._mill = _mill;
-		HashInstance._belt = _belt;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		RadioGatun32* HashInstance = new RadioGatun32();
+		HashInstance->_mill = _mill;
+		HashInstance->_belt = _belt;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<RadioGatun32>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		ArrayUtils::zeroFill(_mill);
 
@@ -65,7 +65,7 @@ public:
 	} // end function Initialize
 
 protected:
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 padding_size = 12 - (_processed_bytes % 12);
 
@@ -80,7 +80,7 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult() 
+	HashLibByteArray GetResult() override
 	{
 		HashLibUInt32Array tempRes = HashLibUInt32Array(8);
 
@@ -97,8 +97,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const uint8_t* a_data,
-		const Int32 a_data_length, const Int32 a_index) 
+	void TransformBlock(const uint8_t* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		HashLibUInt32Array data = HashLibUInt32Array(3);
 

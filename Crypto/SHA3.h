@@ -35,10 +35,10 @@ enum HashMode
 	hmCShake = 0x04
 }; // end enum HashMode
 
-class SHA3 : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class SHA3 : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
-	virtual void Initialize()
+	void Initialize() override
 	{
 		ArrayUtils::zeroFill(_state);
 
@@ -52,7 +52,7 @@ protected:
 		_state.resize(25);
 	} // end constructor
 
-	virtual string GetName() const
+	string GetName() const override
 	{
 		switch (GetHashMode())
 		{
@@ -65,7 +65,7 @@ protected:
 		case hmShake:
 		case hmCShake:
 			return Utils::string_format("%s_%s_%u", _name.c_str(), "XOFSizeInBytes", 
-				dynamic_cast<const IIXOF*>(&(*this))->GetXOFSizeInBits() >> 3);
+				dynamic_cast<const IXOF*>(&(*this))->GetXOFSizeInBits() >> 3);
 		default:
 			throw ArgumentInvalidHashLibException(
 				Utils::string_format(InvalidHashMode, "hmKeccak, hmSHA3, hmShake, hmCShake"));
@@ -331,7 +331,7 @@ protected:
 		_state[24] = Asu;
 	} // end function KeccakF1600_StatePermute
 
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 buffer_pos = _buffer.GetPos();
 
@@ -343,7 +343,7 @@ protected:
 		TransformBlock(&block[0], (Int32)block.size(), 0);
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(GetHashSize());
 
@@ -352,8 +352,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		HashLibUInt64Array data = HashLibUInt64Array(21);
 		Int32 j, blockCount;
@@ -373,7 +373,7 @@ protected:
 		ArrayUtils::zeroFill(data);
 	} // end function TransformBlock
 
-	virtual HashMode GetHashMode() const 
+	virtual HashMode GetHashMode() const
 	{
 		return HashMode::hmSHA3;
 	};
@@ -410,7 +410,7 @@ const HashLibUInt64Array SHA3::RC = HashLibUInt64Array({
 
 #pragma region SHA3 Family
 
-class SHA3_224 : public SHA3
+class SHA3_224 final : public SHA3
 {
 public:
 	SHA3_224()
@@ -419,21 +419,21 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		SHA3_224 HashInstance = SHA3_224();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		SHA3_224* HashInstance = new SHA3_224();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<SHA3_224>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class SHA3_224
 
-class SHA3_256 : public SHA3
+class SHA3_256 final : public SHA3
 {
 public:
 	SHA3_256()
@@ -442,21 +442,21 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		SHA3_256 HashInstance = SHA3_256();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		SHA3_256* HashInstance = new SHA3_256();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<SHA3_256>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class SHA3_256
 
-class SHA3_384 : public SHA3
+class SHA3_384 final : public SHA3
 {
 public:
 	SHA3_384()
@@ -465,21 +465,21 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		SHA3_384 HashInstance = SHA3_384();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		SHA3_384* HashInstance = new SHA3_384();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<SHA3_384>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class SHA3_384
 
-class SHA3_512 : public SHA3
+class SHA3_512 final : public SHA3
 {
 public:
 	SHA3_512()
@@ -488,16 +488,16 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		SHA3_512 HashInstance = SHA3_512();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		SHA3_512* HashInstance = new SHA3_512();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<SHA3_512>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class SHA3_512
@@ -510,7 +510,7 @@ public:
 class Keccak : public SHA3
 {
 protected:
-	virtual HashMode GetHashMode() const
+	HashMode GetHashMode() const override
 	{
 		return HashMode::hmKeccak;
 	}
@@ -521,7 +521,7 @@ protected:
 	{} // end constructor
 };
 
-class Keccak_224 : public Keccak
+class Keccak_224 final : public Keccak
 {
 public:
 	Keccak_224()
@@ -529,100 +529,100 @@ public:
 	{} // end constructor
 
 protected:
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Keccak_224 HashInstance = Keccak_224();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Keccak_224* HashInstance = new Keccak_224();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Keccak_224>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class Keccak_224
 
-class Keccak_256 : public Keccak
+class Keccak_256 final : public Keccak
 {
 public:
 	Keccak_256()
 		: Keccak(HashSize::HashSize256)
 	{} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Keccak_256 HashInstance = Keccak_256();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Keccak_256* HashInstance = new Keccak_256();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Keccak_256>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class Keccak_256
 
-class Keccak_288 : public Keccak
+class Keccak_288 final : public Keccak
 {
 public:
 	Keccak_288()
 		: Keccak(HashSize::HashSize288)
 	{} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Keccak_288 HashInstance = Keccak_288();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Keccak_288* HashInstance = new Keccak_288();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Keccak_288>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class Keccak_288
 
-class Keccak_384 : public Keccak
+class Keccak_384 final : public Keccak
 {
 public:
 	Keccak_384()
 		: Keccak(HashSize::HashSize384)
 	{} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Keccak_384 HashInstance = Keccak_384();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Keccak_384* HashInstance = new Keccak_384();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Keccak_384>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class Keccak_384
 
-class Keccak_512 : public Keccak
+class Keccak_512 final : public Keccak
 {
 public:
 	Keccak_512()
 		: Keccak(HashSize::HashSize512)
 	{} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Keccak_512 HashInstance = Keccak_512();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Keccak_512* HashInstance = new Keccak_512();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Keccak_512>(HashInstance);
+		return *HashInstance;
 	}
 
 }; // end class Keccak_512
@@ -632,10 +632,10 @@ public:
 
 #pragma region Shake Family
 
-class Shake : public SHA3, public virtual IIXOF
+class Shake : public SHA3, public IXOF
 {
 protected:
-	virtual HashMode GetHashMode() const
+	HashMode GetHashMode() const override
 	{
 		return HashMode::hmShake;
 	}
@@ -649,7 +649,7 @@ protected:
 	} // end constructor
 
 public:
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_buffer_pos = 0;
 		_digest_pos = 0;
@@ -659,27 +659,29 @@ public:
 		SHA3::Initialize();
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
 		HashLibByteArray temp = GetResult();
 
 		Initialize();
 
-		return make_shared<HashResult>(temp);
+		HashResult* result = new HashResult(temp);
+
+		return *result;
 	} // end function TransformFinal
 
-	virtual UInt64 GetXOFSizeInBits() const
+	UInt64 GetXOFSizeInBits() const override
 	{
 		return _xofSizeInBits;
 	}
 
-	virtual void SetXOFSizeInBits(const UInt64 value)
+	void SetXOFSizeInBits(const UInt64 value) override
 	{
 		SetXOFSizeInBitsInternal(value);
 	}
 
-	virtual void DoOutput(HashLibByteArray& a_destination, const UInt64 a_destinationOffset,
-		const UInt64 a_outputLength)
+	void DoOutput(HashLibByteArray& a_destination, const UInt64 a_destinationOffset,
+		const UInt64 a_outputLength) override
 	{
 		UInt64 destinationOffset, outputLength;
 
@@ -725,7 +727,7 @@ public:
 		} // end while
 	} // end function DoOutput
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
 	{
 		if (_finalized)
 			throw InvalidOperationHashLibException(
@@ -767,13 +769,20 @@ protected:
 
 }; // end class Shake
 
-class Shake_128 : public Shake
+class Shake_128 final  : public Shake
 {
 public:
 	Shake_128() :
 		Shake((Int32)HashSize::HashSize128)
 	{ } // end constructor
 
+	IHash& Clone() const override
+	{
+		IHash* hash = new Shake_128(Copy());
+		return *hash;
+	} // end function Clone
+
+private:
 	Shake_128 Copy() const
 	{
 		// Xof Cloning
@@ -798,24 +807,22 @@ public:
 		return HashInstance;
 	} //
 
-	virtual IHash Clone() const
-	{
-		return make_shared<Shake_128>(Copy());
-	} // end function Clone
-
-	virtual IXOF CloneXOF() const
-	{
-		return make_shared<Shake_128>(Copy());
-	} // end function CloneXOF
 }; // end class Shake_128
 
-class Shake_256 : public Shake
+class Shake_256 final : public Shake
 {
 public:
 	Shake_256() :
 		Shake((Int32)HashSize::HashSize256)
 	{ } // end constructor
 
+	IHash& Clone() const override
+	{
+		IHash* hash = new Shake_256(Copy());
+		return *hash;
+	} // end function Clone
+
+private:
 	Shake_256 Copy() const
 	{
 		// Xof Cloning
@@ -839,16 +846,6 @@ public:
 
 		return HashInstance;
 	} // end function Copy
-
-	virtual IHash Clone() const
-	{
-		return make_shared<Shake_256>(Copy());
-	} // end function Clone
-
-	virtual IXOF CloneXOF() const
-	{
-		return make_shared<Shake_256>(Copy());
-	} // end function CloneXOF
 }; // end class Shake_256
 
 #pragma endregion
@@ -862,7 +859,7 @@ protected:
 	HashLibByteArray _fn, _fs, _initBlock;
 
 protected:
-	virtual HashMode GetHashMode() const
+	HashMode GetHashMode() const override
 	{
 		return _fn.empty() && _fs.empty() ? HashMode::hmShake : HashMode::hmCShake;
 	}
@@ -919,7 +916,7 @@ private:
 	} // end function LeftEncode
 
 public:
-	virtual void Initialize()
+	void Initialize() override
 	{
 		Shake::Initialize();
 
@@ -927,7 +924,7 @@ public:
 			TransformBytes(BytePad(_initBlock, GetBlockSize()));
 	} // end function Initialize
 
-	virtual void TransformBytes(const HashLibByteArray& a_data)
+	void TransformBytes(const HashLibByteArray& a_data) override
 	{
 		Shake::TransformBytes(a_data, 0, (Int32)a_data.size());
 	} // end function TransformBytes
@@ -972,19 +969,25 @@ public:
 
 }; // end function CShake
 
-class CShake_128 : public CShake
+class CShake_128 final : public CShake
 {
 public:
 	CShake_128(const HashLibByteArray& N, const HashLibByteArray& S) :
 		CShake((Int32)HashSize::HashSize128, N, S)
 	{ } // end constructor
 
+	IHash& Clone() const override
+	{
+		IHash* hash = new CShake_128(Copy());
+	} // end function Clone
+
+private:
 	CShake_128 Copy() const
 	{
 		// Xof Cloning
 		CShake_128 HashInstance = CShake_128(_fn, _fs);
 		HashInstance.SetXOFSizeInBits(GetXOFSizeInBits());
-		
+
 		// CShake_128 Cloning
 		HashInstance._initBlock = _initBlock;
 
@@ -1005,24 +1008,21 @@ public:
 		return HashInstance;
 	} // end function Copy
 
-	virtual IHash Clone() const
-	{
-		return make_shared<CShake_128>(Copy());
-	} // end function Clone
-
-	virtual IXOF CloneXOF() const
-	{
-		return make_shared<CShake_128>(Copy());
-	} // end function CloneXOF
 }; // end class CShake_128
 
-class CShake_256 : public CShake
+class CShake_256 final : public CShake
 {
 public:
 	CShake_256(const HashLibByteArray& N, const HashLibByteArray& S) :
 		CShake((Int32)HashSize::HashSize256, N, S)
 	{ } // end constructor
 
+	IHash& Clone() const override
+	{
+		IHash* hash = new CShake_256(Copy());
+	} // end function Clone
+
+private:
 	CShake_256 Copy() const
 	{
 		// Xof Cloning
@@ -1049,15 +1049,6 @@ public:
 		return HashInstance;
 	} // end function Copy
 
-	virtual IHash Clone() const
-	{
-		return make_shared<CShake_256>(Copy());
-	} // end function Clone
-
-	virtual IXOF CloneXOF() const
-	{
-		return make_shared<CShake_256>(Copy());
-	} // end function CloneXOF
 }; // end class CShake_256
 
 #pragma endregion

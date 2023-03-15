@@ -25,7 +25,7 @@
 
 #include "MDBase.h"
 
-class RIPEMD160 : public MDBase, public virtual IITransformBlock
+class RIPEMD160 final : public MDBase, public ITransformBlock
 {
 public:
 	RIPEMD160()
@@ -34,19 +34,19 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		RIPEMD160 HashInstance = RIPEMD160();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		RIPEMD160* HashInstance = new RIPEMD160();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<RIPEMD160>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_state[4] = 0xC3D2E1F0;
 
@@ -54,8 +54,8 @@ public:
 	} // end function Initialize
 
 protected:
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		UInt32 a, b, c, d, e, aa, bb, cc, dd, ee;
 

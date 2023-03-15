@@ -33,37 +33,31 @@
 #include "../Enum/Argon2Version.h"
 #include "../Nullable/Nullable.h"
 
-class IITransformBlock
+class ITransformBlock
 {}; // end class ITransformBlock
 
-typedef shared_ptr<IITransformBlock> ITransformBlock;
 
-class IIBlockHash : public virtual IIHash
+class IBlockHash : public virtual IHash
 { }; // end IBlockHash
 
-typedef shared_ptr<IIBlockHash> IBlockHash;
 
-class IINonBlockHash
+class INonBlockHash
 { }; // end INonBlockHash
 
-typedef shared_ptr<IINonBlockHash> INonBlockHash;
 
-class IIChecksum
+class IChecksum
 { }; // end IChecksum
 
-typedef shared_ptr<IIChecksum> IChecksum;
 
-class IICrypto : public virtual IIBlockHash
+class ICrypto : public virtual IBlockHash
 { }; // end ICrypto
 
-typedef shared_ptr<IICrypto> ICrypto;
 
-class IICryptoNotBuildIn : public virtual IICrypto
+class ICryptoNotBuildIn : public virtual ICrypto
 { }; // end ICryptoNotBuildIn
 
-typedef shared_ptr<IICryptoNotBuildIn> ICryptoNotBuildIn;
 
-class IIWithKey : public virtual IIHash
+class IWithKey : public virtual IHash
 {
 public:
 	virtual HashLibByteArray GetKey() const = 0;
@@ -71,9 +65,8 @@ public:
 	virtual NullableInteger GetKeyLength() const = 0;
 }; // end IWithKey
 
-typedef shared_ptr<IIWithKey> IWithKey;
 
-class IIMAC : public virtual IIHash
+class IMAC : public virtual IHash
 {
 public:
 	virtual void Clear() = 0;
@@ -82,230 +75,158 @@ public:
 	virtual void SetKey(const HashLibByteArray& value) = 0;
 }; // end IMAC
 
-typedef shared_ptr<IIMAC> IMAC;
 
-class IIMACNotBuildIn;
+class IMACNotBuildIn : public virtual IMAC
+{};
 
-typedef shared_ptr<IIMACNotBuildIn> IMACNotBuildIn;
 
-class IIMACNotBuildIn : public virtual IIMAC
-{
-	friend ostream& operator<<(ostream& output, const IMACNotBuildIn& hash)
-	{
-		output << hash->GetName();
-		return output;
-	}
-public:
-	virtual IMACNotBuildIn CloneMAC() const = 0;
-};
-
-class IIHMAC;
-
-typedef shared_ptr<IIHMAC> IHMAC;
-
-class IIHMAC : public virtual IIMACNotBuildIn
+class IHMAC : public virtual IMACNotBuildIn
 {}; // end IHMAC
 
-class IIHMACNotBuildIn;
 
-typedef shared_ptr<IIHMACNotBuildIn> IHMACNotBuildIn;
-
-class IIHMACNotBuildIn : public virtual IIHMAC
+class IHMACNotBuildIn : public virtual IHMAC
 {
-	friend ostream& operator<<(ostream& output, const IHMACNotBuildIn& hash)
-	{
-		output << hash->GetName();
-		return output;
-	}
 public:
 	virtual HashLibByteArray GetWorkingKey() const = 0;
-	virtual IHMACNotBuildIn CloneHMAC() const = 0;
 }; // end IHMACNotBuildIn
 
-class IIKMAC : public virtual IIMACNotBuildIn
+
+class IKMAC : public virtual IMACNotBuildIn
 { }; // end IKMAC
 
-typedef shared_ptr<IIKMAC> IKMAC;
 
-class IIKMACNotBuildIn : public virtual IIKMAC
+class IKMACNotBuildIn : public virtual IKMAC
 { }; // end IKMACNotBuildIn
-
-typedef shared_ptr<IIKMACNotBuildIn> IKMACNotBuildIn;
-
 
 
 #pragma region Blake2 Interfaces
 
-class IIBlake2BMAC : public virtual IIMACNotBuildIn
+class IBlake2BMAC : public virtual IMACNotBuildIn
 {}; // end IBlake2BMAC
 
-typedef shared_ptr<IIBlake2BMAC> IBlake2BMAC;
 
-class IIBlake2BMACNotBuildIn : public virtual IIBlake2BMAC
+class IBlake2BMACNotBuildIn : public virtual IBlake2BMAC
 {}; // end IBlake2BMACNotBuildIn
 
-typedef shared_ptr<IIBlake2BMACNotBuildIn> IBlake2BMACNotBuildIn;
 
-class IIBlake2SMAC : public virtual IIMACNotBuildIn
+class IBlake2SMAC : public virtual IMACNotBuildIn
 {}; // end IBlake2SMAC
 
-typedef shared_ptr<IIBlake2SMAC> IBlake2SMAC;
 
-class IIBlake2SMACNotBuildIn : public virtual IIBlake2SMAC
+class IBlake2SMACNotBuildIn : public virtual IBlake2SMAC
 {}; // end IBlake2SMACNotBuildIn
 
-typedef shared_ptr<IIBlake2SMACNotBuildIn> IBlake2SMACNotBuildIn;
 
 #pragma endregion
 
 
 #pragma region Blake2X _config Interfaces
 
-class IIBlake2XBConfig;
 
-typedef shared_ptr<IIBlake2XBConfig> IBlake2XBConfig;
-
-class IIBlake2XBConfig
+class IBlake2XBConfig
 {
 public:
-	virtual IBlake2BConfig GetConfig() const = 0;
-	virtual IBlake2BTreeConfig GetTreeConfig() const = 0;
+	virtual ~IBlake2XBConfig() {}
 
-	virtual IBlake2BConfig GetConfig() = 0;
-	virtual IBlake2BTreeConfig GetTreeConfig() = 0;
+	virtual IBlake2BConfig& GetConfig() const = 0;
+	virtual IBlake2BTreeConfig& GetTreeConfig() const = 0;
 
-	virtual void SetConfig(const IBlake2BConfig value) = 0;
-	virtual void SetTreeConfig(const IBlake2BTreeConfig value) = 0;
+	virtual IBlake2BConfig& GetConfig() = 0;
+	virtual IBlake2BTreeConfig& GetTreeConfig() = 0;
 
-	virtual IBlake2XBConfig Clone() const = 0;
+	virtual void SetConfig(const IBlake2BConfig& value) = 0;
+	virtual void SetTreeConfig(const IBlake2BTreeConfig& value) = 0;
+
+	virtual IBlake2XBConfig& Clone() const = 0;
 
 }; // end class IBlake2XBConfig
 
-class IIBlake2XSConfig;
 
-typedef shared_ptr<IIBlake2XSConfig> IBlake2XSConfig;
-
-class IIBlake2XSConfig
+class IBlake2XSConfig
 {
 public:
-	virtual IBlake2SConfig GetConfig() const = 0;
-	virtual IBlake2STreeConfig GetTreeConfig() const = 0;
+	virtual ~IBlake2XSConfig() {}
 
-	virtual IBlake2SConfig GetConfig() = 0;
-	virtual IBlake2STreeConfig GetTreeConfig() = 0;
+	virtual IBlake2SConfig& GetConfig() const = 0;
+	virtual IBlake2STreeConfig& GetTreeConfig() const = 0;
 
-	virtual void SetConfig(const IBlake2SConfig value) = 0;
-	virtual void SetTreeConfig(const IBlake2STreeConfig value) = 0;
+	virtual IBlake2SConfig& GetConfig() = 0;
+	virtual IBlake2STreeConfig& GetTreeConfig() = 0;
 
-	virtual IBlake2XSConfig Clone() const = 0;
+	virtual void SetConfig(const IBlake2SConfig& value) = 0;
+	virtual void SetTreeConfig(const IBlake2STreeConfig& value) = 0;
+
+	virtual IBlake2XSConfig& Clone() const = 0;
 };
 
 #pragma endregion
 
 
-class IIHash16 : public virtual IIHash
+class IHash16 : public virtual IHash
 { }; // end IHash16
 
-typedef shared_ptr<IIHash16> IHash16;
 
-class IIHash32 : public virtual IIHash
+class IHash32 : public virtual IHash
 { }; // end IHash32
 
-typedef shared_ptr<IIHash32> IHash32;
 
-class IIHash64 : public virtual IIHash
+class IHash64 : public virtual IHash
 { }; // end IHash64
 
-typedef shared_ptr<IIHash64> IHash64;
 
-class IIHash128 : public virtual IIHash
+class IHash128 : public virtual IHash
 { }; // end IHash128
 
-typedef shared_ptr<IIHash128> IHash128;
 
-class IIHashWithKey;
-
-typedef shared_ptr<IIHashWithKey> IHashWithKey;
-
-class IIHashWithKey : public virtual IIWithKey
-{
-	friend ostream& operator<<(ostream& output, const IHashWithKey& hash)
-	{
-		output << hash->GetName();
-		return output;
-	}
-public:
-	virtual IHashWithKey CloneHashWithKey() const = 0;
-}; // end IHashWithKey
+class IHashWithKey : public virtual IWithKey
+{}; // end IHashWithKey
 
 
 #pragma region KDF Interfaces
 
-class IIKDFNotBuildIn;
 
-typedef shared_ptr<IIKDFNotBuildIn> IKDFNotBuildIn;
-
-class IIKDFNotBuildIn : public virtual IIKDF
+class IKDFNotBuildIn : public virtual IKDF
 {
 public:
-	virtual IKDFNotBuildIn Clone() const = 0;
-}; // end IIKDFNotBuildIn
+	virtual IKDFNotBuildIn& Clone() const = 0;
+}; // end IKDFNotBuildIn
 
-class IIPBKDF2_HMAC : public virtual IIKDFNotBuildIn
-{ }; // end IPBKDF2_HMAC
 
-typedef shared_ptr<IIPBKDF2_HMAC> IPBKDF2_HMAC;
+class IPBKDF2_HMAC : public virtual IKDFNotBuildIn
+{}; // end IPBKDF2_HMAC
 
-class IIPBKDF2_HMACNotBuildIn;
 
-typedef shared_ptr<IIPBKDF2_HMACNotBuildIn> IPBKDF2_HMACNotBuildIn;
+class IPBKDF2_HMACNotBuildIn : public virtual IPBKDF2_HMAC
+{}; // end IPBKDF2_HMACNotBuildIn
 
-class IIPBKDF2_HMACNotBuildIn : public virtual IIPBKDF2_HMAC
-{
-	friend ostream& operator<<(ostream& output, const IPBKDF2_HMACNotBuildIn& hash)
-	{
-		output << hash->GetName();
-		return output;
-	}
-}; // end IPBKDF2_HMACNotBuildIn
 
-class IIPBKDF_Argon2 : public virtual IIKDFNotBuildIn
-{ }; // end IPBKDF_Argon2
+class IPBKDF_Argon2 : public virtual IKDFNotBuildIn
+{}; // end IPBKDF_Argon2
 
-typedef shared_ptr<IIPBKDF_Argon2> IPBKDF_Argon2;
 
-class IIPBKDF_Argon2NotBuildIn : public virtual IIPBKDF_Argon2
+class IPBKDF_Argon2NotBuildIn : public virtual IPBKDF_Argon2
 { }; // end IPBKDF_Argon2NotBuildIn
 
-typedef shared_ptr<IIPBKDF_Argon2NotBuildIn> IPBKDF_Argon2NotBuildIn;
 
-class IIPBKDF_Scrypt : public virtual IIKDFNotBuildIn
+class IPBKDF_Scrypt : public virtual IKDFNotBuildIn
 { }; // end IPBKDF_Scrypt
 
-typedef shared_ptr<IIPBKDF_Scrypt> IPBKDF_Scrypt;
 
-class IIPBKDF_ScryptNotBuildIn : public virtual IIPBKDF_Scrypt
+class IPBKDF_ScryptNotBuildIn : public virtual IPBKDF_Scrypt
 { }; // end IPBKDF_ScryptNotBuildIn
 
-typedef shared_ptr<IIPBKDF_ScryptNotBuildIn> IPBKDF_ScryptNotBuildIn;
 
-class IIPBKDF_Blake3 : public virtual IIKDFNotBuildIn
+class IPBKDF_Blake3 : public virtual IKDFNotBuildIn
 { }; // end IPBKDF_Blake3
 
-class IIPBKDF_Blake3NotBuildIn : public virtual IIPBKDF_Blake3
+
+class IPBKDF_Blake3NotBuildIn : public virtual IPBKDF_Blake3
 { }; // end IPBKDF_Blake3NotBuildIn
 
-typedef shared_ptr<IIPBKDF_Blake3NotBuildIn> IPBKDF_Blake3NotBuildIn;
 
-class IIXOF;
-
-typedef shared_ptr<IIXOF> IXOF;
-
-class IIXOF : public virtual IIHash
+class IXOF : public virtual IHash
 {
 public:
-	virtual IXOF CloneXOF() const = 0;
-
 	virtual UInt64 GetXOFSizeInBits() const = 0;
 	virtual void SetXOFSizeInBits(const UInt64 value) = 0;
 
@@ -319,11 +240,8 @@ public:
 
 #pragma region Argon2 Parameter Interfaces
 
-class IIArgon2Parameters;
 
-typedef shared_ptr<IIArgon2Parameters> IArgon2Parameters;
-
-class IIArgon2Parameters
+class IArgon2Parameters
 {
 public:
 	virtual void Clear() = 0;
@@ -337,38 +255,36 @@ public:
 	virtual Argon2Type GetType() const = 0;
 	virtual Argon2Version GetVersion() const = 0;
 
-	virtual IArgon2Parameters Clone() const = 0;
+	virtual IArgon2Parameters& Clone() const = 0;
 };  // end IArgon2Parameters
 
-class IIArgon2ParametersBuilder;
 
-typedef shared_ptr<IIArgon2ParametersBuilder> IArgon2ParametersBuilder;
-
-class IIArgon2ParametersBuilder
+class IArgon2ParametersBuilder
 {
 public:
-	virtual IArgon2ParametersBuilder WithParallelism(const Int32 a_parallelism) = 0;
+	virtual IArgon2ParametersBuilder& WithParallelism(const Int32 a_parallelism) = 0;
 
-	virtual IArgon2ParametersBuilder WithSalt(const HashLibByteArray& a_salt) = 0;
+	virtual IArgon2ParametersBuilder& WithSalt(const HashLibByteArray& a_salt) = 0;
 
-	virtual IArgon2ParametersBuilder WithSecret(const HashLibByteArray& a_secret) = 0;
+	virtual IArgon2ParametersBuilder& WithSecret(const HashLibByteArray& a_secret) = 0;
 
-	virtual IArgon2ParametersBuilder WithAdditional(const HashLibByteArray& a_additional) = 0;
+	virtual IArgon2ParametersBuilder& WithAdditional(const HashLibByteArray& a_additional) = 0;
 
-	virtual IArgon2ParametersBuilder WithIterations(const Int32 a_iterations) = 0;
+	virtual IArgon2ParametersBuilder& WithIterations(const Int32 a_iterations) = 0;
 
-	virtual IArgon2ParametersBuilder WithMemoryAsKiB(const Int32 a_memory) = 0;
+	virtual IArgon2ParametersBuilder& WithMemoryAsKiB(const Int32 a_memory) = 0;
 
-	virtual IArgon2ParametersBuilder WithMemoryPowOfTwo(const Int32 a_memory) = 0;
+	virtual IArgon2ParametersBuilder& WithMemoryPowOfTwo(const Int32 a_memory) = 0;
 
-	virtual IArgon2ParametersBuilder WithType(const Argon2Type& a_type) = 0;
+	virtual IArgon2ParametersBuilder& WithType(const Argon2Type& a_type) = 0;
 
-	virtual IArgon2ParametersBuilder WithVersion(const Argon2Version& a_version) = 0;
+	virtual IArgon2ParametersBuilder& WithVersion(const Argon2Version& a_version) = 0;
 
 	virtual void Clear() = 0;
 
-	virtual IArgon2Parameters Build() const = 0;
+	virtual IArgon2ParametersBuilder& Build() const = 0;
 
 }; // end IArgon2ParametersBuilder
+
 
 #pragma endregion

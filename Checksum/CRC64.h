@@ -25,15 +25,15 @@
 
 #include "CRC.h"
 
-class CRC64Polynomials
+class CRC64Polynomials final
 {
 public:
 	static const UInt64 ECMA_182 = 0x42F0E1EBA9EA3693;
 
 }; // end class CRC64Polynomials
 
-class _CRC64 : public Hash, public virtual IIChecksum, public virtual IIBlockHash, 
-	public virtual IIHash64, public virtual IITransformBlock
+class _CRC64 : public Hash, public virtual IChecksum, public virtual IBlockHash, 
+	public virtual IHash64, public virtual ITransformBlock
 {
 public:
 	_CRC64(const UInt64 _poly, const UInt64 _Init,
@@ -41,38 +41,41 @@ public:
 		const UInt64 _check, const HashLibStringArray& _Names)
 		: Hash(8, 1)
 	{
-		_crcAlgorithm = make_shared<_CRC>(64, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names);
+		_crcAlgorithm = new _CRC(64, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names);
 	} // end constructor
 
 	~_CRC64()
-	{} // end destructor
+	{
+		if (_crcAlgorithm != nullptr)
+			delete _crcAlgorithm;
+	} // end destructor
 
-	virtual string GetName() const
+	string GetName() const override
 	{
 		return _crcAlgorithm->GetName();
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_crcAlgorithm->Initialize();
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
 		return _crcAlgorithm->TransformFinal();
 	} // end function TransformFinal
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
 	{
 		_crcAlgorithm->TransformBytes(a_data, a_index, a_length);
 	} // end function TransformBytes
 
 private:
-	ICRC _crcAlgorithm = nullptr;
+	ICRC* _crcAlgorithm = nullptr;
 
 }; // end class _CRC64
 
-class _CRC64_ECMA_182 : public _CRC64
+class _CRC64_ECMA_182 final : public _CRC64
 {
 public:
 	_CRC64_ECMA_182()

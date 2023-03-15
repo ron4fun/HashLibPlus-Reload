@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class Grindahl256 : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class Grindahl256 final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	Grindahl256()
@@ -38,19 +38,19 @@ public:
 		_state.resize(13);
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Grindahl256 HashInstance = Grindahl256();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Grindahl256* HashInstance = new Grindahl256();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Grindahl256>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		ArrayUtils::zeroFill(_state);
 
@@ -58,7 +58,7 @@ public:
 	} // end function Initialize
 
 protected:
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 padding_size = 12 - Int32(_processed_bytes & 3);
 		uint64_t msg_length = (_processed_bytes >> 2) + 1;
@@ -86,7 +86,7 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(8 * sizeof(UInt32));
 
@@ -95,8 +95,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		_state[0] = Converters::ReadBytesAsUInt32LE(a_data, a_index);
 

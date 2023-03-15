@@ -23,8 +23,7 @@
 
 #pragma once
 
-#include "../Interfaces/IBlake2BConfigurations/IBlake2BConfig.h"
-#include "../Interfaces/IBlake2BConfigurations/IBlake2BTreeConfig.h"
+
 #include "../Utils/Converters.h"
 #include "../Enum/HashSize.h"
 #include "../Utils/HashLibTypes.h"
@@ -32,7 +31,7 @@
 #include "../Utils/Utils.h"
 
 
-class Blake2BErrorStrings
+class Blake2BErrorStrings final
 {
 public:
 	static const char* InvalidHashSize;
@@ -43,7 +42,7 @@ public:
 	static const char* InvalidMaxDepth;
 }; // !Blake2BErrorStrings
 
-class Blake2BConfig : public virtual IIBlake2BConfig
+class Blake2BConfig final
 {
 public:
 	Blake2BConfig(const HashSize& a_hash_size = HashSize::HashSize512)
@@ -58,9 +57,9 @@ public:
 		_hash_size = a_hash_size;
 	}
 	
-	static IBlake2BConfig CreateBlake2BConfig(const Int32 a_hash_size = HashSize::HashSize512)
+	static Blake2BConfig CreateBlake2BConfig(const Int32 a_hash_size = HashSize::HashSize512)
 	{
-		return make_shared<Blake2BConfig>(a_hash_size);
+		return Blake2BConfig(a_hash_size);
 	}
 
 	~Blake2BConfig()
@@ -68,66 +67,56 @@ public:
 		Clear();
 	}
 
-	static IBlake2BConfig GetDefaultConfig()
+	static Blake2BConfig GetDefaultConfig()
 	{
-		return make_shared<Blake2BConfig>();
+		return Blake2BConfig();
 	}
 
-	virtual HashLibByteArray GetPersonalization() const
+	HashLibByteArray GetPersonalization() const
 	{
 		return _personalisation;
 	}
 
-	virtual void SetPersonalization(const HashLibByteArray& value)
+	void SetPersonalization(const HashLibByteArray& value)
 	{
 		ValidatePersonalisationLength(value);
 		_personalisation = value;
 	}
 
-	virtual HashLibByteArray GetSalt() const
+	HashLibByteArray GetSalt() const
 	{
 		return _salt;
 	}
 
-	virtual void SetSalt(const HashLibByteArray& value)
+	void SetSalt(const HashLibByteArray& value)
 	{
 		ValidateSaltLength(value);
 		_salt = value;
 	}
 
-	virtual HashLibByteArray GetKey() const
+	HashLibByteArray GetKey() const
 	{
 		return _key;
 	}
 
-	virtual void SetKey(const HashLibByteArray& value)
+	void SetKey(const HashLibByteArray& value)
 	{
 		ValidateKeyLength(value);
 		_key = value;
 	}
 
-	virtual Int32 GetHashSize() const
+	Int32 GetHashSize() const
 	{
 		return _hash_size;
 	}
 
-	virtual void SetHashSize(const Int32 value)
+	void SetHashSize(const Int32 value)
 	{
 		ValidateHashSize(value);
 		_hash_size = value;
 	}
-
-	virtual IBlake2BConfig Clone() const
-	{
-		Blake2BConfig result = Blake2BConfig(GetHashSize());
-		result._key = _key;
-		result._personalisation = _personalisation;
-		result._salt = _salt;
-
-		return make_shared<Blake2BConfig>(result);
-	}
-
-	virtual void Clear()
+	
+	void Clear()
 	{
 		ArrayUtils::zeroFill(_key);
 		ArrayUtils::zeroFill(_salt);
@@ -162,32 +151,32 @@ private:
 			throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidSaltLength, SaltLength));
 	}
 
-
 private:
 	Int32 _hash_size;
 	HashLibByteArray _personalisation, _salt, _key;
-
+	
 }; // !Blake2BConfig
 
-class Blake2BTreeConfig : public virtual IIBlake2BTreeConfig
+class Blake2BTreeConfig final
 {
 public:
-	Blake2BTreeConfig()
-		: _fanOut(0), 
-		_maxDepth(0), 
-		_nodeDepth(0), 
+	Blake2BTreeConfig(bool isNull = false)
+		: _fanOut(0),
+		_maxDepth(0),
+		_nodeDepth(0),
 		_innerHashSize(64),
 		_leafSize(64),
 		_nodeOffset(0),
-		_isLastNode(false)
+		_isLastNode(false),
+		_isNull(isNull)
 	{}
 
-	static IBlake2BTreeConfig CreateBlake2BTreeConfig()
+	static Blake2BTreeConfig CreateBlake2BTreeConfig()
 	{
-		return make_shared<Blake2BTreeConfig>();
+		return Blake2BTreeConfig();
 	}
 
-	static IBlake2BTreeConfig GetSequentialTreeConfig()
+	static Blake2BTreeConfig GetSequentialTreeConfig()
 	{
 		Blake2BTreeConfig result = Blake2BTreeConfig();
 		result._fanOut = 1;
@@ -198,30 +187,30 @@ public:
 		result._innerHashSize = 0;
 		result._isLastNode = false;
 
-		return make_shared<Blake2BTreeConfig>(result);
+		return result;
 	}
 
-	static IBlake2BTreeConfig GetDefaultTreeConfig() 
+	static Blake2BTreeConfig GetDefaultTreeConfig() 
 	{
-		return make_shared<Blake2BTreeConfig>();
+		return Blake2BTreeConfig();
 	}
 
-	virtual byte GetFanOut() const
+	byte GetFanOut() const
 	{
 		return _fanOut;
 	}
 
-	virtual void SetFanOut(const byte value)
+	void SetFanOut(const byte value)
 	{
 		_fanOut = value;
 	}
 
-	virtual byte GetInnerHashSize() const
+	byte GetInnerHashSize() const
 	{
 		return _innerHashSize;
 	}
 
-	virtual void SetInnerHashSize(const byte value)
+	void SetInnerHashSize(const byte value)
 	{
 		if (value > 64)
 			throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidInnerHashSize, value));
@@ -229,12 +218,12 @@ public:
 		_innerHashSize = value;
 	}
 
-	virtual byte GetMaxDepth() const
+	byte GetMaxDepth() const
 	{
 		return _maxDepth;
 	}
 
-	virtual void SetMaxDepth(const byte value)
+	void SetMaxDepth(const byte value)
 	{
 		if (value < 1)
 			throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidMaxDepth, value));
@@ -242,58 +231,49 @@ public:
 		_maxDepth = value;
 	}
 
-	virtual byte GetNodeDepth() const
+	byte GetNodeDepth() const
 	{
 		return _nodeDepth;
 	}
 
-	virtual void SetNodeDepth(const byte value)
+	void SetNodeDepth(const byte value)
 	{
 		_nodeDepth = value;
 	}
 
-	virtual UInt32 GetLeafSize() const
+	UInt32 GetLeafSize() const
 	{
 		return _leafSize;
 	}
-
-	virtual void SetLeafSize(const UInt32 value)
+	 
+	void SetLeafSize(const UInt32 value)
 	{
 		_leafSize = value;
 	}
 
-	virtual UInt64 GetNodeOffset() const
+	UInt64 GetNodeOffset() const
 	{
 		return _nodeOffset;
 	}
 
-	virtual void SetNodeOffset(const UInt64 value)
+	void SetNodeOffset(const UInt64 value)
 	{
 		_nodeOffset = value;
 	}
 
-	virtual bool GetIsLastNode() const
+	bool GetIsLastNode() const
 	{
 		return _isLastNode;
 	}
 
-	virtual void SetIsLastNode(const bool value)
+	void SetIsLastNode(const bool value)
 	{
 		_isLastNode = value;
 	}
-
-	virtual IBlake2BTreeConfig Clone() const
+	
+	bool IsNull() const
 	{
-		Blake2BTreeConfig result = Blake2BTreeConfig();
-		result._fanOut = _fanOut;
-		result._innerHashSize = _innerHashSize;
-		result._maxDepth = _maxDepth;
-		result._nodeDepth = _nodeDepth;
-		result._leafSize = _leafSize;
-		result._nodeOffset = _nodeOffset;
-		result._isLastNode = _isLastNode;
-
-		return make_shared<Blake2BTreeConfig>(result);
+		return _isNull;
 	}
 
 private:
@@ -302,17 +282,19 @@ private:
 	UInt64 _nodeOffset;
 	bool _isLastNode;
 
+	bool _isNull;
+
 }; // end class Blake2BTreeConfig
 
-class Blake2BIvBuilder
+class Blake2BIvBuilder final
 {
 public:
-	static HashLibUInt64Array ConfigB(const IBlake2BConfig a_Config, IBlake2BTreeConfig a_TreeConfig)
+	static HashLibUInt64Array ConfigB(const Blake2BConfig& a_Config, Blake2BTreeConfig& a_TreeConfig)
 	{
 		bool isSequential;
 		HashLibByteArray buffer;
 
-		isSequential = a_TreeConfig == nullptr;
+		isSequential = a_TreeConfig.IsNull();
 		if (isSequential)
 			a_TreeConfig = Blake2BTreeConfig::GetSequentialTreeConfig();
 
@@ -320,74 +302,74 @@ public:
 
 		buffer.resize(64);
 
-		buffer[0] = (byte)a_Config->GetHashSize();
-		buffer[1] = (byte)a_Config->GetKey().size();
+		buffer[0] = (byte)a_Config.GetHashSize();
+		buffer[1] = (byte)a_Config.GetKey().size();
 
-		if (a_TreeConfig != nullptr)
+		if (a_TreeConfig.IsNull())
 		{
-			buffer[2] = (byte)a_TreeConfig->GetFanOut();
-			buffer[3] = (byte)a_TreeConfig->GetMaxDepth();
-			Converters::ReadUInt32AsBytesLE(a_TreeConfig->GetLeafSize(), buffer, 4);
-			Converters::ReadUInt64AsBytesLE(a_TreeConfig->GetNodeOffset(), buffer, 8);
-			buffer[16] = (byte)a_TreeConfig->GetNodeDepth();
-			buffer[17] = (byte)a_TreeConfig->GetInnerHashSize();
+			buffer[2] = (byte)a_TreeConfig.GetFanOut();
+			buffer[3] = (byte)a_TreeConfig.GetMaxDepth();
+			Converters::ReadUInt32AsBytesLE(a_TreeConfig.GetLeafSize(), buffer, 4);
+			Converters::ReadUInt64AsBytesLE(a_TreeConfig.GetNodeOffset(), buffer, 8);
+			buffer[16] = (byte)a_TreeConfig.GetNodeDepth();
+			buffer[17] = (byte)a_TreeConfig.GetInnerHashSize();
 		}
 
-		if (!a_Config->GetSalt().empty())
-			memmove(&buffer[32], &a_Config->GetSalt()[0], 16 * sizeof(byte));
+		if (!a_Config.GetSalt().empty())
+			memmove(&buffer[32], &a_Config.GetSalt()[0], 16 * sizeof(byte));
 
-		if (!a_Config->GetPersonalization().empty())
-			memmove(&buffer[48], &a_Config->GetPersonalization()[0], 16 * sizeof(byte));
+		if (!a_Config.GetPersonalization().empty())
+			memmove(&buffer[48], &a_Config.GetPersonalization()[0], 16 * sizeof(byte));
 
 		HashLibUInt64Array result = HashLibUInt64Array(8);
 		Converters::le64_copy(&buffer[0], 0, &result[0], 0, (Int32)buffer.size() * sizeof(byte));
-
+		
 		return result;
 	}
 
 private:
-	static void VerifyConfigB(const IBlake2BConfig a_Config, const IBlake2BTreeConfig a_TreeConfig,
+	static void VerifyConfigB(const Blake2BConfig& a_Config, const Blake2BTreeConfig& a_TreeConfig,
 		const bool a_IsSequential)
 	{
 		// digest length
-		if (a_Config->GetHashSize() < 1 || a_Config->GetHashSize() > 64)
-			throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidHashSize, a_Config->GetHashSize()));
+		if (a_Config.GetHashSize() < 1 || a_Config.GetHashSize() > 64)
+			throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidHashSize, a_Config.GetHashSize()));
 
 		// Key length
-		if (!a_Config->GetKey().empty())
+		if (!a_Config.GetKey().empty())
 		{
-			size_t KeyLength = a_Config->GetKey().size();
+			size_t KeyLength = a_Config.GetKey().size();
 			if (KeyLength > 64)
 				throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidKeyLength, KeyLength));
 		}
 
 		// Salt length
-		if (!a_Config->GetSalt().empty())
+		if (!a_Config.GetSalt().empty())
 		{
-			size_t SaltLength = a_Config->GetSalt().size();
+			size_t SaltLength = a_Config.GetSalt().size();
 			if (SaltLength != 16)
 				throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidSaltLength, SaltLength));
 		}
 
 		// Personalisation length
-		if (!a_Config->GetPersonalization().empty())
+		if (!a_Config.GetPersonalization().empty())
 		{
-			size_t PersonalizationLength = a_Config->GetPersonalization().size();
+			size_t PersonalizationLength = a_Config.GetPersonalization().size();
 			if (PersonalizationLength != 16)
 				throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidPersonalizationLength, PersonalizationLength));
 		}
 
 		// Tree InnerHashSize
-		if (a_TreeConfig)
+		if (!a_TreeConfig.IsNull())
 		{
-			if (a_IsSequential && a_TreeConfig->GetInnerHashSize() != 0)
+			if (a_IsSequential && a_TreeConfig.GetInnerHashSize() != 0)
 			{
-				throw ArgumentOutOfRangeHashLibException("a_TreeConfig->GetInnerHashSize()");
+				throw ArgumentOutOfRangeHashLibException("a_TreeConfig.GetInnerHashSize()");
 			}
 
-			if (a_TreeConfig->GetInnerHashSize() > 64)
+			if (a_TreeConfig.GetInnerHashSize() > 64)
 			{
-				throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidInnerHashSize, a_TreeConfig->GetInnerHashSize()));
+				throw ArgumentOutOfRangeHashLibException(Utils::string_format(Blake2BErrorStrings::InvalidInnerHashSize, a_TreeConfig.GetInnerHashSize()));
 			}
 		}
 

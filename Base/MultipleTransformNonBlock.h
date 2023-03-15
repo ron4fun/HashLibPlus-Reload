@@ -26,7 +26,7 @@
 #include "Hash.h"
 #include "../Interfaces/IHashInfo.h"
 
-class MultipleTransformNonBlock : public Hash, public virtual IINonBlockHash
+class MultipleTransformNonBlock : public Hash, public virtual INonBlockHash
 {
 public:
 	MultipleTransformNonBlock(const Int32 a_hash_size, const Int32 a_block_size)
@@ -38,12 +38,12 @@ public:
 		_buffer.clear(); // reset buffer
 	} // end destructor
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_buffer.clear(); // reset buffer
 	} // end fucntion Initialize
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
 	{
 		if (a_data.empty()) return;
 
@@ -56,16 +56,16 @@ public:
 		_buffer += data;
 	} // end function TransformBytes
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
-		IHashResult result = ComputeAggregatedBytes(Aggregate());
+		IHashResult& result = ComputeAggregatedBytes(Aggregate());
 
 		Initialize();
 
 		return result;
 	} // end function TransformFinal
 
-	virtual IHashResult ComputeBytes(const HashLibByteArray& a_data)
+	IHashResult& ComputeBytes(const HashLibByteArray& a_data) override
 	{
 		Initialize();
 
@@ -75,7 +75,7 @@ public:
 protected:
 	MultipleTransformNonBlock() {}
 
-	virtual IHashResult ComputeAggregatedBytes(const HashLibByteArray& a_data) = 0;
+	virtual IHashResult& ComputeAggregatedBytes(const HashLibByteArray& a_data) = 0;
 
 private:
 	HashLibByteArray Aggregate()

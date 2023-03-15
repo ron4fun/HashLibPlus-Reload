@@ -26,7 +26,7 @@
 #include "../Base/HashCryptoNotBuildIn.h"
 #include "../Enum/HashSize.h"
 
-class Snefru : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class Snefru final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	Snefru(const Int32 a_security_level, const Int32 a_hash_size)
@@ -36,24 +36,24 @@ public:
 		_state.resize(a_hash_size >> 2);
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Snefru HashInstance = Snefru(_security_level, GetHashSize(_hash_size));
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Snefru* HashInstance = new Snefru(_security_level, GetHashSize(_hash_size));
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Snefru>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual string GetName() const
+	string GetName() const override
 	{
 		return Utils::string_format("Snefru_%u_%u", _security_level, _hash_size * 8);
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		ArrayUtils::zeroFill(_state);
 
@@ -75,7 +75,7 @@ protected:
 		}
 	}
 
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 padindex;
 
@@ -97,7 +97,7 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(_state.size() * sizeof(UInt32));
 
@@ -106,8 +106,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		UInt32 i, j, k, shift;
 

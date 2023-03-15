@@ -25,7 +25,7 @@
 
 #include "CRC.h"
 
-class CRC32Polynomials
+class CRC32Polynomials final
 {
 public:
 	static const UInt32 PKZIP = 0x04C11DB7;
@@ -33,8 +33,8 @@ public:
 
 }; // end class CRC32Polynomials
 
-class _CRC32 : public Hash, public virtual IIChecksum, public virtual IIBlockHash, 
-	public virtual IIHash32, public virtual IITransformBlock
+class _CRC32 : public Hash, public virtual IChecksum, public virtual IBlockHash, 
+	public virtual IHash32, public virtual ITransformBlock
 {
 public:
 	_CRC32(const UInt64 _poly, const UInt64 _Init,
@@ -42,38 +42,41 @@ public:
 		const UInt64 _check, const HashLibStringArray& _Names)
 		: Hash(4, 1)
 	{
-		_crcAlgorithm = make_shared<_CRC>(32, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names);
+		_crcAlgorithm = new _CRC(32, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names);
 	} // end constructor
 
 	~_CRC32()
-	{} // end destructor
+	{
+		if (_crcAlgorithm != nullptr)
+			delete _crcAlgorithm;
+	} // end destructor
 
-	virtual string GetName() const
+	string GetName() const
 	{
 		return _crcAlgorithm->GetName();
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_crcAlgorithm->Initialize();
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
 		return _crcAlgorithm->TransformFinal();
 	} // end function TransformFinal
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
 	{
 		_crcAlgorithm->TransformBytes(a_data, a_index, a_length);
 	} // end function TransformBytes
 
 private:
-	ICRC _crcAlgorithm = nullptr;
+	ICRC* _crcAlgorithm = nullptr;
 
 }; // end class _CRC32
 
-class _CRC32_PKZIP : public _CRC32
+class _CRC32_PKZIP final : public _CRC32
 {
 public:
 	_CRC32_PKZIP()
@@ -81,7 +84,7 @@ public:
 	{} // end constructor
 }; // end class CRC32_PKZIP
 
-class _CRC32_CASTAGNOLI : public _CRC32
+class _CRC32_CASTAGNOLI final : public _CRC32
 {
 public:
 	_CRC32_CASTAGNOLI()

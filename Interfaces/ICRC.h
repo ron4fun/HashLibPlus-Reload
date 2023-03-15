@@ -25,15 +25,12 @@
 
 #include "IHash.h"
 
-class IICRC;
 
-typedef shared_ptr<IICRC> ICRC;
-
-class IICRC : public virtual IIHash
+class ICRC : public virtual IHash
 {
 	friend ostream& operator<<(ostream& output, const ICRC& _hash)
 	{
-		output << _hash->GetName();
+		output << _hash.GetName();
 		return output;
 	}
 

@@ -122,78 +122,90 @@
 #include "HashFactory.h"
 
 // ====================== Checksum ======================
-IHash HashFactory::Checksum::CreateAdler32()
+IHash& HashFactory::Checksum::CreateAdler32()
 {
-	return make_shared<Adler32>();
+	Adler32* hash = new Adler32();
+	return *hash;
 } // end function CreateAdler32
 
-IHash HashFactory::Checksum::CreateCRC(const Int32 a_Width, const Int64 a_Polynomial, const Int64 a_InitialValue,
+IHash& HashFactory::Checksum::CreateCRC(const Int32 a_Width, const Int64 a_Polynomial, const Int64 a_InitialValue,
 	const bool a_ReflectIn, const bool a_ReflectOut, const Int64 a_OutputXor, const Int64 a_CheckValue,
 	const HashLibStringArray& a_Names)
 {
-	return make_shared<_CRC>(a_Width, a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	IHash* hash = new _CRC(a_Width, a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	 return *hash;
 } // end function CreateCRC
 
-ICRC HashFactory::Checksum::CreateCRC(const CRCStandard& a_Value)
+ICRC& HashFactory::Checksum::CreateCRC(const CRCStandard& a_Value)
 {
 	return _CRC::CreateCRCObject(a_Value);
 } // end function CreateCRC
 
-IHash HashFactory::Checksum::CreateCRC16(const Int64 a_Polynomial, const Int64 a_InitialValue,
+IHash& HashFactory::Checksum::CreateCRC16(const Int64 a_Polynomial, const Int64 a_InitialValue,
 	const bool a_ReflectIn, const bool a_ReflectOut, const Int64 a_OutputXor, const Int64 a_CheckValue,
 	const HashLibStringArray& a_Names)
 {
-	return make_shared<_CRC16>(a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	IHash* hash = new _CRC16(a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	return *hash;
 } // end function CreateCRC16
 
-IHash HashFactory::Checksum::CreateCRC32(const Int64 a_Polynomial, const Int64 a_InitialValue,
+IHash& HashFactory::Checksum::CreateCRC32(const Int64 a_Polynomial, const Int64 a_InitialValue,
 	const bool a_ReflectIn, const bool a_ReflectOut, const Int64 a_OutputXor, const Int64 a_CheckValue,
 	const HashLibStringArray& a_Names)
 {
-	return make_shared<_CRC32>(a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	IHash* hash = new _CRC32(a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	return *hash;
 } // end function CreateCRC32
 
-IHash HashFactory::Checksum::CreateCRC64(const Int64 a_Polynomial, const Int64 a_InitialValue,
+IHash& HashFactory::Checksum::CreateCRC64(const Int64 a_Polynomial, const Int64 a_InitialValue,
 	const bool a_ReflectIn, const bool a_ReflectOut, const Int64 a_OutputXor, const Int64 a_CheckValue,
 	const HashLibStringArray& a_Names)
 {
-	return make_shared<_CRC64>(a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	IHash* hash = new _CRC64(a_Polynomial, a_InitialValue, a_ReflectIn, a_ReflectOut, a_OutputXor, a_CheckValue, a_Names);
+	return *hash;
 } // end function CreateCRC64
 
-IHash HashFactory::Checksum::CreateCRC16_BUYPASS()
+IHash& HashFactory::Checksum::CreateCRC16_BUYPASS()
 {
-	return make_shared<_CRC16_BUYPASS>();
+	IHash* hash = new _CRC16_BUYPASS();
+	return *hash;
 } // end function CreateCRC16_BUYPASS
 
-IHash HashFactory::Checksum::CreateCRC32_PKZIP()
+IHash& HashFactory::Checksum::CreateCRC32_PKZIP()
 {
-	return make_shared<CRC32_PKZIP_Fast>();
+	IHash* hash = new CRC32_PKZIP_Fast();
+	return *hash;
 } // end function CreateCRC32_PKZIP
 
-IHash HashFactory::Checksum::CreateCRC32_CASTAGNOLI()
+IHash& HashFactory::Checksum::CreateCRC32_CASTAGNOLI()
 {
-	return make_shared<CRC32_CASTAGNOLI_Fast>();
+	IHash* hash = new CRC32_CASTAGNOLI_Fast();
+	return *hash;
 } // end function CreateCRC32_CASTAGNOLI
 
-IHash HashFactory::Checksum::CreateCRC64_ECMA_182()
+IHash& HashFactory::Checksum::CreateCRC64_ECMA_182()
 {
-	return make_shared<_CRC64_ECMA_182>();
+	IHash* hash = new _CRC64_ECMA_182();
+	return *hash;
 } // end function CreateCRC64_ECMA_182
 
 // ====================== Crypto ======================
-IHash HashFactory::Crypto::CreateHAS160()
+IHash& HashFactory::Crypto::CreateHAS160()
 {
-	return make_shared<HAS160>();
+	IHash* hash = new HAS160();
+	return *hash;
 } // end function CreateHAS160
 
-IHash HashFactory::Crypto::CreatePanama()
+IHash& HashFactory::Crypto::CreatePanama()
 {
-	return make_shared<Panama>();
+	IHash* hash = new Panama();
+	return *hash;
 } // end function CreatePanama
 
-IHash HashFactory::Crypto::CreateWhirlPool()
+IHash& HashFactory::Crypto::CreateWhirlPool()
 {
-	return make_shared<WhirlPool>();
+	IHash* hash = new WhirlPool();
+	return *hash;
 } // end function CreateWhirlPool
 
 ///////////////////////////////////////////
@@ -202,19 +214,22 @@ IHash HashFactory::Crypto::CreateWhirlPool()
 /// </summary>
 ////////////////////////////////////////////
 
-IHash HashFactory::Crypto::CreateGost()
+IHash& HashFactory::Crypto::CreateGost()
 {
-	return make_shared<Gost>();
+	IHash* hash = new Gost();
+	return *hash;
 } // end function CreateGost
 
-IHash HashFactory::Crypto::CreateGOST3411_2012_256()
+IHash& HashFactory::Crypto::CreateGOST3411_2012_256()
 {
-	return make_shared<GOST3411_2012_256>();
+	IHash* hash = new GOST3411_2012_256();
+	return *hash;
 } // end function CreateGOST3411_2012_256
 
-IHash HashFactory::Crypto::CreateGOST3411_2012_512()
+IHash& HashFactory::Crypto::CreateGOST3411_2012_512()
 {
-	return make_shared<GOST3411_2012_512>();
+	IHash* hash = new GOST3411_2012_512();
+	return *hash;
 } // end function CreateGOST3411_2012_512
 
 ///////////////////////////////////////////
@@ -229,7 +244,7 @@ IHash HashFactory::Crypto::CreateGOST3411_2012_512()
 /// <param name="a_rounds">3, 4, 5</param>
 /// <param name="a_hash_size">128, 160, 192, 224, 256</param>
 /// <returns></returns>
-IHash HashFactory::Crypto::CreateHaval(const HashRounds& a_rounds, const HashSize& a_hash_size)
+IHash& HashFactory::Crypto::CreateHaval(const HashRounds& a_rounds, const HashSize& a_hash_size)
 {
 	switch (a_rounds)
 	{
@@ -304,79 +319,94 @@ IHash HashFactory::Crypto::CreateHaval(const HashRounds& a_rounds, const HashSiz
 	} // end switch
 } // end function Haval
 
-IHash HashFactory::Crypto::CreateHaval_3_128()
+IHash& HashFactory::Crypto::CreateHaval_3_128()
 {
-	return make_shared<Haval_3_128>();
+	IHash* hash = new Haval_3_128;
+	return *hash;
 } // end function CreateHaval_3_128
 
-IHash HashFactory::Crypto::CreateHaval_4_128()
+IHash& HashFactory::Crypto::CreateHaval_4_128()
 {
-	return make_shared<Haval_4_128>();
+	IHash* hash = new Haval_4_128;
+	return *hash;
 } // end function CreateHaval_4_128
 
-IHash HashFactory::Crypto::CreateHaval_5_128()
+IHash& HashFactory::Crypto::CreateHaval_5_128()
 {
-	return make_shared<Haval_5_128>();
+	IHash* hash = new Haval_5_128;
+	return *hash;
 } // end function CreateHaval_5_128
 
-IHash HashFactory::Crypto::CreateHaval_3_160()
+IHash& HashFactory::Crypto::CreateHaval_3_160()
 {
-	return make_shared<Haval_3_160>();
+	IHash* hash = new Haval_3_160;
+	return *hash;
 } // end function CreateHaval_3_160
 
-IHash HashFactory::Crypto::CreateHaval_4_160()
+IHash& HashFactory::Crypto::CreateHaval_4_160()
 {
-	return make_shared<Haval_4_160>();
+	IHash* hash = new Haval_4_160;
+	return *hash;
 } // end function CreateHaval_4_160
 
-IHash HashFactory::Crypto::CreateHaval_5_160()
+IHash& HashFactory::Crypto::CreateHaval_5_160()
 {
-	return make_shared<Haval_5_160>();
+	IHash* hash = new Haval_5_160;
+	return *hash;
 } // end function CreateHaval_5_160
 
-IHash HashFactory::Crypto::CreateHaval_3_192()
+IHash& HashFactory::Crypto::CreateHaval_3_192()
 {
-	return make_shared<Haval_3_192>();
+	IHash* hash = new Haval_3_192;
+	return *hash;
 } // end function CreateHaval_3_192
 
-IHash HashFactory::Crypto::CreateHaval_4_192()
+IHash& HashFactory::Crypto::CreateHaval_4_192()
 {
-	return make_shared<Haval_4_192>();
+	IHash* hash = new Haval_4_192;
+	return *hash;
 } // end function CreateHaval_4_192
 
-IHash HashFactory::Crypto::CreateHaval_5_192()
+IHash& HashFactory::Crypto::CreateHaval_5_192()
 {
-	return make_shared<Haval_5_192>();
+	IHash* hash = new Haval_5_192;
+	return *hash;
 } // end function CreateHaval_5_192
 
-IHash HashFactory::Crypto::CreateHaval_3_224()
+IHash& HashFactory::Crypto::CreateHaval_3_224()
 {
-	return make_shared<Haval_3_224>();
+	IHash* hash = new Haval_3_224;
+	return *hash;
 } // end function CreateHaval_3_224
 
-IHash HashFactory::Crypto::CreateHaval_4_224()
+IHash& HashFactory::Crypto::CreateHaval_4_224()
 {
-	return make_shared<Haval_4_224>();
+	IHash* hash = new Haval_4_224;
+	return *hash;
 } // end function CreateHaval_4_224
 
-IHash HashFactory::Crypto::CreateHaval_5_224()
+IHash& HashFactory::Crypto::CreateHaval_5_224()
 {
-	return make_shared<Haval_5_224>();
+	IHash* hash = new Haval_5_224;
+	return *hash;
 } // end function CreateHaval_5_224
 
-IHash HashFactory::Crypto::CreateHaval_3_256()
+IHash& HashFactory::Crypto::CreateHaval_3_256()
 {
-	return make_shared<Haval_3_256>();
+	IHash* hash = new Haval_3_256;
+	return *hash;
 } // end function CreateHaval_3_256
 
-IHash HashFactory::Crypto::CreateHaval_4_256()
+IHash& HashFactory::Crypto::CreateHaval_4_256()
 {
-	return make_shared<Haval_4_256>();
+	IHash* hash = new Haval_4_256;
+	return *hash;
 } // end function CreateHaval_4_256
 
-IHash HashFactory::Crypto::CreateHaval_5_256()
+IHash& HashFactory::Crypto::CreateHaval_5_256()
 {
-	return make_shared<Haval_5_256>();
+	IHash* hash = new Haval_5_256;
+	return *hash;
 } // end function CreateHaval_5_256
 
 ///////////////////////////////////////////
@@ -385,14 +415,16 @@ IHash HashFactory::Crypto::CreateHaval_5_256()
 /// </summary>
 ////////////////////////////////////////////
 
-IHash HashFactory::Crypto::CreateRadioGatun32()
+IHash& HashFactory::Crypto::CreateRadioGatun32()
 {
-	return make_shared<RadioGatun32>();
+	IHash* hash = new RadioGatun32;
+	return *hash;
 } // end function CreateRadioGatun32
 
-IHash HashFactory::Crypto::CreateRadioGatun64()
+IHash& HashFactory::Crypto::CreateRadioGatun64()
 {
-	return make_shared<RadioGatun64>();
+	IHash* hash = new RadioGatun64;
+	return *hash;
 } // end function CreateRadioGatun64
 
 ///////////////////////////////////////////
@@ -401,14 +433,16 @@ IHash HashFactory::Crypto::CreateRadioGatun64()
 /// </summary>
 ////////////////////////////////////////////
 
-IHash HashFactory::Crypto::CreateGrindahl256()
+IHash& HashFactory::Crypto::CreateGrindahl256()
 {
-	return make_shared<Grindahl256>();
+	IHash* hash = new Grindahl256;
+	return *hash;
 } // end function CreateGrindahl256
 
-IHash HashFactory::Crypto::CreateGrindahl512()
+IHash& HashFactory::Crypto::CreateGrindahl512()
 {
-	return make_shared<Grindahl512>();
+	IHash* hash = new Grindahl512;
+	return *hash;
 } // end function CreateGrindahl512
 
 ///////////////////////////////////////////
@@ -417,29 +451,34 @@ IHash HashFactory::Crypto::CreateGrindahl512()
 /// </summary>
 ////////////////////////////////////////////
 
-IHash HashFactory::Crypto::CreateRIPEMD()
+IHash& HashFactory::Crypto::CreateRIPEMD()
 {
-	return make_shared<RIPEMD>();
+	IHash* hash = new RIPEMD;
+	return *hash;
 } // end function CreateRIPEMD
 
-IHash HashFactory::Crypto::CreateRIPEMD128()
+IHash& HashFactory::Crypto::CreateRIPEMD128()
 {
-	return make_shared<RIPEMD128>();
+	IHash* hash = new RIPEMD128;
+	return *hash;
 } // end function CreateRIPEMD128
 
-IHash HashFactory::Crypto::CreateRIPEMD160()
+IHash& HashFactory::Crypto::CreateRIPEMD160()
 {
-	return make_shared<RIPEMD160>();
+	IHash* hash = new RIPEMD160;
+	return *hash;
 } // end function CreateRIPEMD160
 
-IHash HashFactory::Crypto::CreateRIPEMD256()
+IHash& HashFactory::Crypto::CreateRIPEMD256()
 {
-	return make_shared<RIPEMD256>();
+	IHash* hash = new RIPEMD256;
+	return *hash;
 } // end function CreateRIPEMD256
 
-IHash HashFactory::Crypto::CreateRIPEMD320()
+IHash& HashFactory::Crypto::CreateRIPEMD320()
 {
-	return make_shared<RIPEMD320>();
+	IHash* hash = new RIPEMD320;
+	return *hash;
 } // end function CreateRIPEMD320
 
 ///////////////////////////////////////////
@@ -454,23 +493,26 @@ IHash HashFactory::Crypto::CreateRIPEMD320()
 /// <param name="a_security_level">any Integer value greater than 0. Standard is 8. </param>
 /// <param name="a_hash_size">128bit, 256bit</param>
 /// <returns></returns>
-IHash HashFactory::Crypto::CreateSnefru(const Int32 a_security_level, const HashSize& a_hash_size)
+IHash& HashFactory::Crypto::CreateSnefru(const Int32 a_security_level, const HashSize& a_hash_size)
 {
 	if (a_security_level < 1)
 		throw ArgumentHashLibException(Snefru::InvalidSnefruLevel);
 
 	if ((a_hash_size == HashSize::HashSize128) || (a_hash_size == HashSize::HashSize256))
-		return make_shared<Snefru>(a_security_level, (Int32)a_hash_size);
+	{
+		IHash* hash = new Snefru(a_security_level, (Int32)a_hash_size);
+		return *hash;
+	}
 	else
 		throw ArgumentHashLibException(Snefru::InvalidSnefruHashSize);
 } // end function CreateSnefru
 
-IHash HashFactory::Crypto::CreateSnefru_8_128()
+IHash& HashFactory::Crypto::CreateSnefru_8_128()
 {
 	return CreateSnefru(8, HashSize::HashSize128);
 } // end function CreateSnefru_8_128
 
-IHash HashFactory::Crypto::CreateSnefru_8_256()
+IHash& HashFactory::Crypto::CreateSnefru_8_256()
 {
 	return CreateSnefru(8, HashSize::HashSize256);
 } // end function CreateSnefru_8_256
@@ -481,19 +523,22 @@ IHash HashFactory::Crypto::CreateSnefru_8_256()
 /// </summary>
 ////////////////////////////////////////////
 
-IHash HashFactory::Crypto::CreateMD2()
+IHash& HashFactory::Crypto::CreateMD2()
 {
-	return make_shared<MD2>();
+	IHash* hash = new MD2();
+	return *hash;
 } // end function CreateMD2
 
-IHash HashFactory::Crypto::CreateMD4()
+IHash& HashFactory::Crypto::CreateMD4()
 {
-	return make_shared<MD4>();
+	IHash* hash = new MD4();
+	return *hash;
 } // end function CreateMD4
 
-IHash HashFactory::Crypto::CreateMD5()
+IHash& HashFactory::Crypto::CreateMD5()
 {
-	return make_shared<MD5>();
+	IHash* hash = new MD5();
+	return *hash;
 } // end function CreateMD5
 
 ///////////////////////////////////////////
@@ -502,89 +547,106 @@ IHash HashFactory::Crypto::CreateMD5()
 /// </summary>
 ////////////////////////////////////////////
 
-IHash HashFactory::Crypto::CreateSHA0()
+IHash& HashFactory::Crypto::CreateSHA0()
 {
-	return make_shared<SHA0>();
+	IHash* hash = new SHA0();
+	return *hash;
 } // end function CreateSHA0
 
-IHash HashFactory::Crypto::CreateSHA1()
+IHash& HashFactory::Crypto::CreateSHA1()
 {
-	return make_shared<SHA1>();
+	IHash* hash = new SHA1();
+	return *hash;
 } // end function CreateSHA1
 
-IHash HashFactory::Crypto::CreateSHA2_224()
+IHash& HashFactory::Crypto::CreateSHA2_224()
 {
-	return make_shared<SHA2_224>();
+	IHash* hash = new SHA2_224();
+	return *hash;
 } // end function CreateSHA2_224
 
-IHash HashFactory::Crypto::CreateSHA2_256()
+IHash& HashFactory::Crypto::CreateSHA2_256()
 {
-	return make_shared<SHA2_256>();
+	IHash* hash = new SHA2_256();
+	return *hash;
 } // end function CreateSHA2_256
 
-IHash HashFactory::Crypto::CreateSHA2_384()
+IHash& HashFactory::Crypto::CreateSHA2_384()
 {
-	return make_shared<SHA2_384>();
+	IHash* hash = new SHA2_384();
+	return *hash;
 } // end function CreateSHA2_384
 
-IHash HashFactory::Crypto::CreateSHA2_512()
+IHash& HashFactory::Crypto::CreateSHA2_512()
 {
-	return make_shared<SHA2_512>();
+	IHash* hash = new SHA2_512();
+	return *hash;
 } // end function CreateSHA2_512
 
-IHash HashFactory::Crypto::CreateSHA2_512_224()
+IHash& HashFactory::Crypto::CreateSHA2_512_224()
 {
-	return make_shared<SHA2_512_224>();
+	IHash* hash = new SHA2_512_224();
+	return *hash;
 } // end function CreateSHA2_512_224
 
-IHash HashFactory::Crypto::CreateSHA2_512_256()
+IHash& HashFactory::Crypto::CreateSHA2_512_256()
 {
-	return make_shared<SHA2_512_256>();
+	IHash* hash = new SHA2_512_256();
+	return *hash;
 } // end function CreateSHA2_512_256
 
-IHash HashFactory::Crypto::CreateSHA3_224()
+IHash& HashFactory::Crypto::CreateSHA3_224()
 {
-	return make_shared<SHA3_224>();
+	IHash* hash = new SHA3_224();
+	return *hash;
 } // end function CreateSHA3_224
 
-IHash HashFactory::Crypto::CreateSHA3_256()
+IHash& HashFactory::Crypto::CreateSHA3_256()
 {
-	return make_shared<SHA3_256>();
+	IHash* hash = new SHA3_256();
+	return *hash;
 } // end function CreateSHA3_256
 
-IHash HashFactory::Crypto::CreateSHA3_384()
+IHash& HashFactory::Crypto::CreateSHA3_384()
 {
-	return make_shared<SHA3_384>();
+	IHash* hash = new SHA3_384();
+	return *hash;
 } // end function CreateSHA3_384
 
-IHash HashFactory::Crypto::CreateSHA3_512()
+IHash& HashFactory::Crypto::CreateSHA3_512()
 {
-	return make_shared<SHA3_512>();
+	IHash* hash = new SHA3_512();
+	return *hash;
 } // end function CreateSHA3_512
 
-IHash HashFactory::Crypto::CreateKeccak_224()
+IHash& HashFactory::Crypto::CreateKeccak_224()
 {
-	return make_shared<Keccak_224>();
+	IHash* hash = new Keccak_224();
+	return *hash;
 } // end function CreateKeccak_224
 
-IHash HashFactory::Crypto::CreateKeccak_256()
+IHash& HashFactory::Crypto::CreateKeccak_256()
 {
-	return make_shared<Keccak_256>();
+	IHash* hash = new Keccak_256();
+	return *hash;
 } // end function CreateKeccak_256
 
-IHash HashFactory::Crypto::CreateKeccak_288()
+IHash& HashFactory::Crypto::CreateKeccak_288()
 {
-	return make_shared<Keccak_288>();
+	IHash* hash = new Keccak_288();
+	return *hash;
 } // end function CreateKeccak_288
 
-IHash HashFactory::Crypto::CreateKeccak_384()
+IHash& HashFactory::Crypto::CreateKeccak_384()
 {
-	return make_shared<Keccak_384>();
+	IHash* hash = new Keccak_384();
+	return *hash;
 } // end function CreateKeccak_384
 
-IHash HashFactory::Crypto::CreateKeccak_512()
+IHash& HashFactory::Crypto::CreateKeccak_512()
 {
-	return make_shared<Keccak_512>();
+	IHash* hash = new Keccak_512();
+	return *hash;
 } // end function CreateKeccak_512
 
 ///////////////////////////////////////////
@@ -593,81 +655,94 @@ IHash HashFactory::Crypto::CreateKeccak_512()
 /// </summary>
 ////////////////////////////////////////////
 
-IHash HashFactory::Crypto::CreateBlake2B(IBlake2BConfig a_Config, IBlake2BTreeConfig a_TreeConfig)
+IHash& HashFactory::Crypto::CreateBlake2B()
 {
-	if (!a_Config)
-		a_Config = Blake2BConfig::GetDefaultConfig();
-	
-	return make_shared<Blake2B>(a_Config, a_TreeConfig);
+	return HashFactory::Crypto::CreateBlake2B(Blake2BConfig::GetDefaultConfig());
 } // end function CreateBlake2B
 
-IHash HashFactory::Crypto::CreateBlake2B_160()
+IHash& HashFactory::Crypto::CreateBlake2B(const Blake2BConfig& a_Config)
+{
+	return HashFactory::Crypto::CreateBlake2B(Blake2BConfig::GetDefaultConfig(), Blake2BTreeConfig(true));
+} // end function CreateBlake2B
+
+IHash& HashFactory::Crypto::CreateBlake2B(const Blake2BConfig& a_Config, const Blake2BTreeConfig& a_TreeConfig)
+{
+	IHash* hash = new Blake2B(a_Config, a_TreeConfig);
+	return *hash;
+} // end function CreateBlake2B
+
+IHash& HashFactory::Crypto::CreateBlake2B_160()
 {
 	return HashFactory::Crypto::CreateBlake2B(Blake2BConfig::CreateBlake2BConfig(HashSize::HashSize160));
 } // end function CreateBlake2B_160
 
-IHash HashFactory::Crypto::CreateBlake2B_256()
+IHash& HashFactory::Crypto::CreateBlake2B_256()
 {
 	return HashFactory::Crypto::CreateBlake2B(Blake2BConfig::CreateBlake2BConfig(HashSize::HashSize256));
 }
 
-IHash HashFactory::Crypto::CreateBlake2B_384()
+IHash& HashFactory::Crypto::CreateBlake2B_384()
 {
 	return HashFactory::Crypto::CreateBlake2B(Blake2BConfig::CreateBlake2BConfig(HashSize::HashSize384));
 }
 
-IHash HashFactory::Crypto::CreateBlake2B_512()
+IHash& HashFactory::Crypto::CreateBlake2B_512()
 {
 	return HashFactory::Crypto::CreateBlake2B(Blake2BConfig::CreateBlake2BConfig(HashSize::HashSize512));
 }
 
-IHash HashFactory::Crypto::CreateBlake2S(IBlake2SConfig a_Config, IBlake2STreeConfig a_TreeConfig)
+IHash& HashFactory::Crypto::CreateBlake2S()
 {
-	IBlake2SConfig _config;
+	return HashFactory::Crypto::CreateBlake2S(Blake2SConfig::GetDefaultConfig());
+} // end function CreateBlake2B
 
-	_config = a_Config;
-	if (_config == nullptr)
-		_config = Blake2SConfig::GetDefaultConfig();
+IHash& HashFactory::Crypto::CreateBlake2S(const Blake2SConfig& a_Config)
+{
+	return HashFactory::Crypto::CreateBlake2S(Blake2SConfig::GetDefaultConfig(), Blake2STreeConfig(true));
+} // end function CreateBlake2B
 
-	return make_shared<Blake2S>(_config, a_TreeConfig);
+IHash& HashFactory::Crypto::CreateBlake2S(const Blake2SConfig& a_Config, const Blake2STreeConfig& a_TreeConfig)
+{
+	IHash* hash = new Blake2S(a_Config, a_TreeConfig);
+	return *hash;
 }
 
-IHash HashFactory::Crypto::CreateBlake2S_128()
+IHash& HashFactory::Crypto::CreateBlake2S_128()
 {
 	return HashFactory::Crypto::CreateBlake2S(Blake2SConfig::CreateBlake2SConfig(HashSize::HashSize128));
 }
 
-IHash HashFactory::Crypto::CreateBlake2S_160()
+IHash& HashFactory::Crypto::CreateBlake2S_160()
 {
 	return HashFactory::Crypto::CreateBlake2S(Blake2SConfig::CreateBlake2SConfig(HashSize::HashSize160));
 }
 
-IHash HashFactory::Crypto::CreateBlake2S_224()
+IHash& HashFactory::Crypto::CreateBlake2S_224()
 {
 	return HashFactory::Crypto::CreateBlake2S(Blake2SConfig::CreateBlake2SConfig(HashSize::HashSize224));
 }
 
-IHash HashFactory::Crypto::CreateBlake2S_256()
+IHash& HashFactory::Crypto::CreateBlake2S_256()
 {
 	return HashFactory::Crypto::CreateBlake2S(Blake2SConfig::CreateBlake2SConfig(HashSize::HashSize256));
 }
 
-IHash HashFactory::Crypto::CreateBlake2BP(const Int32 a_HashSize, const HashLibByteArray& a_Key)
+IHash& HashFactory::Crypto::CreateBlake2BP(const Int32 a_HashSize, const HashLibByteArray& a_Key)
 {
 	return make_shared<Blake2BP>(a_HashSize, a_Key);
 }
 
-IHash HashFactory::Crypto::CreateBlake2SP(const Int32 a_HashSize, const HashLibByteArray& a_Key)
+IHash& HashFactory::Crypto::CreateBlake2SP(const Int32 a_HashSize, const HashLibByteArray& a_Key)
 {
 	return make_shared<Blake2SP>(a_HashSize, a_Key);
 }
 
-IHash HashFactory::Crypto::CreateBlake3_256(const HashLibByteArray& key)
+IHash& HashFactory::Crypto::CreateBlake3_256(const HashLibByteArray& key)
 {
 	return make_shared<Blake3>(HashSize::HashSize256, key);
 }
 
-IHash HashFactory::Crypto::CreateBlake3_256()
+IHash& HashFactory::Crypto::CreateBlake3_256()
 {
 	return make_shared<Blake3>(HashSize::HashSize256, HashLibByteArray());
 }
@@ -684,7 +759,7 @@ IHash HashFactory::Crypto::CreateBlake3_256()
 /// <param name="a_hash_size">16, 20 or 24 bytes. </param>
 /// <param name="a_rounds">no of rounds (standard rounds are 3, 4 and 5)</param>
 /// <returns></returns>
-IHash HashFactory::Crypto::CreateTiger(const Int32 a_hash_size, const HashRounds& a_rounds)
+IHash& HashFactory::Crypto::CreateTiger(const Int32 a_hash_size, const HashRounds& a_rounds)
 {
 	if ((a_hash_size != 16) && (a_hash_size != 20) && (a_hash_size != 24))
 		throw ArgumentHashLibException(Tiger::InvalidTigerHashSize);
@@ -692,47 +767,47 @@ IHash HashFactory::Crypto::CreateTiger(const Int32 a_hash_size, const HashRounds
 	return make_shared<Tiger_Base>(a_hash_size, a_rounds);
 } // end function CreateTiger
 
-IHash HashFactory::Crypto::CreateTiger_3_128()
+IHash& HashFactory::Crypto::CreateTiger_3_128()
 {
 	return Tiger_128::CreateRound3();
 } // end function CreateTiger_3_128
 
-IHash HashFactory::Crypto::CreateTiger_3_160()
+IHash& HashFactory::Crypto::CreateTiger_3_160()
 {
 	return Tiger_160::CreateRound3();
 } // end function CreateTiger_3_160
 
-IHash HashFactory::Crypto::CreateTiger_3_192()
+IHash& HashFactory::Crypto::CreateTiger_3_192()
 {
 	return Tiger_192::CreateRound3();
 } // end function CreateTiger_3_192
 
-IHash HashFactory::Crypto::CreateTiger_4_128()
+IHash& HashFactory::Crypto::CreateTiger_4_128()
 {
 	return Tiger_128::CreateRound4();
 } // end function CreateTiger_4_128
 
-IHash HashFactory::Crypto::CreateTiger_4_160()
+IHash& HashFactory::Crypto::CreateTiger_4_160()
 {
 	return Tiger_160::CreateRound4();
 } // end function CreateTiger_4_160
 
-IHash HashFactory::Crypto::CreateTiger_4_192()
+IHash& HashFactory::Crypto::CreateTiger_4_192()
 {
 	return Tiger_192::CreateRound4();
 } // end function CreateTiger_4_192
 
-IHash HashFactory::Crypto::CreateTiger_5_128()
+IHash& HashFactory::Crypto::CreateTiger_5_128()
 {
 	return Tiger_128::CreateRound5();
 } // end function CreateTiger_5_128
 
-IHash HashFactory::Crypto::CreateTiger_5_160()
+IHash& HashFactory::Crypto::CreateTiger_5_160()
 {
 	return Tiger_160::CreateRound5();
 } // end function CreateTiger_5_160
 
-IHash HashFactory::Crypto::CreateTiger_5_192()
+IHash& HashFactory::Crypto::CreateTiger_5_192()
 {
 	return Tiger_192::CreateRound5();
 } // end function CreateTiger_5_192
@@ -749,7 +824,7 @@ IHash HashFactory::Crypto::CreateTiger_5_192()
 /// <param name="a_hash_size">16, 20 or 24 bytes. </param>
 /// <param name="a_rounds">no of rounds (standard rounds are 3, 4 and 5)</param>
 /// <returns></returns>
-IHash HashFactory::Crypto::CreateTiger2(const Int32 a_hash_size, const HashRounds& a_rounds)
+IHash& HashFactory::Crypto::CreateTiger2(const Int32 a_hash_size, const HashRounds& a_rounds)
 {
 	if ((a_hash_size != 16) && (a_hash_size != 20) && (a_hash_size != 24))
 		throw ArgumentHashLibException(Tiger2::InvalidTiger2HashSize);
@@ -757,104 +832,104 @@ IHash HashFactory::Crypto::CreateTiger2(const Int32 a_hash_size, const HashRound
 	return make_shared<Tiger2_Base>(a_hash_size, a_rounds);
 } // end function CreateTiger2
 
-IHash HashFactory::Crypto::CreateTiger2_3_128()
+IHash& HashFactory::Crypto::CreateTiger2_3_128()
 {
 	return Tiger2_128::CreateRound3();
 } // end function CreateTiger2_3_128
 
-IHash HashFactory::Crypto::CreateTiger2_3_160()
+IHash& HashFactory::Crypto::CreateTiger2_3_160()
 {
 	return Tiger2_160::CreateRound3();
 } // end function CreateTiger2_3_160
 
-IHash HashFactory::Crypto::CreateTiger2_3_192()
+IHash& HashFactory::Crypto::CreateTiger2_3_192()
 {
 	return Tiger2_192::CreateRound3();
 } // end function CreateTiger2_3_192
 
-IHash HashFactory::Crypto::CreateTiger2_4_128()
+IHash& HashFactory::Crypto::CreateTiger2_4_128()
 {
 	return Tiger2_128::CreateRound4();
 } // end function CreateTiger2_4_128
 
-IHash HashFactory::Crypto::CreateTiger2_4_160()
+IHash& HashFactory::Crypto::CreateTiger2_4_160()
 {
 	return Tiger2_160::CreateRound4();
 } // end function CreateTiger2_4_160
 
-IHash HashFactory::Crypto::CreateTiger2_4_192()
+IHash& HashFactory::Crypto::CreateTiger2_4_192()
 {
 	return Tiger2_192::CreateRound4();
 } // end function CreateTiger2_4_192
 
-IHash HashFactory::Crypto::CreateTiger2_5_128()
+IHash& HashFactory::Crypto::CreateTiger2_5_128()
 {
 	return Tiger2_128::CreateRound5();
 } // end function CreateTiger2_5_128
 
-IHash HashFactory::Crypto::CreateTiger2_5_160()
+IHash& HashFactory::Crypto::CreateTiger2_5_160()
 {
 	return Tiger2_160::CreateRound5();
 } // end function CreateTiger2_5_160
 
-IHash HashFactory::Crypto::CreateTiger2_5_192()
+IHash& HashFactory::Crypto::CreateTiger2_5_192()
 {
 	return Tiger2_192::CreateRound5();
 } // end function CreateTiger2_5_192
 
 
 // ====================== Hash32 ====================== 
-IHash HashFactory::Hash32::CreateAP()
+IHash& HashFactory::Hash32::CreateAP()
 {
 	return make_shared<AP>();
 } //
 
-IHash HashFactory::Hash32::CreateBernstein()
+IHash& HashFactory::Hash32::CreateBernstein()
 {
 	return make_shared<Bernstein>();
 } //
 
-IHash HashFactory::Hash32::CreateBernstein1()
+IHash& HashFactory::Hash32::CreateBernstein1()
 {
 	return make_shared<Bernstein1>();
 } //
 
-IHash HashFactory::Hash32::CreateBKDR()
+IHash& HashFactory::Hash32::CreateBKDR()
 {
 	return make_shared<BKDR>();
 } //
 
-IHash HashFactory::Hash32::CreateDEK()
+IHash& HashFactory::Hash32::CreateDEK()
 {
 	return make_shared<DEK>();
 } //
 
-IHash HashFactory::Hash32::CreateDJB()
+IHash& HashFactory::Hash32::CreateDJB()
 {
 	return make_shared<DJB>();
 } //
 
-IHash HashFactory::Hash32::CreateELF()
+IHash& HashFactory::Hash32::CreateELF()
 {
 	return make_shared<ELF>();
 } //
 
-IHash HashFactory::Hash32::CreateFNV32()
+IHash& HashFactory::Hash32::CreateFNV32()
 {
 	return make_shared<FNV32>();
 } //
 
-IHash HashFactory::Hash32::CreateFNV1a_32()
+IHash& HashFactory::Hash32::CreateFNV1a_32()
 {
 	return make_shared<FNV1a_32>();
 } //
 
-IHash HashFactory::Hash32::CreateJenkins3(const Int32 initialValue)
+IHash& HashFactory::Hash32::CreateJenkins3(const Int32 initialValue)
 {
 	return make_shared<Jenkins3>(initialValue);
 } //
 
-IHash HashFactory::Hash32::CreateJS()
+IHash& HashFactory::Hash32::CreateJS()
 {
 	return make_shared<JS>();
 } //
@@ -869,37 +944,37 @@ IHashWithKey HashFactory::Hash32::CreateMurmurHash3_x86_32()
 	return make_shared<MurmurHash3_x86_32>();
 } //
 
-IHash HashFactory::Hash32::CreateOneAtTime()
+IHash& HashFactory::Hash32::CreateOneAtTime()
 {
 	return make_shared<OneAtTime>();
 } //
 
-IHash HashFactory::Hash32::CreatePJW()
+IHash& HashFactory::Hash32::CreatePJW()
 {
 	return make_shared<PJW>();
 } //
 
-IHash HashFactory::Hash32::CreateRotating()
+IHash& HashFactory::Hash32::CreateRotating()
 {
 	return make_shared<Rotating>();
 } //
 
-IHash HashFactory::Hash32::CreateRS()
+IHash& HashFactory::Hash32::CreateRS()
 {
 	return make_shared<RS>();
 } //
 
-IHash HashFactory::Hash32::CreateSDBM()
+IHash& HashFactory::Hash32::CreateSDBM()
 {
 	return make_shared<SDBM>();
 } //
 
-IHash HashFactory::Hash32::CreateShiftAndXor()
+IHash& HashFactory::Hash32::CreateShiftAndXor()
 {
 	return make_shared<ShiftAndXor>();
 } //
 
-IHash HashFactory::Hash32::CreateSuperFast()
+IHash& HashFactory::Hash32::CreateSuperFast()
 {
 	return make_shared<SuperFast>();
 } //
@@ -910,12 +985,12 @@ IHashWithKey HashFactory::Hash32::CreateXXHash32()
 } //
 
 // ====================== Hash64 ====================== 
-IHash HashFactory::Hash64::CreateFNV64()
+IHash& HashFactory::Hash64::CreateFNV64()
 {
 	return make_shared<FNV64>();
 } // end function CreateFNV64
 
-IHash HashFactory::Hash64::CreateFNV1a_64()
+IHash& HashFactory::Hash64::CreateFNV1a_64()
 {
 	return make_shared<FNV1a_64>();
 } // end function CreateFNV1a
@@ -1085,7 +1160,7 @@ IXOF HashFactory::XOF::CreateShake_256(const UInt64 xofSizeInBits)
 }
 
 // ====================== NullDigest ======================
-IHash HashFactory::NullDigestFactory::CreateNullDigest()
+IHash& HashFactory::NullDigestFactory::CreateNullDigest()
 {
 	return make_shared<NullDigest>();
 } // end function CreateNullDigest

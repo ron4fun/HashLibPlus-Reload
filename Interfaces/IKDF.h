@@ -25,8 +25,14 @@
 
 #include "../Utils/HashLibTypes.h"
 
-class IIKDF
+class IKDF
 {
+	friend ostream& operator<<(ostream& output, const IKDF& hash)
+	{
+		output << hash.GetName();
+		return output;
+	}
+
 public:
 	virtual void Clear() = 0;
 
@@ -41,6 +47,4 @@ public:
 
 	virtual string GetName() const = 0;
 
-}; // end class IIKDF
-
-typedef shared_ptr<IIKDF> IKDF;
+}; // end class IKDF

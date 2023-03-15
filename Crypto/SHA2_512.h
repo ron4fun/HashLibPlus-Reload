@@ -25,7 +25,7 @@
 
 #include "SHA2_512Base.h"
 
-class SHA2_512 : public SHA2_512Base
+class SHA2_512 final : public SHA2_512Base
 {
 public:
 	SHA2_512()
@@ -34,19 +34,19 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		SHA2_512 HashInstance = SHA2_512();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		SHA2_512* HashInstance = new SHA2_512();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<SHA2_512>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_state[0] = 0x6A09E667F3BCC908;
 		_state[1] = 0xBB67AE8584CAA73B;
@@ -61,7 +61,7 @@ public:
 	} // end function Initialize
 
 protected:
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(8 * sizeof(UInt64));
 		Converters::be64_copy(&_state[0], 0, &result[0], 0, (Int32)result.size());

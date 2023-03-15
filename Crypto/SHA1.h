@@ -25,7 +25,7 @@
 
 #include "SHA0.h"
 
-class SHA1 : public SHA0
+class SHA1 final : public SHA0
 {
 public:
 	SHA1()
@@ -34,20 +34,20 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		SHA1 HashInstance = SHA1();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		SHA1* HashInstance = new SHA1();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<SHA1>(HashInstance);
+		return *HashInstance;
 	}
 
 protected:
-	virtual void Expand(UInt32* a_data)
+	void Expand(UInt32* a_data) override
 	{
 		UInt32 T;
 

@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class Gost : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class Gost final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	Gost()
@@ -37,20 +37,20 @@ public:
 		_hash.resize(8);
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Gost HashInstance = Gost();
-		HashInstance._state = _state;
-		HashInstance._hash = _hash;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		Gost* HashInstance = new Gost();
+		HashInstance->_state = _state;
+		HashInstance->_hash = _hash;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Gost>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		ArrayUtils::zeroFill(_state);
 		ArrayUtils::zeroFill(_hash);
@@ -337,7 +337,7 @@ private:
 	} // end function Compress
 
 protected:
-	virtual void Finish()
+	void Finish() override
 	{
 		UInt64 bits = _processed_bytes * 8;
 
@@ -357,7 +357,7 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(8 * sizeof(UInt32));
 
@@ -366,8 +366,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		UInt32 c, a, b;
 		

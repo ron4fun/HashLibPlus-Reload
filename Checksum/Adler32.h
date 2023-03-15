@@ -26,8 +26,8 @@
 #include "../Base/Hash.h"
 #include "../Interfaces/IHashInfo.h"
 
-class Adler32 : public Hash, public virtual IIChecksum, public virtual IIBlockHash, 
-	public virtual IIHash32, public virtual IITransformBlock
+class Adler32 final : public Hash, public IChecksum, public IBlockHash, 
+	public IHash32, public ITransformBlock
 {
 public:
 	Adler32()
@@ -36,33 +36,33 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const override
+	IHash& Clone() const override
 	{
-		Adler32 HashInstance = Adler32();
-		HashInstance._a = _a;
-		HashInstance._b = _b;
+		Adler32* HashInstance = new Adler32();
+		HashInstance->_a = _a;
+		HashInstance->_b = _b;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Adler32>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize() override
+	void Initialize() override
 	{
 		_a = 1;
 		_b = 0;
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal() override
+	IHashResult& TransformFinal() override
 	{
-		IHashResult result = make_shared<HashResult>(int32_t((_b << 16) | _a));
+		IHashResult* result = new HashResult(int32_t((_b << 16) | _a));
 
 		Initialize();
 
-		return result;
+		return *result;
 	} // end function TransformFinal
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
 	{
 		Int32 n, length = a_length, index = a_index;
 

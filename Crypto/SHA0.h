@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class SHA0 : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class SHA0 : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	SHA0()
@@ -36,19 +36,19 @@ public:
 		_state.resize(5);
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		SHA0 HashInstance = SHA0();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		SHA0* HashInstance = new SHA0();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<SHA0>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_state[0] = 0x67452301;
 		_state[1] = 0xEFCDAB89;
@@ -129,7 +129,7 @@ protected:
 
 	} // end function Expand
 
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 padindex;
 
@@ -153,7 +153,7 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(5 * sizeof(UInt32));
 		Converters::be32_copy(&_state[0], 0, &result[0], 0, (Int32)result.size());
@@ -161,8 +161,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		UInt32 A, B, C, D, E;
 

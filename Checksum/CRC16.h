@@ -25,15 +25,15 @@
 
 #include "CRC.h"
 
-class CRC16Polynomials
+class CRC16Polynomials final
 {
 public:
 	static const UInt16 BUYPASS = 0x8005;
 
 }; // end class CRC16Polynomials
 
-class _CRC16 : public Hash, public virtual IIChecksum, public virtual IIBlockHash, 
-	public virtual IIHash16, public virtual IITransformBlock
+class _CRC16 : public Hash, public virtual IChecksum, public virtual IBlockHash, 
+	public virtual IHash16, public virtual ITransformBlock
 {
 public:
 	_CRC16(const UInt64 _poly, const UInt64 _Init,
@@ -41,38 +41,41 @@ public:
 		const UInt64 _check, const HashLibStringArray& _Names)
 		: Hash(2, 1)
 	{
-		_crcAlgorithm = make_shared<_CRC>(16, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names);
+		_crcAlgorithm = new _CRC(16, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names);
 	} // end constructor
 
 	~_CRC16()
-	{} // end destructor
+	{
+		if (_crcAlgorithm != nullptr)
+			delete _crcAlgorithm;
+	} // end destructor
 
-	virtual string GetName() const
+	string GetName() const override
 	{
 		return _crcAlgorithm->GetName();
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_crcAlgorithm->Initialize();
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	IHashResult& TransformFinal() override
 	{
 		return _crcAlgorithm->TransformFinal();
 	} // end function TransformFinal
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
 	{
 		_crcAlgorithm->TransformBytes(a_data, a_index, a_length);
 	} // end function TransformBytes
 
 private:
-	ICRC _crcAlgorithm = nullptr;
+	ICRC* _crcAlgorithm = nullptr;
 
 }; // end class _CRC16
 
-class _CRC16_BUYPASS : public _CRC16
+class _CRC16_BUYPASS final : public _CRC16
 {
 public:
 	_CRC16_BUYPASS()

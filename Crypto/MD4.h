@@ -25,7 +25,7 @@
 
 #include "MDBase.h"
 
-class MD4 : public MDBase, public virtual IITransformBlock
+class MD4 final : public MDBase, public ITransformBlock
 {
 public:
 	MD4()
@@ -34,21 +34,21 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		MD4 HashInstance = MD4();
-		HashInstance._state = _state;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		MD4* HashInstance = new MD4();
+		HashInstance->_state = _state;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<MD4>(HashInstance);
+		return *HashInstance;
 	}
 
 protected:
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index) 
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		UInt32 a, b, c, d;
 		HashLibUInt32Array data = HashLibUInt32Array(16);

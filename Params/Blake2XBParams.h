@@ -30,61 +30,59 @@
 /// <b>Blake2XBConfig</b> is used to configure _hash function parameters and
 /// keying.
 /// </summary>
-class Blake2XBConfig : public virtual IIBlake2XBConfig
+class Blake2XBConfig final
 {
 private:
-	IBlake2BConfig _config = nullptr;
-	IBlake2BTreeConfig _treeConfig = nullptr;
+	Blake2BConfig _config;
+	Blake2BTreeConfig _treeConfig;
 
 public:
-	Blake2XBConfig() {}
+	Blake2XBConfig() 
+		: _treeConfig(Blake2BTreeConfig(true)) 
+	{}
 
-	Blake2XBConfig(const IBlake2BConfig config, const IBlake2BTreeConfig treeConfig)
+	Blake2XBConfig(const Blake2BConfig& config, const Blake2BTreeConfig& treeConfig)
 	{
-		_config = ::move(config);
-		_treeConfig = ::move(treeConfig);
+		_config = config;
+		_treeConfig = treeConfig;
 	}
 
-	virtual IBlake2BConfig GetConfig() const
-	{
-		return _config->Clone();
-	}
+	~Blake2XBConfig()
+	{}
 
-	virtual IBlake2BTreeConfig GetTreeConfig() const
-	{
-		return _treeConfig ? _treeConfig->Clone() : nullptr;
-	} 
-
-	virtual IBlake2BConfig GetConfig()
+	Blake2BConfig GetConfig() const
 	{
 		return _config;
 	}
 
-	virtual IBlake2BTreeConfig GetTreeConfig()
+	Blake2BTreeConfig GetTreeConfig() const
+	{
+		return _treeConfig;
+	} 
+
+	Blake2BConfig& GetConfig()
+	{
+		return _config;
+	}
+
+	Blake2BTreeConfig& GetTreeConfig()
 	{
 		return _treeConfig;
 	}
 
-	virtual void SetConfig(const IBlake2BConfig value)
+	void SetConfig(const Blake2BConfig& value)
 	{
-		_config = ::move(value);
+		_config = value;
 	}
 
-	virtual void SetTreeConfig(const IBlake2BTreeConfig value) 
+	void SetTreeConfig(const Blake2BTreeConfig& value)
 	{
-		_treeConfig = ::move(value);
+		_treeConfig = value;
 	}
-
-	virtual IBlake2XBConfig Clone() const
+	
+	static Blake2XBConfig CreateBlake2XBConfig(const Blake2BConfig& config, const Blake2BTreeConfig& treeConfig)
 	{
-		return make_shared<Blake2XBConfig>(
-			_config ? _config->Clone() : nullptr, 
-			_treeConfig ? _treeConfig->Clone() : nullptr);
-	}
-
-	static IBlake2XBConfig CreateBlake2XBConfig(IBlake2BConfig config, IBlake2BTreeConfig treeConfig)
-	{
-		return make_shared<Blake2XBConfig>(config, treeConfig);
+		return Blake2XBConfig(config, treeConfig);
 	}
 
 }; // end class 

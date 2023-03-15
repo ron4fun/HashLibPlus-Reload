@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class SHA2_256Base : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class SHA2_256Base : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 protected:
 	SHA2_256Base() {}
@@ -36,7 +36,7 @@ protected:
 		_state.resize(8);		
 	} // end constructor
 
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 padindex;
 
@@ -60,8 +60,8 @@ protected:
 
 	} // end function Finish
 
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		UInt32 A, B, C, D, E, F, G, H, T, T2;
 		

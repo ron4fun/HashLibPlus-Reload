@@ -27,7 +27,7 @@
 #include "HashBuffer.h"
 #include "../Interfaces/IHashInfo.h"
 
-class BlockHash : public Hash, public virtual IIBlockHash
+class BlockHash : public Hash, public IBlockHash
 {
 protected:
 	BlockHash() {}
@@ -54,7 +54,7 @@ public:
 		SetBufferSize(a_hash.GetBufferSize());
 	}
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, Int32 a_index, Int32 a_length)
+	void TransformBytes(const HashLibByteArray& a_data, Int32 a_index, Int32 a_length) override
 	{
 		if (a_data.empty()) return;
 
@@ -79,7 +79,7 @@ public:
 
 	} // end function TransformBytes
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		_buffer.Initialize();
 		_processed_bytes = 0;
@@ -88,7 +88,7 @@ public:
 	~BlockHash()
 	{} // end destructor
 
-	virtual IHashResult TransformFinal()
+	virtual IHashResult& TransformFinal()
 	{
 		Finish();
 
@@ -96,7 +96,9 @@ public:
 
 		Initialize();
 
-		return make_shared<HashResult>(tempresult);
+		HashResult* result = new HashResult(tempresult);
+
+		return *result;
 	} // end function TransformFinal
 
 private:

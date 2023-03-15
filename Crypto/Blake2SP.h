@@ -57,15 +57,15 @@ public:
 	virtual IHash Clone() const
 	{
 		Blake2SP HashInstance = Blake2SP(GetHashSize());
-		HashInstance._key = _key;
+		HashInstance->_key = _key;
 
-		HashInstance._rootHash = _rootHash;
+		HashInstance->_rootHash = _rootHash;
 		
-		HashInstance._leafHashes = _leafHashes;
-		HashInstance._buffer = _buffer;
-		HashInstance._bufferLength = _bufferLength;
+		HashInstance->_leafHashes = _leafHashes;
+		HashInstance->_buffer = _buffer;
+		HashInstance->_bufferLength = _bufferLength;
 	
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
 		return make_shared<Blake2SP>(HashInstance);
 	}

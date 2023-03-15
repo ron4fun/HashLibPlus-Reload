@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class WhirlPool : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class WhirlPool final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	WhirlPool()
@@ -36,19 +36,19 @@ public:
 		_hash.resize(8);
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		WhirlPool HashInstance = WhirlPool();
-		HashInstance._hash = _hash;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		WhirlPool* HashInstance = new WhirlPool();
+		HashInstance->_hash = _hash;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<WhirlPool>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		ArrayUtils::zeroFill(_hash);
 
@@ -56,7 +56,7 @@ public:
 	} // end function Initialize
 
 protected:
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 padindex;
 
@@ -80,7 +80,7 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(8 * sizeof(UInt64));
 
@@ -89,8 +89,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const byte* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const byte* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		HashLibUInt64Array data = HashLibUInt64Array(8), 
 			k = HashLibUInt64Array(8),

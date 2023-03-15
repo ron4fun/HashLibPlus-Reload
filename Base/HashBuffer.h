@@ -26,7 +26,7 @@
 #include <sstream>
 #include "../Utils/HashLibTypes.h"
 
-class HashBuffer
+class HashBuffer final
 {
 public:
 	HashBuffer(const Int32 a_length = 0)

@@ -31,7 +31,7 @@
 #include "../Utils/Utils.h"
 #include "../Enum/HashSize.h"
 
-class Hash : public virtual IIHash
+class Hash : public virtual IHash
 {
 private:
 	static const char* IndexOutOfRange;
@@ -63,17 +63,19 @@ public:
 		_hash_size = hash2._hash_size;
 	}
 
-	virtual string GetName() const  
+	~Hash() {}
+
+	string GetName() const override
 	{
 		return _name;
 	} //
 
-	virtual Int32 GetBufferSize() const 
+	Int32 GetBufferSize() const override
 	{
 		return _buffer_size;
 	} // end function GetBufferSize
 
-	virtual void SetBufferSize(const Int32 value) 
+	void SetBufferSize(const Int32 value) 
 	{
 		if (value > 0)
 		{
@@ -85,44 +87,44 @@ public:
 		} // end else
 	} // end function SetBufferSize
 
-	virtual Int32 GetBlockSize() const 
+	Int32 GetBlockSize() const override
 	{
 		return _block_size;
 	} // end function GetBlockSize
 
-	virtual void SetBlockSize(const Int32 value)
+	void SetBlockSize(const Int32 value)
 	{
 		_block_size = value;
 	}
 
-	virtual Int32 GetHashSize() const 
+	Int32 GetHashSize() const override
 	{
 		return _hash_size;
 	} // end function GetHashSize
 
-	virtual void SetHashSize(const Int32 value)
+	void SetHashSize(const Int32 value)
 	{
 		_hash_size = value;
 	}
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
 		throw NotImplementedHashLibException(Utils::string_format(CloneNotYetImplemented, GetName().c_str()));
 	}
 
-	virtual IHashResult ComputeString(const string& a_data) 
+	IHashResult& ComputeString(const string& a_data) override
 	{
 		return ComputeBytes(Converters::ConvertStringToBytes(a_data));
 	} // end function ComputeString
 
-	virtual IHashResult ComputeUntyped(const void* a_data, const Int64 a_length) 
+	IHashResult& ComputeUntyped(const void* a_data, const Int64 a_length) override
 	{
 		Initialize();
 		TransformUntyped(a_data, a_length);
 		return TransformFinal();
 	} // end function ComputeUntyped
 
-	virtual void TransformUntyped(const void* a_data, const Int64 a_length) 
+	void TransformUntyped(const void* a_data, const Int64 a_length) override
 	{
 		byte* PtrBuffer, * PtrEnd;
 		HashLibByteArray ArrBuffer;
@@ -161,47 +163,46 @@ public:
 
 	} // end function TransformUntyped
 
-	virtual IHashResult ComputeStream(ifstream& a_stream, const Int64 a_length = -1) 
+	IHashResult& ComputeStream(ifstream& a_stream, const Int64 a_length = -1) override
 	{
 		Initialize();
 		TransformStream(a_stream, a_length);
 		return TransformFinal();
 	} // end function ComputeStream
 
-	virtual IHashResult ComputeFile(const string& a_file_name,
-		const Int64 a_from = 0, const Int64 a_length = -1) 
+	IHashResult& ComputeFile(const string& a_file_name, const Int64 a_from = 0, const Int64 a_length = -1) override
 	{
 		Initialize();
 		TransformFile(a_file_name, a_from, a_length);
 		return TransformFinal();
 	} // end function ComputeFile
 
-	virtual IHashResult ComputeBytes(const HashLibByteArray& a_data) 
+	IHashResult& ComputeBytes(const HashLibByteArray& a_data) override
 	{
 		Initialize();
 		TransformBytes(a_data);
 		return TransformFinal();
 	} // end function ComputeBytes
 
-	virtual void TransformString(const string& a_data) 
+	void TransformString(const string& a_data) override
 	{
 		TransformBytes(Converters::ConvertStringToBytes(a_data));
 	} // end function TransformString
 
-	virtual void TransformBytes(const HashLibByteArray& a_data) 
+	void TransformBytes(const HashLibByteArray& a_data) override
 	{
 		TransformBytes(a_data, 0, (Int32)a_data.size());
 	} // end function TransformBytes
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index) 
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index) override
 	{
 		Int32 Length = (Int32)a_data.size() - a_index;
 		TransformBytes(a_data, a_index, Length);
 	} // end function TransformBytes
+	
+	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) = 0;
 
-	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) = 0;
-
-	virtual void TransformStream(ifstream& a_stream, const Int64 a_length = -1) 
+	void TransformStream(ifstream& a_stream, const Int64 a_length = -1) override
 	{
 		Int32 readed = 0, LBufferSize;
 		UInt64 size, new_size;
@@ -283,7 +284,7 @@ public:
 		}
 	} // end function TransformStream
 
-	virtual void TransformFile(const string& a_file_name, const Int64 a_from, const Int64 a_length) 
+	void TransformFile(const string& a_file_name, const Int64 a_from = 0, const Int64 a_length = -1) override
 	{
 		ifstream ReadFile;
 		ReadFile.open(a_file_name.c_str(), ios::in | ios::binary);

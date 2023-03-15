@@ -246,12 +246,6 @@
     <ClInclude Include="Interfaces\IHashInfo.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IHashResult.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IIHash.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Interfaces\IKDF.h">
       <Filter>Interfaces</Filter>
     </ClInclude>

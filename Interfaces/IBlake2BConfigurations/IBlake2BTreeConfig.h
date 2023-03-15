@@ -25,11 +25,8 @@
 
 #include "../../Utils/HashLibTypes.h"
 
-class IIBlake2BTreeConfig;
 
-typedef shared_ptr<IIBlake2BTreeConfig> IBlake2BTreeConfig;
-
-class IIBlake2BTreeConfig
+class IBlake2BTreeConfig
 {
 public:
 	virtual byte GetFanOut() const = 0;
@@ -53,6 +50,6 @@ public:
 	virtual bool GetIsLastNode() const = 0;
 	virtual void SetIsLastNode(const bool value) = 0;
 
-	virtual IBlake2BTreeConfig Clone() const = 0;
+	virtual IBlake2BTreeConfig& Clone() const = 0;
 
 }; // end class IBlake2BTreeConfig

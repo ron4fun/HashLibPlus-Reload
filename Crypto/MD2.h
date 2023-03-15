@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class MD2 : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class MD2 final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	MD2()
@@ -37,20 +37,20 @@ public:
 		_checksum.resize(16);
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		MD2 HashInstance = MD2();
-		HashInstance._state = _state;
-		HashInstance._checksum = _checksum;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		MD2* HashInstance = new MD2();
+		HashInstance->_state = _state;
+		HashInstance->_checksum = _checksum;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<MD2>(HashInstance);
+		return*HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		memset(&_state[0], 0, 16 * sizeof(byte));
 		memset(&_checksum[0], 0, 16 * sizeof(byte));
@@ -59,7 +59,7 @@ public:
 	} // end function Initialize
 
 protected:
-	virtual void Finish()
+	void Finish() override
 	{
 		UInt32 padLen;
 
@@ -78,13 +78,13 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		return _state;
 	} // end function GetResult
 
-	virtual void TransformBlock(const byte* a_data,
-		const int32_t a_data_length, const int32_t a_index)
+	void TransformBlock(const byte* a_data,
+		const int32_t a_data_length, const int32_t a_index) override
 	{
 		UInt32 t = 0;
 		HashLibByteArray temp = HashLibByteArray(48);

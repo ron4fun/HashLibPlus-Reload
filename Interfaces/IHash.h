@@ -30,15 +30,11 @@
 
 using namespace std;
 
-class IIHash;
-
-typedef shared_ptr<IIHash> IHash;
-
-class IIHash
+class IHash
 {
 	friend ostream& operator<<(ostream& output, const IHash& _hash)
 	{
-		output << _hash->GetName();
+		output << _hash.GetName();
 		return output;
 	}
 
@@ -49,14 +45,15 @@ public:
 	virtual Int32 GetBufferSize() const = 0;
 	virtual void SetBufferSize(const Int32 value) = 0;
 
-	virtual IHash Clone() const = 0;
+	virtual ~IHash() {}
 
-	virtual IHashResult ComputeString(const string& a_data) = 0;
-	virtual IHashResult ComputeBytes(const HashLibByteArray& a_data) = 0;
-	virtual IHashResult ComputeUntyped(const void* a_data, const Int64 a_length) = 0;
-	virtual IHashResult ComputeStream(ifstream& a_stream, const Int64 a_length = -1) = 0;
-	virtual IHashResult ComputeFile(const string& a_file_name,
-		const Int64 a_from = 0, const Int64 a_length = -1) = 0;
+	virtual IHash& Clone() const = 0;
+
+	virtual IHashResult& ComputeString(const string& a_data) = 0;
+	virtual IHashResult& ComputeBytes(const HashLibByteArray& a_data) = 0;
+	virtual IHashResult& ComputeUntyped(const void* a_data, const Int64 a_length) = 0;
+	virtual IHashResult& ComputeStream(ifstream& a_stream, const Int64 a_length = -1) = 0;
+	virtual IHashResult& ComputeFile(const string& a_file_name, const Int64 a_from = 0, const Int64 a_length = -1) = 0;
 
 	virtual void Initialize() = 0;
 
@@ -66,11 +63,10 @@ public:
 
 	virtual void TransformUntyped(const void* a_data, const Int64 a_length) = 0;
 
-	virtual IHashResult TransformFinal() = 0;
+	virtual IHashResult& TransformFinal() = 0;
 
 	virtual void TransformString(const string& a_data) = 0;
 	virtual void TransformStream(ifstream& a_stream, const Int64 a_length = -1) = 0;
-	virtual void TransformFile(const string& a_file_name,
-		const Int64 a_from = 0, const Int64 a_length = -1) = 0;
+	virtual void TransformFile(const string& a_file_name, const Int64 a_from = 0, const Int64 a_length = -1) = 0;
 
 }; // end class IHash

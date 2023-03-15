@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class Panama : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
+class Panama final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
 {
 public:
 	Panama()
@@ -46,26 +46,26 @@ public:
 
 	} // end constructor
 
-	virtual IHash Clone() const
+	IHash& Clone() const override
 	{
-		Panama HashInstance = Panama();
-		HashInstance._state = _state;
-		HashInstance._theta = _theta;
-		HashInstance._gamma = _gamma;
-		HashInstance._pi = _pi;
+		Panama* HashInstance = new Panama();
+		HashInstance->_state = _state;
+		HashInstance->_theta = _theta;
+		HashInstance->_gamma = _gamma;
+		HashInstance->_pi = _pi;
 
-		HashInstance._stages = _stages;
+		HashInstance->_stages = _stages;
 
-		HashInstance._tap = _tap;
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
+		HashInstance->_tap = _tap;
+		HashInstance->_buffer = _buffer.Clone();
+		HashInstance->_processed_bytes = _processed_bytes;
 
-		HashInstance.SetBufferSize(GetBufferSize());
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		return make_shared<Panama>(HashInstance);
+		return *HashInstance;
 	}
 
-	virtual void Initialize()
+	void Initialize() override
 	{
 		ArrayUtils::zeroFill(_state);
 
@@ -76,7 +76,7 @@ public:
 	} // end function Initialize
 
 protected:
-	virtual void Finish()
+	void Finish() override
 	{
 		Int32 tap4, tap16, tap25;
 
@@ -140,7 +140,7 @@ protected:
 
 	} // end function Finish
 
-	virtual HashLibByteArray GetResult()
+	HashLibByteArray GetResult() override
 	{
 		HashLibByteArray result = HashLibByteArray(8 * sizeof(UInt32));
 
@@ -149,8 +149,8 @@ protected:
 		return result;
 	} // end function GetResult
 
-	virtual void TransformBlock(const uint8_t* a_data,
-		const Int32 a_data_length, const Int32 a_index)
+	void TransformBlock(const uint8_t* a_data,
+		const Int32 a_data_length, const Int32 a_index) override
 	{
 		UInt32 tap16, tap25;
 
