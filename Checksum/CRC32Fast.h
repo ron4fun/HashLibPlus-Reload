@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -26,8 +26,8 @@
 #include "../Base/Hash.h"
 #include "../Interfaces/IHashInfo.h"
 
-class CRC32Fast : public Hash, public virtual IChecksum, public virtual IBlockHash, 
-	public virtual IHash32, public virtual ITransformBlock
+class CRC32Fast : public Hash, public virtual IIChecksum, public virtual IIBlockHash, 
+	public virtual IIHash32, public virtual IITransformBlock
 {
 protected:
 	UInt32 _currentCRC = 0;
@@ -41,13 +41,13 @@ public:
 		_currentCRC = 0;
 	} // end function Initialize
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
-		HashResult* res = new HashResult(_currentCRC);
+		HashResult res = HashResult(_currentCRC);
 
 		Initialize();
 
-		return *res;
+		return res;
 	} // end function TransformFinal
 
 protected:
@@ -136,14 +136,13 @@ public:
 		_crc32_PKZIP_Table = Init_CRC_Table(CRC32_PKZIP_Polynomial);
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		CRC32_PKZIP_Fast* HashInstance = new CRC32_PKZIP_Fast();
-		HashInstance->_currentCRC = _currentCRC;
+		CRC32_PKZIP_Fast HashInstance = CRC32_PKZIP_Fast();
+		HashInstance._currentCRC = _currentCRC;
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		HashInstance->SetBufferSize(GetBufferSize());
-
-		return *HashInstance;
+		return IHash(new CRC32_PKZIP_Fast(HashInstance));
 	} // end function Clone
 
 	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
@@ -175,14 +174,13 @@ public:
 		_crc32_CASTAGNOLI_Table = Init_CRC_Table(CRC32_CASTAGNOLI_Polynomial);
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		CRC32_CASTAGNOLI_Fast* HashInstance = new CRC32_CASTAGNOLI_Fast();
-		HashInstance->_currentCRC = _currentCRC;
+		CRC32_CASTAGNOLI_Fast HashInstance = CRC32_CASTAGNOLI_Fast();
+		HashInstance._currentCRC = _currentCRC;
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		HashInstance->SetBufferSize(GetBufferSize());
-
-		return *HashInstance;
+		return IHash(new CRC32_CASTAGNOLI_Fast(HashInstance));
 	} // end function Clone
 
 	void TransformBytes(const HashLibByteArray &a_data, const Int32 a_index, const Int32 a_length) override

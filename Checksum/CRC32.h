@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -33,8 +33,8 @@ public:
 
 }; // end class CRC32Polynomials
 
-class _CRC32 : public Hash, public virtual IChecksum, public virtual IBlockHash, 
-	public virtual IHash32, public virtual ITransformBlock
+class _CRC32 : public Hash, public virtual IIChecksum, public virtual IIBlockHash, 
+	public virtual IIHash32, public virtual IITransformBlock
 {
 public:
 	_CRC32(const UInt64 _poly, const UInt64 _Init,
@@ -42,14 +42,11 @@ public:
 		const UInt64 _check, const HashLibStringArray& _Names)
 		: Hash(4, 1)
 	{
-		_crcAlgorithm = new _CRC(32, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names);
+		_crcAlgorithm = ICRC(new _CRC(32, _poly, _Init, _refIn, _refOut, _XorOut, _check, _Names));
 	} // end constructor
 
 	~_CRC32()
-	{
-		if (_crcAlgorithm != nullptr)
-			delete _crcAlgorithm;
-	} // end destructor
+	{} // end destructor
 
 	string GetName() const
 	{
@@ -61,7 +58,7 @@ public:
 		_crcAlgorithm->Initialize();
 	} // end function Initialize
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		return _crcAlgorithm->TransformFinal();
 	} // end function TransformFinal
@@ -72,7 +69,7 @@ public:
 	} // end function TransformBytes
 
 private:
-	ICRC* _crcAlgorithm = nullptr;
+	ICRC _crcAlgorithm;
 
 }; // end class _CRC32
 

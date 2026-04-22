@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -27,8 +27,8 @@
 #include "../Interfaces/IHashInfo.h"
 #include "../Interfaces/ICRC.h"
 
-class _CRC : public Hash, public virtual ICRC, public virtual IChecksum, 
-	public virtual ITransformBlock
+class _CRC : public Hash, public virtual IICRC, public virtual IIChecksum, 
+	public virtual IITransformBlock
 {
 public:
 	_CRC(const Int32 _Width, const UInt64 _poly, const UInt64 _Init,
@@ -76,12 +76,11 @@ public:
 
 	~_CRC() {}
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		IHash* _hash = new _CRC(Copy());
+		IHash _hash = IHash(new _CRC(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
-
-		return *_hash;
+		return _hash;
 	}
 
 	string GetName() const override
@@ -106,12 +105,13 @@ public:
 		} // end if
 	} // end function Initialize
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		UInt64 LUInt64;
 		UInt32 LUInt32;
 		UInt16 LUInt16;
 		byte LUInt8;
+		HashResult result;
 
 		if (_width > Delta)
 		{
@@ -126,18 +126,16 @@ public:
 
 		_hash = _hash ^ _xorOut;
 		_hash = _hash & _crcMask;
-
-		IHashResult* result = nullptr;
-
+		
 		if (_width == 21) // special case
 		{
 			LUInt32 = (UInt32)_hash;
 
-			result = new HashResult(LUInt32);
+			result = HashResult(LUInt32);
 
 			Initialize();
 
-			return *result;
+			return result;
 		} // end if
 
 		int64_t value = _width >> 3;
@@ -146,28 +144,24 @@ public:
 		{
 			LUInt8 = (byte)_hash;
 			Initialize();
-			result = new HashResult(LUInt8);
-			return *result;
+			return HashResult(LUInt8);
 		} // end result
 		else if (value == 1 || value == 2)
 		{
 			LUInt16 = (UInt16)_hash;
 			Initialize();
-			result = new HashResult(LUInt16);
-			return *result;
+			return HashResult(LUInt16);
 		} // end else if
 		else if (value == 3 || value == 4)
 		{
 			LUInt32 = (UInt32)_hash;
 			Initialize();
-			result = new HashResult(LUInt32);
-			return *result;
+			return HashResult(LUInt32);
 		} // end else if
 
 		LUInt64 = _hash;
 		Initialize();
-		result = new HashResult(LUInt64);
-		return *result;
+		return HashResult(LUInt64);
 	} // end function TransformFinal
 
 	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
@@ -189,9 +183,10 @@ public:
 
 	} // end function TransformBytes
 
-	static ICRC& CreateCRCObject(const CRCStandard& a_value)
+
+	static ICRC CreateCRCObject(const CRCStandard& a_value)
 	{
-		ICRC* hash = nullptr;
+		IICRC* hash = nullptr;
 
 		switch (a_value)
 		{
@@ -500,7 +495,7 @@ public:
 
 		} // end switch
 
-		if (hash != nullptr) return *hash;
+		if (hash != nullptr) return ICRC(hash);
 
 		throw ArgumentInvalidHashLibException(Utils::string_format(UnSupportedCRCType, a_value));
 	} // end function CreateCRCObject

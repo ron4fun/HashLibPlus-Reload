@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -26,8 +26,8 @@
 #include "../Base/Hash.h"
 #include "../Interfaces/IHashInfo.h"
 
-class Adler32 final : public Hash, public IChecksum, public IBlockHash, 
-	public IHash32, public ITransformBlock
+class Adler32 final : public Hash, public IIChecksum, public IIBlockHash, 
+	public IIHash32, public IITransformBlock
 {
 public:
 	Adler32()
@@ -36,15 +36,15 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Adler32* HashInstance = new Adler32();
-		HashInstance->_a = _a;
-		HashInstance->_b = _b;
+		Adler32 HashInstance = Adler32();
+		HashInstance._a = _a;
+		HashInstance._b = _b;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Adler32(HashInstance));
 	}
 
 	void Initialize() override
@@ -53,13 +53,13 @@ public:
 		_b = 0;
 	} // end function Initialize
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
-		IHashResult* result = new HashResult(int32_t((_b << 16) | _a));
+		HashResult result = HashResult(int32_t((_b << 16) | _a));
 
 		Initialize();
 
-		return *result;
+		return result;
 	} // end function TransformFinal
 
 	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
