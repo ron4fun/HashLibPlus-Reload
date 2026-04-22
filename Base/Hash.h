@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -31,7 +31,7 @@
 #include "../Utils/Utils.h"
 #include "../Enum/HashSize.h"
 
-class Hash : public virtual IHash
+class Hash : public virtual IIHash
 {
 private:
 	static const char* IndexOutOfRange;
@@ -107,17 +107,17 @@ public:
 		_hash_size = value;
 	}
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
 		throw NotImplementedHashLibException(Utils::string_format(CloneNotYetImplemented, GetName().c_str()));
 	}
 
-	IHashResult& ComputeString(const string& a_data) override
+	HashResult ComputeString(const string& a_data) override
 	{
 		return ComputeBytes(Converters::ConvertStringToBytes(a_data));
 	} // end function ComputeString
 
-	IHashResult& ComputeUntyped(const void* a_data, const Int64 a_length) override
+	HashResult ComputeUntyped(const void* a_data, const Int64 a_length) override
 	{
 		Initialize();
 		TransformUntyped(a_data, a_length);
@@ -163,21 +163,21 @@ public:
 
 	} // end function TransformUntyped
 
-	IHashResult& ComputeStream(ifstream& a_stream, const Int64 a_length = -1) override
+	HashResult ComputeStream(ifstream& a_stream, const Int64 a_length = -1) override
 	{
 		Initialize();
 		TransformStream(a_stream, a_length);
 		return TransformFinal();
 	} // end function ComputeStream
 
-	IHashResult& ComputeFile(const string& a_file_name, const Int64 a_from = 0, const Int64 a_length = -1) override
+	HashResult ComputeFile(const string& a_file_name, const Int64 a_from = 0, const Int64 a_length = -1) override
 	{
 		Initialize();
 		TransformFile(a_file_name, a_from, a_length);
 		return TransformFinal();
 	} // end function ComputeFile
 
-	IHashResult& ComputeBytes(const HashLibByteArray& a_data) override
+	HashResult ComputeBytes(const HashLibByteArray& a_data) override
 	{
 		Initialize();
 		TransformBytes(a_data);

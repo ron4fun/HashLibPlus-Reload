@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -27,7 +27,7 @@
 #include "HashBuffer.h"
 #include "../Interfaces/IHashInfo.h"
 
-class BlockHash : public Hash, public IBlockHash
+class BlockHash : public Hash, public virtual IIBlockHash
 {
 protected:
 	BlockHash() {}
@@ -88,7 +88,7 @@ public:
 	~BlockHash()
 	{} // end destructor
 
-	virtual IHashResult& TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		Finish();
 
@@ -96,9 +96,7 @@ public:
 
 		Initialize();
 
-		HashResult* result = new HashResult(tempresult);
-
-		return *result;
+		return HashResult(tempresult);
 	} // end function TransformFinal
 
 private:

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -26,7 +26,7 @@
 #include "Hash.h"
 #include "../Interfaces/IHashInfo.h"
 
-class MultipleTransformNonBlock : public Hash, public virtual INonBlockHash
+class MultipleTransformNonBlock : public Hash, public virtual IINonBlockHash
 {
 public:
 	MultipleTransformNonBlock(const Int32 a_hash_size, const Int32 a_block_size)
@@ -56,16 +56,16 @@ public:
 		_buffer += data;
 	} // end function TransformBytes
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
-		IHashResult& result = ComputeAggregatedBytes(Aggregate());
+		HashResult result = ComputeAggregatedBytes(Aggregate());
 
 		Initialize();
 
 		return result;
 	} // end function TransformFinal
 
-	IHashResult& ComputeBytes(const HashLibByteArray& a_data) override
+	HashResult ComputeBytes(const HashLibByteArray& a_data) override
 	{
 		Initialize();
 
@@ -75,7 +75,7 @@ public:
 protected:
 	MultipleTransformNonBlock() {}
 
-	virtual IHashResult& ComputeAggregatedBytes(const HashLibByteArray& a_data) = 0;
+	virtual HashResult ComputeAggregatedBytes(const HashLibByteArray& a_data) = 0;
 
 private:
 	HashLibByteArray Aggregate()

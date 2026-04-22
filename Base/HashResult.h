@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -24,7 +24,6 @@
 #pragma once
 
 #include "../Utils/Converters.h"
-
 
 class HashResult final
 {
@@ -102,7 +101,7 @@ public:
 		return *this;
 	} // end funcion operator=
 
-	bool CompareTo(const IHashResult& a_hashResult) const
+	bool CompareTo(const HashResult& a_hashResult) const
 	{
 		return HashResult::SlowEquals(a_hashResult.GetBytes(), _hash);
 	} // end function CompareTo
@@ -213,10 +212,3 @@ private:
 	HashLibByteArray _hash;
 
 }; // end class HashResult
-
-
-const char* HashResult::ImpossibleRepresentationInt32 = "Current data structure cannot be represented as an 'Int32' type";
-const char* HashResult::ImpossibleRepresentationUInt8 = "Current data structure cannot be represented as an 'UInt8' type";
-const char* HashResult::ImpossibleRepresentationUInt16 = "Current data structure cannot be represented as an 'UInt16' type";
-const char* HashResult::ImpossibleRepresentationUInt32 = "Current data structure cannot be represented as an 'UInt32' type";
-const char* HashResult::ImpossibleRepresentationUInt64 = "Current data structure cannot be represented as an 'UInt64' type";
