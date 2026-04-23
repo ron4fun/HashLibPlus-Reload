@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -27,14 +27,14 @@
 #include "../Base/Hash.h"
 #include "../Interfaces/IHashInfo.h"
 
-class HMACNotBuildInAdapter : public Hash, public virtual IIHMACNotBuildIn,
+class HMACNotBuildInAdapter final : public Hash, public virtual IIHMACNotBuildIn,
 	public virtual IIWithKey, public virtual IICryptoNotBuildIn
 {
 private:
 	HMACNotBuildInAdapter(const IHash a_hash)
 		: Hash(a_hash->GetHashSize(), a_hash->GetBlockSize())
 	{
-		_hash = ::move(a_hash);
+		_hash = a_hash->Clone(); 
 	}
 
 	HMACNotBuildInAdapter Copy() const
@@ -69,8 +69,8 @@ public:
 
 	static IHMACNotBuildIn CreateHMAC(const IHash a_hash, const HashLibByteArray& hmacKey)
 	{
-		if (!a_hash) throw ArgumentNullHashLibException("hash");
-		return make_shared<HMACNotBuildInAdapter>(a_hash, hmacKey);
+		if (a_hash == nullptr) throw ArgumentNullHashLibException("hash is null");
+		return IHMACNotBuildIn(new HMACNotBuildInAdapter(a_hash, hmacKey));
 	} //
 
 	virtual string GetName() const
@@ -94,17 +94,17 @@ public:
 
 	virtual IHash Clone() const
 	{
-		return make_shared<HMACNotBuildInAdapter>(Copy());
+		return IHash(new HMACNotBuildInAdapter(Copy()));
 	}
 
 	virtual IHMACNotBuildIn CloneHMAC() const
 	{
-		return make_shared<HMACNotBuildInAdapter>(Copy());
+		return IHMACNotBuildIn(new HMACNotBuildInAdapter(Copy()));
 	}
 
 	virtual IMACNotBuildIn CloneMAC() const
 	{
-		return make_shared<HMACNotBuildInAdapter>(Copy());
+		return IMACNotBuildIn(new HMACNotBuildInAdapter(Copy()));
 	}
 
 	virtual void Clear()
@@ -120,13 +120,17 @@ public:
 		_hash->TransformBytes(_ipad);
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
-		IHashResult result = _hash->TransformFinal();
-		_hash->TransformBytes(_opad);
-		_hash->TransformBytes(result->GetBytes());
+		HashResult result;
 		result = _hash->TransformFinal();
+		_hash->TransformBytes(_opad);
+		_hash->TransformBytes(result.GetBytes());
+
+		result = _hash->TransformFinal();
+
 		Initialize();
+
 		return result;
 	} // end function TransformFinal
 
@@ -184,11 +188,18 @@ private:
 	{
 		Int32 blockSize = _hash->GetBlockSize();
 		// Perform RFC 2104, section 2 key adjustment.
-		_workingKey = (Int32)_key.size() > blockSize ? _hash->ComputeBytes(_key)->GetBytes() : _key;
+		if ((Int32)_key.size() > blockSize)
+		{
+			_workingKey = _hash->ComputeBytes(_key).GetBytes();
+		}
+		else 
+		{
+			_workingKey = _key;
+		}
 	}
 
 private:
-	IHash _hash = nullptr;
+	IHash _hash;
 	HashLibByteArray _opad, _ipad, _key, _workingKey;
 
 }; // end class HMACNotBuildInAdapter

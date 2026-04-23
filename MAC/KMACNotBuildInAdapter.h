@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -28,7 +28,7 @@
 
 #pragma region KMAC Family
 
-class KMACNotBuildInAdapter : public Hash, public virtual IIKMACNotBuildIn, 
+class KMACNotBuildInAdapter : public Hash, public virtual IIKMACNotBuildIn,
 	public virtual IICryptoNotBuildIn
 {
 protected:
@@ -37,7 +37,7 @@ protected:
 	bool _finalized = false;
 
 	static const HashLibByteArray KMAC_Bytes;
-	
+
 	KMACNotBuildInAdapter(Int32 a_hash_size)
 		: Hash(a_hash_size, 200 - (a_hash_size * 2))
 	{ } // end constructor
@@ -66,13 +66,13 @@ public:
 		TransformBytes(CShake::BytePad(CShake::EncodeString(GetKey()), GetBlockSize()));
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		HashLibByteArray temp = GetResult();
 
 		Initialize();
 
-		return make_shared<HashResult>(temp);
+		return HashResult(temp);
 	} // end function TransformFinal
 
 	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
@@ -116,13 +116,13 @@ public:
 			TransformBytes(dynamic_cast<const IIXOF*>(this) != nullptr ?
 				CShake::RightEncode(0) : CShake::RightEncode(
 					dynamic_cast<IIXOF*>(&(*_hash))->GetXOFSizeInBits())
-			);
+				);
 			_finalized = true;
 		}
-		
+
 		dynamic_cast<IIXOF*>(&(*_hash))->DoOutput(destination, destinationOffset, outputLength);
 	} // end function DoOutput
-	
+
 }; // end class KMACNotBuildInAdapter
 
 const HashLibByteArray KMACNotBuildInAdapter::KMAC_Bytes = HashLibByteArray({ 75, 77, 65, 67 });
@@ -186,14 +186,14 @@ public:
 	KMAC128XOF(const HashLibByteArray& a_KMACKey, const HashLibByteArray& a_Customization)
 		: KMAC128XOF(make_shared<CShake_128>(KMAC_Bytes, a_Customization), a_KMACKey)
 	{} // end constructor
-	
+
 	KMAC128XOF(IHash a_hash, const HashLibByteArray& a_KMACKey)
 		: KMACNotBuildInAdapter((Int32)HashSize128)
 	{
 		_name = __func__;
 
 		_key = a_KMACKey;
-		
+
 		_hash = ::move(a_hash);
 	} // end constructor
 
@@ -354,7 +354,7 @@ public:
 	{
 		return make_shared<KMAC256XOF>(Copy());
 	}
-	
+
 	virtual IMACNotBuildIn CloneMAC() const
 	{
 		return make_shared<KMAC256XOF>(Copy());

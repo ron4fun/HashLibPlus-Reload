@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -37,20 +37,18 @@ public:
 
 	virtual IHash Clone() const override
 	{
-		Blake2BMACNotBuildInAdapter HashInstance = Blake2BMACNotBuildInAdapter(_hash, _key);
+		IHash HashInstance = IHash(new Blake2BMACNotBuildInAdapter(_hash, _key));
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		HashInstance.SetBufferSize(GetBufferSize());
-
-		return make_shared<Blake2BMACNotBuildInAdapter>(HashInstance);
+		return HashInstance;
 	}
 
 	virtual IMACNotBuildIn CloneMAC() const
 	{
-		Blake2BMACNotBuildInAdapter HashInstance = Blake2BMACNotBuildInAdapter(_hash, _key);
+		IMACNotBuildIn HashInstance = IMACNotBuildIn(new Blake2BMACNotBuildInAdapter(_hash, _key));
+		HashInstance->SetBufferSize(GetBufferSize());
 
-		HashInstance.SetBufferSize(GetBufferSize());
-
-		return make_shared<Blake2BMACNotBuildInAdapter>(HashInstance);
+		return HashInstance;
 	} // end function CloneMAC
 
 	virtual void Clear() override
@@ -70,11 +68,11 @@ public:
 
 	virtual void Initialize() override
 	{
-		_hash.GetConfig()->SetKey(_key);
+		_hash.GetConfig().SetKey(_key);
 		_hash.Initialize();
 	}
 
-	virtual IHashResult TransformFinal() override
+	virtual HashResult TransformFinal() override
 	{
 		return _hash.TransformFinal();
 	}
@@ -87,12 +85,12 @@ public:
 	static IBlake2BMACNotBuildIn CreateBlake2BMAC(const HashLibByteArray& a_Blake2BKey, 
 		const HashLibByteArray& a_Salt, const HashLibByteArray& a_Personalisation, const Int32 a_OutputLengthInBits)
 	{
-		IBlake2BConfig config = Blake2BConfig::CreateBlake2BConfig(a_OutputLengthInBits >> 3);
-		config->SetKey(a_Blake2BKey);
-		config->SetSalt(a_Salt);
-		config->SetPersonalization(a_Personalisation);
+		Blake2BConfig config = Blake2BConfig::CreateBlake2BConfig(a_OutputLengthInBits >> 3);
+		config.SetKey(a_Blake2BKey);
+		config.SetSalt(a_Salt);
+		config.SetPersonalization(a_Personalisation);
 
-		return make_shared<Blake2BMACNotBuildInAdapter>(Blake2B(config, nullptr), config->GetKey());
+		return IBlake2BMACNotBuildIn(new Blake2BMACNotBuildInAdapter(Blake2B(config, Blake2BTreeConfig(true)), config.GetKey()));
 	}
 
 	Blake2BMACNotBuildInAdapter(const Blake2B& a_Hash, const HashLibByteArray& a_Blake2BKey)
