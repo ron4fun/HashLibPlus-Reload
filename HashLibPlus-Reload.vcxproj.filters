@@ -35,12 +35,6 @@
     <Filter Include="Crypto">
       <UniqueIdentifier>{0c234245-77d7-4826-880a-28534e8e06ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\IBlake2SConfigurations">
-      <UniqueIdentifier>{85a45fd8-c3eb-4431-98b2-dcacc033f73e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Interfaces\IBlake2BConfigurations">
-      <UniqueIdentifier>{26d08786-5522-4afb-9d3c-c437a89ff20a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Enum">
       <UniqueIdentifier>{cdb74991-ee5b-4eb3-8251-c80e102aa1c7}</UniqueIdentifier>
     </Filter>
@@ -69,6 +63,9 @@
     </ClCompile>
     <ClCompile Include="Params\Blake2BParams.cpp">
       <Filter>Params</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\HashResult.cpp">
+      <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,18 +245,6 @@
     </ClInclude>
     <ClInclude Include="Interfaces\IKDF.h">
       <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IBlake2SConfigurations\IBlake2SConfig.h">
-      <Filter>Interfaces\IBlake2SConfigurations</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IBlake2SConfigurations\IBlake2STreeConfig.h">
-      <Filter>Interfaces\IBlake2SConfigurations</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IBlake2BConfigurations\IBlake2BConfig.h">
-      <Filter>Interfaces\IBlake2BConfigurations</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IBlake2BConfigurations\IBlake2BTreeConfig.h">
-      <Filter>Interfaces\IBlake2BConfigurations</Filter>
     </ClInclude>
     <ClInclude Include="Hash32\AP.h">
       <Filter>Hash32</Filter>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -23,7 +23,7 @@
     <ProjectGuid>{BC410CEB-77D7-477E-9E6C-751B8DC3C5DE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>HashLibPlusReload</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,13 +42,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -135,7 +135,7 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level1</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Base\HashFactory.cpp" />
+    <ClCompile Include="Base\HashResult.cpp" />
     <ClCompile Include="HashLibPlus.cpp" />
     <ClCompile Include="Params\Blake2BParams.cpp" />
     <ClCompile Include="Params\Blake2SParams.cpp" />
@@ -242,10 +243,6 @@
     <ClInclude Include="Hash64\Murmur2_64.h" />
     <ClInclude Include="Hash64\SipHash64.h" />
     <ClInclude Include="Hash64\XXHash64.h" />
-    <ClInclude Include="Interfaces\IBlake2BConfigurations\IBlake2BConfig.h" />
-    <ClInclude Include="Interfaces\IBlake2BConfigurations\IBlake2BTreeConfig.h" />
-    <ClInclude Include="Interfaces\IBlake2SConfigurations\IBlake2SConfig.h" />
-    <ClInclude Include="Interfaces\IBlake2SConfigurations\IBlake2STreeConfig.h" />
     <ClInclude Include="Interfaces\ICRC.h" />
     <ClInclude Include="Interfaces\IHash.h" />
     <ClInclude Include="Interfaces\IHashInfo.h" />
