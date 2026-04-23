@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -29,14 +29,14 @@
 #include "../Interfaces/IHashInfo.h"
 #include "../Utils/ArrayUtils.h"
 
-class PBKDF2_HMACNotBuildInAdapter : public KDFNotBuildInAdapter, 
+class PBKDF2_HMACNotBuildInAdapter final : public KDFNotBuildInAdapter, 
 	public virtual IIPBKDF2_HMACNotBuildIn
 {
 public:
 	PBKDF2_HMACNotBuildInAdapter(const IHash _hash, const HashLibByteArray &a_password,
 		const HashLibByteArray &a_salt, const UInt32 a_iterations)
 	{
-		if (!_hash) throw ArgumentNullHashLibException("hash is null");
+		if (_hash == nullptr) throw ArgumentNullHashLibException("hash is null");
 		if (a_iterations <= 0) throw ArgumentOutOfRangeHashLibException(IterationTooSmall);
 
 		_hmac = HMACNotBuildInAdapter::CreateHMAC(_hash, a_password);
@@ -56,6 +56,19 @@ public:
 	{
 		Clear();
 	} // end destructor
+
+	PBKDF2_HMACNotBuildInAdapter(const PBKDF2_HMACNotBuildInAdapter& a_hash)
+	{
+		_hmac = a_hash._hmac->CloneHMAC();
+		_password = a_hash._password;
+		_salt = a_hash._salt;
+		_buffer = a_hash._buffer;
+		_iterationCount = a_hash._iterationCount;
+		_block = a_hash._block;
+		_blockSize = a_hash._blockSize;
+		_startIndex = a_hash._startIndex;
+		_endIndex = a_hash._endIndex;
+	} // end copy constructor
 
 	virtual HashLibByteArray GetBytes(const Int32 bc)
 	{
@@ -130,7 +143,7 @@ public:
 	virtual IKDFNotBuildIn Clone() const
 	{
 		PBKDF2_HMACNotBuildInAdapter hmac = PBKDF2_HMACNotBuildInAdapter();
-		hmac._hmac = ::move(_hmac);
+		hmac._hmac = _hmac->CloneHMAC();
 		hmac._password = _password;
 		hmac._salt = _salt;
 		hmac._buffer = _buffer;
@@ -140,7 +153,7 @@ public:
 		hmac._startIndex = _startIndex;
 		hmac._endIndex = _endIndex;
 
-		return make_shared<PBKDF2_HMACNotBuildInAdapter>(hmac);
+		return IKDFNotBuildIn(new PBKDF2_HMACNotBuildInAdapter(hmac));
 	}
 
 private:
@@ -161,15 +174,16 @@ private:
 
 		_hmac->TransformBytes(_salt, 0, (Int32)_salt.size());
 		_hmac->TransformBytes(INT_block, 0, (Int32)INT_block.size());
-
-		HashLibByteArray temp = _hmac->TransformFinal()->GetBytes();
+		
+		HashLibByteArray temp = _hmac->TransformFinal().GetBytes();
 		HashLibByteArray ret = temp;
-
+		
 		UInt32 i = 2;
 		Int32 j = 0;
 		while (i <= _iterationCount)
 		{
-			temp = _hmac->ComputeBytes(temp)->GetBytes();
+			temp = _hmac->ComputeBytes(temp).GetBytes();
+			
 			j = 0;
 			while (j < _blockSize)
 			{
@@ -199,7 +213,7 @@ private:
 protected:
 	PBKDF2_HMACNotBuildInAdapter() {}
 
-	IHMACNotBuildIn _hmac = nullptr;
+	IHMACNotBuildIn _hmac;
 	HashLibByteArray _password, _salt, _buffer;
 	UInt32 _iterationCount = 0, _block = 0;
 	Int32 _blockSize = 0, _startIndex = 0, _endIndex = 0;

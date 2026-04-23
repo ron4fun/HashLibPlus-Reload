@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -43,6 +43,15 @@ public:
 	PBKDF_Blake3NotBuildInAdapter()
 	{}
 	
+	~PBKDF_Blake3NotBuildInAdapter()
+	{	}
+
+	PBKDF_Blake3NotBuildInAdapter(const PBKDF_Blake3NotBuildInAdapter& a_hash)
+	{
+		_srcKey = a_hash._srcKey;
+		_xof = a_hash._xof->CloneXOF();
+	}
+
 	// derives a subkey from ctx and srcKey. ctx should be hardcoded,
 	// globally unique, and application-specific. A good format for ctx strings is:
 	//
@@ -62,11 +71,12 @@ public:
 
 		// construct the derivation Hasher and get the derivationIV
 		HashLibByteArray derivationIv = Blake3(derivationIVLen, ivWords, flagDeriveKeyContext)
-			.ComputeBytes(ctx)->GetBytes();
+			.ComputeBytes(ctx).GetBytes();
 		
 		Converters::le32_copy(&derivationIv[0], 0, &ivWords[0], 0, Blake3::KeyLengthInBytes);
-		
-		_xof = make_shared<Blake3XOF>(32, ivWords, flagDeriveKeyMaterial);
+
+		IXOF blake3xof = IXOF(new Blake3XOF(32, ivWords, flagDeriveKeyMaterial));
+		_xof = blake3xof;
 	}
 
 	virtual void Clear()
@@ -85,7 +95,7 @@ public:
 		result._srcKey = _srcKey;
 		result._xof = _xof->CloneXOF();
 
-		return make_shared<PBKDF_Blake3NotBuildInAdapter>(result);
+		return IKDFNotBuildIn(new PBKDF_Blake3NotBuildInAdapter(result));
 	} //
 
 	virtual HashLibByteArray GetBytes(const Int32 bc)

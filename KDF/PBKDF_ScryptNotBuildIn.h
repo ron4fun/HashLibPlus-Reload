@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -114,7 +114,7 @@ public:
 		hash._blockSize = _blockSize;
 		hash._parallelism = _parallelism;
 
-		return make_shared<PBKDF_ScryptNotBuildInAdapter>(hash);
+		return IKDFNotBuildIn(new PBKDF_ScryptNotBuildInAdapter(hash));
 	} // end function Clone
 
 	/// <summary>
@@ -158,7 +158,8 @@ private:
 	static HashLibByteArray SingleIterationPBKDF2(const HashLibByteArray& a_PasswordBytes,
 		const HashLibByteArray& a_SaltBytes, const Int32 a_OutputLength)
 	{
-		PBKDF2_HMACNotBuildInAdapter pbkdf = PBKDF2_HMACNotBuildInAdapter(make_shared<SHA2_256>(), a_PasswordBytes,
+		IHash hash = IHash(new SHA2_256());
+		PBKDF2_HMACNotBuildInAdapter pbkdf = PBKDF2_HMACNotBuildInAdapter(hash, a_PasswordBytes,
 			a_SaltBytes, 1);
 		HashLibByteArray result = pbkdf.GetBytes(a_OutputLength);
 		return result;

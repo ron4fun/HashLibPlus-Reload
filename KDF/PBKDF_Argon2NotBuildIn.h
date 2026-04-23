@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -298,12 +298,15 @@ private:
 	//
 	HashLibByteArray _digest, _password;
 	vector<Block> _memory;
-	IArgon2Parameters _parameters;
+	Argon2Parameters _parameters;
 	Int32 _segmentLength, _laneLength;
 
 public:
 	PBKDF_Argon2NotBuildInAdapter()
 	{} //
+
+	~PBKDF_Argon2NotBuildInAdapter()
+	{} // destructor
 
 	/// <summary>
 	/// Initialise the <see cref="PBKDF_Argon2NotBuildIn" />
@@ -315,22 +318,22 @@ public:
 	/// <param name="parameters">
 	/// Argon2 configuration.
 	/// </param>
-	PBKDF_Argon2NotBuildInAdapter(const HashLibByteArray& password, const IArgon2Parameters parameters)
+	PBKDF_Argon2NotBuildInAdapter(const HashLibByteArray& password, const Argon2Parameters& parameters)
 	{
 		_password = password;
-		_parameters = parameters->Clone();
+		_parameters = parameters;
 
-		if (_parameters->GetLanes() < MIN_PARALLELISM)
+		if (_parameters.GetLanes() < MIN_PARALLELISM)
 			throw ArgumentOutOfRangeHashLibException(Utils::string_format(LanesTooSmall, MIN_PARALLELISM));
 
-		if (_parameters->GetLanes() > MAX_PARALLELISM)
+		if (_parameters.GetLanes() > MAX_PARALLELISM)
 			throw ArgumentOutOfRangeHashLibException(Utils::string_format(LanesTooBig, MAX_PARALLELISM));
 
-		if (_parameters->GetMemory() < 8 * _parameters->GetLanes())
-			throw ArgumentOutOfRangeHashLibException(Utils::string_format(MemoryTooSmall, _parameters->GetMemory(),
-				8 * _parameters->GetLanes()));
+		if (_parameters.GetMemory() < 8 * _parameters.GetLanes())
+			throw ArgumentOutOfRangeHashLibException(Utils::string_format(MemoryTooSmall, _parameters.GetMemory(),
+				8 * _parameters.GetLanes()));
 
-		if (_parameters->GetIterations() < MIN_ITERATIONS)
+		if (_parameters.GetIterations() < MIN_ITERATIONS)
 			throw ArgumentOutOfRangeHashLibException(Utils::string_format(IterationsTooSmall, MIN_ITERATIONS));
 
 		DoInit(parameters);
@@ -372,11 +375,11 @@ public:
 		result._digest = _digest;
 		result._password = _password;
 		result._memory = DeepCopyBlockArray(_memory);
-		result._parameters = _parameters->Clone();
+		result._parameters = _parameters;
 		result._segmentLength = _segmentLength;
 		result._laneLength = _laneLength;
 
-		return make_shared<PBKDF_Argon2NotBuildInAdapter>(result);
+		return IKDFNotBuildIn(new PBKDF_Argon2NotBuildInAdapter(result));
 	} //
 
 private:
@@ -392,19 +395,19 @@ private:
 		return result;
 	} //
 
-	inline void DoInit(const IArgon2Parameters parameters)
+	inline void DoInit(const Argon2Parameters& parameters)
 	{
 		// 2. Align memory size
 		// Minimum memoryBlocks = 8L blocks, where L is the number of lanes */
-		Int32 memoryBlocks = parameters->GetMemory();
+		Int32 memoryBlocks = parameters.GetMemory();
 
-		memoryBlocks = max(memoryBlocks, 2 * ARGON2_SYNC_POINTS * parameters->GetLanes());
+		memoryBlocks = max(memoryBlocks, 2 * ARGON2_SYNC_POINTS * parameters.GetLanes());
 
-		_segmentLength = memoryBlocks / (_parameters->GetLanes() * ARGON2_SYNC_POINTS);
+		_segmentLength = memoryBlocks / (_parameters.GetLanes() * ARGON2_SYNC_POINTS);
 		_laneLength = _segmentLength * ARGON2_SYNC_POINTS;
 
 		// Ensure that all segments have equal length
-		memoryBlocks = _segmentLength * parameters->GetLanes() * ARGON2_SYNC_POINTS;
+		memoryBlocks = _segmentLength * parameters.GetLanes() * ARGON2_SYNC_POINTS;
 
 		InitializeMemory(memoryBlocks);
 	} //
@@ -428,24 +431,24 @@ private:
 		ArrayUtils::zeroFill(_digest);
 	} //
 
-	static HashLibByteArray InitialHash(const IArgon2Parameters parameters, const Int32 outputLength,
+	static HashLibByteArray InitialHash(const Argon2Parameters& parameters, const Int32 outputLength,
 		const HashLibByteArray& password)
 	{
 		Blake2B blake2B = MakeBlake2BInstanceAndInitialize(ARGON2_PREHASH_DIGEST_LENGTH);
 
-		AddIntToLittleEndian(blake2B, parameters->GetLanes());
+		AddIntToLittleEndian(blake2B, parameters.GetLanes());
 		AddIntToLittleEndian(blake2B, outputLength);
-		AddIntToLittleEndian(blake2B, parameters->GetMemory());
-		AddIntToLittleEndian(blake2B, parameters->GetIterations());
-		AddIntToLittleEndian(blake2B, (Int32)parameters->GetVersion());
-		AddIntToLittleEndian(blake2B, (Int32)parameters->GetType());
+		AddIntToLittleEndian(blake2B, parameters.GetMemory());
+		AddIntToLittleEndian(blake2B, parameters.GetIterations());
+		AddIntToLittleEndian(blake2B, (Int32)parameters.GetVersion());
+		AddIntToLittleEndian(blake2B, (Int32)parameters.GetType());
 
 		AddByteString(blake2B, password);
-		AddByteString(blake2B, parameters->GetSalt());
-		AddByteString(blake2B, parameters->GetSecret());
-		AddByteString(blake2B, parameters->GetAdditional());
-
-		return blake2B.TransformFinal()->GetBytes();
+		AddByteString(blake2B, parameters.GetSalt());
+		AddByteString(blake2B, parameters.GetSecret());
+		AddByteString(blake2B, parameters.GetAdditional());
+				
+		return blake2B.TransformFinal().GetBytes();
 	} //
 
 	inline static void AddByteString(Blake2B& hashInstance, const HashLibByteArray& octets)
@@ -469,7 +472,8 @@ private:
 
 	inline static Blake2B MakeBlake2BInstanceAndInitialize(const Int32 hashSize)
 	{
-		Blake2B hashInstance = Blake2B(Blake2BConfig::CreateBlake2BConfig(hashSize));
+		Blake2BConfig config = Blake2BConfig(hashSize);
+		Blake2B hashInstance = Blake2B(config, Blake2BTreeConfig(true));
 		hashInstance.Initialize();
 		return hashInstance;
 	} //
@@ -487,7 +491,7 @@ private:
 	static HashLibByteArray Hash(const HashLibByteArray& input, const Int32 outputLength)
 	{
 		Blake2B blake2B;
-
+		HashLibByteArray buffer;
 		const Int32 blake2BLength = 64;
 
 		HashLibByteArray result = HashLibByteArray(outputLength);
@@ -499,7 +503,7 @@ private:
 
 			blake2B.TransformBytes(outputLengthBytes, 0, (Int32)outputLengthBytes.size());
 			blake2B.TransformBytes(input, 0, (Int32)input.size());
-			result = blake2B.TransformFinal()->GetBytes();
+			result = blake2B.TransformFinal().GetBytes();
 		}
 		else
 		{
@@ -507,7 +511,8 @@ private:
 
 			blake2B.TransformBytes(outputLengthBytes, 0, (Int32)outputLengthBytes.size());
 			blake2B.TransformBytes(input, 0, (Int32)input.size());
-			HashLibByteArray buffer = blake2B.TransformFinal()->GetBytes();
+			
+			buffer = blake2B.TransformFinal().GetBytes();
 
 			memmove(&result[0], &buffer[0], (blake2BLength / 2) * sizeof(byte));
 			
@@ -520,8 +525,8 @@ private:
 			while (idx <= count)
 			{
 				blake2B.TransformBytes(buffer, 0, (Int32)buffer.size());
-				buffer = blake2B.TransformFinal()->GetBytes();
-
+				buffer = blake2B.TransformFinal().GetBytes();
+				
 				memmove(&result[position], &buffer[0], (blake2BLength / 2) * sizeof(byte));
 				
 				idx++;
@@ -533,8 +538,8 @@ private:
 			blake2B = MakeBlake2BInstanceAndInitialize(lastLength);
 
 			blake2B.TransformBytes(buffer, 0, (Int32)buffer.size());
-			buffer = blake2B.TransformFinal()->GetBytes();
-
+			buffer = blake2B.TransformFinal().GetBytes();
+			
 			memmove(&result[position], &buffer[0], lastLength * sizeof(byte));
 		}
 
@@ -546,7 +551,7 @@ private:
 		Block finalBlock = _memory[(size_t)_laneLength - 1];
 
 		// XOR the last blocks
-		for (Int32 idx = 1; idx < _parameters->GetLanes(); idx++)
+		for (Int32 idx = 1; idx < _parameters.GetLanes(); idx++)
 		{
 			Int32 lastBlockInLane = (idx * _laneLength) + (_laneLength - 1);
 			finalBlock.XorWith(_memory[lastBlockInLane]);
@@ -565,7 +570,7 @@ private:
 		HashLibByteArray initialHashWithZeros = GetInitialHashLong(initialHash, zeroBytes);
 		HashLibByteArray initialHashWithOnes = GetInitialHashLong(initialHash, oneBytes);
 
-		for (Int32 idx = 0; idx < _parameters->GetLanes(); idx++)
+		for (Int32 idx = 0; idx < _parameters.GetLanes(); idx++)
 		{
 			Converters::ReadUInt32AsBytesLE((UInt32)idx, initialHashWithZeros, ARGON2_PREHASH_DIGEST_LENGTH + 4);
 			Converters::ReadUInt32AsBytesLE((UInt32)idx, initialHashWithOnes, ARGON2_PREHASH_DIGEST_LENGTH + 4);
@@ -581,8 +586,8 @@ private:
 	inline bool IsDataIndependentAddressing(const Position& position)
 	{
 		return
-			(_parameters->GetType() == Argon2Type::DataIndependentAddressing) ||
-			((_parameters->GetType() == Argon2Type::HybridAddressing) && (position.Pass == 0)
+			(_parameters.GetType() == Argon2Type::DataIndependentAddressing) ||
+			((_parameters.GetType() == Argon2Type::HybridAddressing) && (position.Pass == 0)
 			&& (position.Slice < ARGON2_SYNC_POINTS / 2));
 	} //
 
@@ -655,8 +660,8 @@ private:
 		BlockFiller filler = BlockFiller::DefaultBlockFiller();
 		Position position = Position::DefaultPosition();
 
-		Int32 iterations = _parameters->GetIterations();
-		Int32 lanes = _parameters->GetLanes();
+		Int32 iterations = _parameters.GetIterations();
+		Int32 lanes = _parameters.GetLanes();
 
 		for (Int32 idx = 0; idx < iterations; idx++)
 		{
@@ -674,7 +679,7 @@ private:
 
 	inline bool IsWithXor(const Position& position)
 	{
-		return !(position.Pass == 0 || _parameters->GetVersion() == Argon2Version::Sixteen);
+		return !(position.Pass == 0 || _parameters.GetVersion() == Argon2Version::Sixteen);
 	} //
 
 	Int32 GetRefColumn(const Position& position, const UInt64 pseudoRandom, const bool sameLane)
@@ -724,7 +729,7 @@ private:
 
 	inline Int32 GetRefLane(const Position& position, const UInt64 pseudoRandom)
 	{
-		Int32 refLane = (Int32)((pseudoRandom >> 32) % (UInt64)_parameters->GetLanes());
+		Int32 refLane = (Int32)((pseudoRandom >> 32) % (UInt64)_parameters.GetLanes());
 
 		if (position.Pass == 0 && position.Slice == 0)
 			// Can not reference other lanes yet
@@ -756,8 +761,8 @@ private:
 		inputBlock.V[1] = IntToUInt64(position.Lane);
 		inputBlock.V[2] = IntToUInt64(position.Slice);
 		inputBlock.V[3] = IntToUInt64((Int32)_memory.size());
-		inputBlock.V[4] = IntToUInt64(_parameters->GetIterations());
-		inputBlock.V[5] = IntToUInt64((Int32)_parameters->GetType());
+		inputBlock.V[4] = IntToUInt64(_parameters.GetIterations());
+		inputBlock.V[5] = IntToUInt64((Int32)_parameters.GetType());
 
 		// Don't forget to generate the first block of addresses: */
 		if (position.Pass == 0 && position.Slice == 0)
