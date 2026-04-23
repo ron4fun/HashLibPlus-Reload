@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -305,7 +305,7 @@ public:
 		buffer[0] = (byte)a_Config.GetHashSize();
 		buffer[1] = (byte)a_Config.GetKey().size();
 
-		if (a_TreeConfig.IsNull())
+		if (!a_TreeConfig.IsNull())
 		{
 			buffer[2] = (byte)a_TreeConfig.GetFanOut();
 			buffer[3] = (byte)a_TreeConfig.GetMaxDepth();

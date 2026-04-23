@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -26,7 +26,7 @@
 #include "../Utils/ArrayUtils.h"
 #include "../Interfaces/IHashInfo.h"
 
-class Argon2Parameters : public virtual IIArgon2Parameters
+class Argon2Parameters final
 {
 private:
 	HashLibByteArray _salt;
@@ -92,10 +92,10 @@ public:
 		ArrayUtils::zeroFill(_additional);
 	} //
 
-	virtual IArgon2Parameters Clone() const
+	virtual Argon2Parameters Clone() const
 	{
 		Argon2Parameters result = Argon2Parameters(GetType(), _salt, _secret, _additional, GetIterations(), GetMemory(), GetLanes(), GetVersion());
-		return make_shared<Argon2Parameters>(result);
+		return result;
 	} //
 }; //
 
@@ -154,11 +154,11 @@ public:
 		Clear();
 	} //
 
-	virtual IArgon2Parameters Build() const
+	virtual Argon2Parameters Build() const
 	{
 		Argon2Parameters result = Argon2Parameters(_type, _salt, _secret, _additional,
 			_iterations, _memory, _lanes, _version);
-		return make_shared<Argon2Parameters>(result);
+		return result;
 	} //
 
 	virtual void Clear()
@@ -224,7 +224,7 @@ public:
 	
 }; //
 
-class Argon2iParametersBuilder : public Argon2ParametersBuilder
+class Argon2iParametersBuilder final : public Argon2ParametersBuilder
 {
 public:
 	Argon2iParametersBuilder()
@@ -232,7 +232,7 @@ public:
 	{} // end cctr
 }; // end class Argon2iParametersBuilder
 
-class Argon2dParametersBuilder : public Argon2ParametersBuilder
+class Argon2dParametersBuilder final : public Argon2ParametersBuilder
 {
 public:
 	Argon2dParametersBuilder()
@@ -240,7 +240,7 @@ public:
 	{} // end cctr
 }; // end class Argon2dParametersBuilder
 
-class Argon2idParametersBuilder : public Argon2ParametersBuilder
+class Argon2idParametersBuilder final : public Argon2ParametersBuilder
 {
 public:
 	Argon2idParametersBuilder()

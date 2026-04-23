@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -30,61 +30,59 @@
 /// <b>Blake2XSConfig</b> is used to configure _hash function parameters and
 /// keying.
 /// </summary>
-class Blake2XSConfig : public virtual IIBlake2XSConfig
+class Blake2XSConfig final
 {
 private:
-	IBlake2SConfig _config = nullptr;
-	IBlake2STreeConfig _treeConfig = nullptr;
+	Blake2SConfig _config;
+	Blake2STreeConfig _treeConfig;
 
 public:
 	Blake2XSConfig() {}
 
-	Blake2XSConfig(const IBlake2SConfig config, const IBlake2STreeConfig treeConfig)
+	Blake2XSConfig(const Blake2SConfig& config, const Blake2STreeConfig& treeConfig)
 	{
-		_config = ::move(config);
-		_treeConfig = ::move(treeConfig);
+		_config = config;
+		_treeConfig = treeConfig;
 	}
 
-	virtual IBlake2SConfig GetConfig() const
-	{
-		return _config->Clone();
-	}
-
-	virtual IBlake2STreeConfig GetTreeConfig() const
-	{
-		return _treeConfig ? _treeConfig->Clone() : nullptr;
-	}
-
-	virtual IBlake2SConfig GetConfig()
+	Blake2SConfig GetConfig() const
 	{
 		return _config;
 	}
 
-	virtual IBlake2STreeConfig GetTreeConfig()
+	Blake2STreeConfig GetTreeConfig() const
 	{
 		return _treeConfig;
 	}
 
-	virtual void SetConfig(const IBlake2SConfig value)
+	Blake2SConfig& GetConfig() 
 	{
-		_config = ::move(value);
+		return _config;
 	}
 
-	virtual void SetTreeConfig(const IBlake2STreeConfig value)
+	Blake2STreeConfig& GetTreeConfig() 
 	{
-		_treeConfig = ::move(value);
+		return _treeConfig;
 	}
 
-	virtual IBlake2XSConfig Clone() const
+	virtual void SetConfig(const Blake2SConfig& value)
 	{
-		return make_shared<Blake2XSConfig>(
-			_config ? _config->Clone() : nullptr,
-			_treeConfig ? _treeConfig->Clone() : nullptr);
+		_config = value;
 	}
 
-	static IBlake2XSConfig CreateBlake2XSConfig(IBlake2SConfig config, IBlake2STreeConfig treeConfig)
+	virtual void SetTreeConfig(const Blake2STreeConfig& value)
 	{
-		return make_shared<Blake2XSConfig>(config, treeConfig);
+		_treeConfig = value;
+	}
+
+	virtual Blake2XSConfig Clone() const
+	{
+		return Blake2XSConfig(_config, _treeConfig);
+	}
+
+	static Blake2XSConfig CreateBlake2XSConfig(const Blake2SConfig& config, const Blake2STreeConfig& treeConfig)
+	{
+		return Blake2XSConfig(config, treeConfig);
 	}
 
 }; // end class 
