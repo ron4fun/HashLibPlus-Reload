@@ -23,6 +23,14 @@ namespace CryptoHashTests
 		HashLibStringArray KeyedTestVectors = Blake2BPTestVectors::KeyedBlake2BP;
 		HashLibStringArray UnkeyedTestVectors = Blake2BPTestVectors::UnKeyedBlake2BP;
 		
+		SECTION("TestEmptyString")
+		{
+			string String = HashOfEmptyData;
+			string ActualString = HashInstance->ComputeString(EmptyData).ToString();
+
+			REQUIRE(String == ActualString);
+		}
+
 		SECTION("TestCheckKeyedTestVectors")
 		{
 			string ActualString, ExpectedString;
@@ -30,7 +38,7 @@ namespace CryptoHashTests
 
 			for (i = 0; i < KeyedTestVectors.size(); i++)
 			{
-				ActualString = HashInstanceWithKey->ComputeBytes(GenerateByteArrayInRange(0, i))->ToString();
+				ActualString = HashInstanceWithKey->ComputeBytes(GenerateByteArrayInRange(0, i)).ToString();
 				ExpectedString = KeyedTestVectors[i];
 				REQUIRE(ExpectedString == ActualString);
 			}
@@ -43,7 +51,7 @@ namespace CryptoHashTests
 
 			for (i = 0; i < UnkeyedTestVectors.size(); i++)
 			{
-				ActualString = HashInstance->ComputeBytes(GenerateByteArrayInRange(0, i))->ToString();
+				ActualString = HashInstance->ComputeBytes(GenerateByteArrayInRange(0, i)).ToString();
 				ExpectedString = UnkeyedTestVectors[i];
 				REQUIRE(ExpectedString == ActualString);
 			}
@@ -55,7 +63,7 @@ namespace CryptoHashTests
 			hmac->SetKey(HMACLongKeyBytes);
 
 			string String = HashOfDefaultDataWithHMACWithLongKey;
-			string ActualString = hmac->ComputeBytes(DefaultDataBytes)->ToString();
+			string ActualString = hmac->ComputeBytes(DefaultDataBytes).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -66,15 +74,7 @@ namespace CryptoHashTests
 			hmac->SetKey(HMACShortKeyBytes);
 
 			string String = HashOfDefaultDataWithHMACWithShortKey;
-			string ActualString = hmac->ComputeString(DefaultData)->ToString();
-
-			REQUIRE(String == ActualString);
-		}
-
-		SECTION("TestEmptyString")
-		{
-			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeString(EmptyData)->ToString();
+			string ActualString = hmac->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -82,7 +82,7 @@ namespace CryptoHashTests
 		SECTION("TestDefaultData")
 		{
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->ComputeString(DefaultData)->ToString();
+			string ActualString = HashInstance->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -90,7 +90,7 @@ namespace CryptoHashTests
 		SECTION("TestOnetoNine")
 		{
 			string String = HashOfOnetoNine;
-			string ActualString = HashInstance->ComputeString(OneToNine)->ToString();
+			string ActualString = HashInstance->ComputeString(OneToNine).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -98,7 +98,7 @@ namespace CryptoHashTests
 		SECTION("TestBytesABCDE")
 		{
 			string String = HashOfABCDE;
-			string ActualString = HashInstance->ComputeBytes(BytesABCDE)->ToString();
+			string ActualString = HashInstance->ComputeBytes(BytesABCDE).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -109,7 +109,7 @@ namespace CryptoHashTests
 			ifstream stream("EmptyFile.txt");
 
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeStream(stream)->ToString();
+			string ActualString = HashInstance->ComputeStream(stream).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -124,7 +124,7 @@ namespace CryptoHashTests
 			HashInstance->TransformString(DefaultData.substr(12));
 
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->TransformFinal()->ToString();
+			string ActualString = HashInstance->TransformFinal().ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -133,7 +133,7 @@ namespace CryptoHashTests
 		{
 			Int32 Count, i;
 			HashLibByteArray temp, ChunkedDataBytes;
-			IHash HashInstanceCopy = nullptr;
+			IHash HashInstanceCopy;
 
 			HashInstanceCopy = HashInstance->Clone();
 			ChunkedDataBytes = Converters::ConvertStringToBytes(ChunkedData);
@@ -149,8 +149,8 @@ namespace CryptoHashTests
 
 				HashInstance->TransformBytes(ChunkedDataBytes, i, Count);
 
-				string ActualString = HashInstance->TransformFinal()->ToString();
-				string String = HashInstanceCopy->ComputeBytes(temp)->ToString();
+				string ActualString = HashInstance->TransformFinal().ToString();
+				string String = HashInstanceCopy->ComputeBytes(temp).ToString();
 
 				REQUIRE(String == ActualString);
 			}
@@ -160,7 +160,7 @@ namespace CryptoHashTests
 		{
 			size_t x, size, i;
 			string temp;
-			IHash HashInstanceCopy = nullptr;
+			IHash HashInstanceCopy;
 
 			HashInstanceCopy = HashInstance->Clone();
 			for (x = 0; x < (sizeof(ChunkSizes) / sizeof(Int32)); x++)
@@ -179,8 +179,8 @@ namespace CryptoHashTests
 				temp = ChunkedData.substr((i - size), ChunkedData.size() - ((i - size)));
 				HashInstance->TransformString(temp);
 
-				string ActualString = HashInstance->TransformFinal()->ToString();
-				string String = HashInstanceCopy->ComputeString(ChunkedData)->ToString();
+				string ActualString = HashInstance->TransformFinal().ToString();
+				string String = HashInstanceCopy->ComputeString(ChunkedData).ToString();
 
 				REQUIRE(String == ActualString);
 			}
@@ -199,10 +199,10 @@ namespace CryptoHashTests
 			Copy = Original->Clone();
 
 			Original->TransformBytes(ChunkTwo);
-			string String = Original->TransformFinal()->ToString();
+			string String = Original->TransformFinal().ToString();
 
 			Copy->TransformBytes(ChunkTwo);
-			string ActualString = Copy->TransformFinal()->ToString();
+			string ActualString = Copy->TransformFinal().ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -236,10 +236,10 @@ namespace CryptoHashTests
 			Copy = Original->CloneHMAC();
 
 			Original->TransformBytes(ChunkTwo);
-			string String = Original->TransformFinal()->ToString();
+			string String = Original->TransformFinal().ToString();
 
 			Copy->TransformBytes(ChunkTwo);
-			string ActualString = Copy->TransformFinal()->ToString();
+			string ActualString = Copy->TransformFinal().ToString();
 
 			REQUIRE(String == ActualString);
 		}

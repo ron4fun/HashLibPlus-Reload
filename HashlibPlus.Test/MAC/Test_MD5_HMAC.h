@@ -16,16 +16,16 @@ namespace MACTests
 		string HashOfABCDE = "B6DE7A4249C9E8338098CB8B18E14CA5";
 	
 		IHash HashInstance = HashFactory::HMAC::CreateHMAC(HashFactory::Crypto::CreateMD5(), EmptyBytes);
-		IMACNotBuildIn MacInstance = HashFactory::HMAC::CreateHMAC(HashFactory::Crypto::CreateMD5(), EmptyBytes);;
-		IMACNotBuildIn MacInstanceTwo = HashFactory::HMAC::CreateHMAC(HashFactory::Crypto::CreateMD5(), OneToNineBytes);;
+		IMACNotBuildIn MacInstance = HashFactory::HMAC::CreateHMAC(HashFactory::Crypto::CreateMD5(), EmptyBytes);
+		IMACNotBuildIn MacInstanceTwo = HashFactory::HMAC::CreateHMAC(HashFactory::Crypto::CreateMD5(), OneToNineBytes);
 
 		SECTION("ChangeKeyAndInitializeWorks")
 		{
-			ExpectedString = MacInstanceTwo->ComputeBytes(DefaultDataBytes)->ToString();
+			ExpectedString = MacInstanceTwo->ComputeBytes(DefaultDataBytes).ToString();
 			MacInstance->SetKey(OneToNineBytes);
 			MacInstance->Initialize();
 			MacInstance->TransformBytes(DefaultDataBytes);
-			ActualString = MacInstance->TransformFinal()->ToString();
+			ActualString = MacInstance->TransformFinal().ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}
@@ -33,7 +33,7 @@ namespace MACTests
 		SECTION("TestEmptyString")
 		{
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeString(EmptyData)->ToString();
+			string ActualString = HashInstance->ComputeString(EmptyData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -41,7 +41,7 @@ namespace MACTests
 		SECTION("TestDefaultData")
 		{
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->ComputeString(DefaultData)->ToString();
+			string ActualString = HashInstance->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -49,7 +49,7 @@ namespace MACTests
 		SECTION("TestOnetoNine")
 		{
 			string String = HashOfOnetoNine;
-			string ActualString = HashInstance->ComputeString(OneToNine)->ToString();
+			string ActualString = HashInstance->ComputeString(OneToNine).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -57,7 +57,7 @@ namespace MACTests
 		SECTION("TestBytesABCDE")
 		{
 			string String = HashOfABCDE;
-			string ActualString = HashInstance->ComputeBytes(BytesABCDE)->ToString();
+			string ActualString = HashInstance->ComputeBytes(BytesABCDE).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -71,7 +71,7 @@ namespace MACTests
 
 		SECTION("TestMACCloneIsCorrect")
 		{
-			IMACNotBuildIn Original = MacInstance;
+			IMACNotBuildIn Original = MacInstance->CloneMAC();
 			IMACNotBuildIn Copy;
 
 			Original->SetKey(HMACLongKeyBytes);
@@ -82,10 +82,10 @@ namespace MACTests
 			Copy = Original->CloneMAC();
 
 			Original->TransformBytes(ChunkTwo);
-			string String = Original->TransformFinal()->ToString();
+			string String = Original->TransformFinal().ToString();
 
 			Copy->TransformBytes(ChunkTwo);
-			string ActualString = Copy->TransformFinal()->ToString();
+			string ActualString = Copy->TransformFinal().ToString();
 
 			REQUIRE(String == ActualString);
 		}

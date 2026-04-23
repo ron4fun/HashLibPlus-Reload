@@ -41,7 +41,7 @@ namespace XOFTests
 		SECTION("TestEmptyString")
 		{
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeString(EmptyData)->ToString();
+			string ActualString = HashInstance->ComputeString(EmptyData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -49,7 +49,7 @@ namespace XOFTests
 		SECTION("TestDefaultData")
 		{
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->ComputeString(DefaultData)->ToString();
+			string ActualString = HashInstance->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -57,7 +57,7 @@ namespace XOFTests
 		SECTION("TestOnetoNine")
 		{
 			string String = HashOfOnetoNine;
-			string ActualString = HashInstance->ComputeString(OneToNine)->ToString();
+			string ActualString = HashInstance->ComputeString(OneToNine).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -65,15 +65,15 @@ namespace XOFTests
 		SECTION("TestBytesABCDE")
 		{
 			string String = HashOfABCDE;
-			string ActualString = HashInstance->ComputeBytes(BytesABCDE)->ToString();
+			string ActualString = HashInstance->ComputeBytes(BytesABCDE).ToString();
 
 			REQUIRE(String == ActualString);
 		}
 
 		SECTION("TestCShakeAndShakeAreSameWhenNAndSAreEmpty")
 		{
-			ExpectedString = XofInstanceShake->ComputeBytes(EmptyBytes)->ToString();
-			ActualString = XofInstance->ComputeBytes(EmptyBytes)->ToString();
+			ExpectedString = XofInstanceShake->ComputeBytes(EmptyBytes).ToString();
+			ActualString = XofInstance->ComputeBytes(EmptyBytes).ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}
@@ -82,7 +82,7 @@ namespace XOFTests
 		{
 			ExpectedString = XofOfZeroToOneHundredAndNinetyNine;
 			ActualString = XofInstanceCShakeWithN->ComputeBytes(ZeroToOneHundredAndNinetyNineBytes)
-				->ToString();
+				.ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}
@@ -92,7 +92,7 @@ namespace XOFTests
 			ExpectedString = XofOfZeroToOneHundredAndNinetyNine;
 			XofInstanceCShakeWithN->Initialize();
 			XofInstanceCShakeWithN->TransformBytes(ZeroToOneHundredAndNinetyNineBytes);
-			ActualString = XofInstanceCShakeWithN->TransformFinal()->ToString();
+			ActualString = XofInstanceCShakeWithN->TransformFinal().ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}
@@ -128,7 +128,7 @@ namespace XOFTests
 		SECTION("TestVeryLongXofOfEmptyData")
 		{
 			ExpectedString = XofOfEmptyData;
-			ActualString = XofInstance->ComputeBytes(EmptyBytes)->ToString();
+			ActualString = XofInstance->ComputeBytes(EmptyBytes).ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}

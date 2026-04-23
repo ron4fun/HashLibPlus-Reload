@@ -4,6 +4,7 @@
 
 #include "../Base/TestConstants.h"
 
+
 namespace KDFTests
 {
 	TEST_CASE("PBKDF2_HMACSHA1Test")
@@ -13,7 +14,7 @@ namespace KDFTests
 		HashLibByteArray Salt = { 0x78, 0x57, 0x8E, 0x5A, 0x5D, 0x63, 0xCB, 0x06 };
 		Int32 ByteCount = 24;
 		
-		IKDFNotBuildIn KdfInstance =
+		IPBKDF2_HMACNotBuildIn KdfInstance = 
 			HashFactory::KDF::CreatePBKDF2_HMAC(HashFactory::Crypto::CreateSHA1(), Password, Salt, 2048);
 
 		UInt32 Iteration = (UInt32)ByteCount;
@@ -27,7 +28,7 @@ namespace KDFTests
 		SECTION("TestNullHashInstanceThrowsCorrectException")
 		{
 			REQUIRE_THROWS_AS(
-				HashFactory::KDF::CreatePBKDF2_HMAC(NullHashInstance, Password, Salt, Iteration), 
+				HashFactory::KDF::CreatePBKDF2_HMAC(NullHashInstance, Password, Salt, Iteration),
 				ArgumentNullHashLibException);
 		}
 

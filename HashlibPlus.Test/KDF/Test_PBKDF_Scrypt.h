@@ -12,7 +12,7 @@ string DoTestVector(const string& a_Password, const string& a_Salt, const Int32 
 	PasswordBytes = Converters::ConvertStringToBytes(a_Password);
 	SaltBytes = Converters::ConvertStringToBytes(a_Salt);
 
-	IPBKDF_Scrypt PBKDF_Scrypt = HashFactory::KDF::CreatePBKDF_Scrypt(PasswordBytes,
+	IPBKDF_ScryptNotBuildIn PBKDF_Scrypt = HashFactory::KDF::CreatePBKDF_Scrypt(PasswordBytes,
 		SaltBytes, a_Cost, a_BlockSize, a_Parallelism);
 	OutputBytes = PBKDF_Scrypt->GetBytes(a_OutputSize);
 	PBKDF_Scrypt->Clear();
@@ -25,7 +25,7 @@ void DoCheckOk(const string& a_Msg, const HashLibByteArray& a_Password, const Ha
 {
 	try
 	{
-		IPBKDF_Scrypt PBKDF_Scrypt = HashFactory::KDF::CreatePBKDF_Scrypt(a_Password,
+		IPBKDF_ScryptNotBuildIn PBKDF_Scrypt = HashFactory::KDF::CreatePBKDF_Scrypt(a_Password,
 			a_Salt, a_Cost, a_BlockSize, a_Parallelism);
 		PBKDF_Scrypt->GetBytes(a_OutputSize);
 		PBKDF_Scrypt->Clear();

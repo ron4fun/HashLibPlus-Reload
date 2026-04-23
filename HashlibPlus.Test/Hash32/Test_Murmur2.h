@@ -21,7 +21,7 @@ namespace Hash32Tests
 			IHashWithKey hashWithKey = HashInstance->CloneHashWithKey();
 			hashWithKey->SetKey(MaxUInt32Bytes);
 
-			string ActualString = hashWithKey->ComputeBytes(DefaultDataBytes)->ToString();
+			string ActualString = hashWithKey->ComputeBytes(DefaultDataBytes).ToString();
 			string ExpectedString = HashOfDefaultDataWithFourByteKey;
 
 			REQUIRE(ExpectedString == ActualString);
@@ -30,7 +30,7 @@ namespace Hash32Tests
 		SECTION("TestEmptyString")
 		{
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeString(EmptyData)->ToString();
+			string ActualString = HashInstance->ComputeString(EmptyData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -38,7 +38,7 @@ namespace Hash32Tests
 		SECTION("TestDefaultData")
 		{
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->ComputeString(DefaultData)->ToString();
+			string ActualString = HashInstance->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -46,7 +46,7 @@ namespace Hash32Tests
 		SECTION("TestOnetoNine")
 		{
 			string String = HashOfOnetoNine;
-			string ActualString = HashInstance->ComputeString(OneToNine)->ToString();
+			string ActualString = HashInstance->ComputeString(OneToNine).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -54,7 +54,7 @@ namespace Hash32Tests
 		SECTION("TestBytesABCDE")
 		{
 			string String = HashOfABCDE;
-			string ActualString = HashInstance->ComputeBytes(BytesABCDE)->ToString();
+			string ActualString = HashInstance->ComputeBytes(BytesABCDE).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -65,7 +65,7 @@ namespace Hash32Tests
 			ifstream stream("EmptyFile.txt");
 
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeStream(stream)->ToString();
+			string ActualString = HashInstance->ComputeStream(stream).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -80,7 +80,7 @@ namespace Hash32Tests
 			HashInstance->TransformString(DefaultData.substr(12));
 
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->TransformFinal()->ToString();
+			string ActualString = HashInstance->TransformFinal().ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -89,7 +89,7 @@ namespace Hash32Tests
 		{
 			Int32 Count, i;
 			HashLibByteArray temp, ChunkedDataBytes;
-			IHash HashInstanceCopy = nullptr;
+			IHash HashInstanceCopy;
 
 			HashInstanceCopy = HashInstance->Clone();
 			ChunkedDataBytes = Converters::ConvertStringToBytes(ChunkedData);
@@ -105,8 +105,8 @@ namespace Hash32Tests
 
 				HashInstance->TransformBytes(ChunkedDataBytes, i, Count);
 
-				string ActualString = HashInstance->TransformFinal()->ToString();
-				string String = HashInstanceCopy->ComputeBytes(temp)->ToString();
+				string ActualString = HashInstance->TransformFinal().ToString();
+				string String = HashInstanceCopy->ComputeBytes(temp).ToString();
 
 				REQUIRE(String == ActualString);
 			}
@@ -116,7 +116,7 @@ namespace Hash32Tests
 		{
 			size_t x, size, i;
 			string temp;
-			IHash HashInstanceCopy = nullptr;
+			IHash HashInstanceCopy;
 
 			HashInstanceCopy = HashInstance->Clone();
 			for (x = 0; x < (sizeof(ChunkSizes) / sizeof(Int32)); x++)
@@ -135,8 +135,8 @@ namespace Hash32Tests
 				temp = ChunkedData.substr((i - size), ChunkedData.size() - ((i - size)));
 				HashInstance->TransformString(temp);
 
-				string ActualString = HashInstance->TransformFinal()->ToString();
-				string String = HashInstanceCopy->ComputeString(ChunkedData)->ToString();
+				string ActualString = HashInstance->TransformFinal().ToString();
+				string String = HashInstanceCopy->ComputeString(ChunkedData).ToString();
 
 				REQUIRE(String == ActualString);
 			}
@@ -155,10 +155,10 @@ namespace Hash32Tests
 			Copy = Original->Clone();
 
 			Original->TransformBytes(ChunkTwo);
-			string String = Original->TransformFinal()->ToString();
+			string String = Original->TransformFinal().ToString();
 
 			Copy->TransformBytes(ChunkTwo);
-			string ActualString = Copy->TransformFinal()->ToString();
+			string ActualString = Copy->TransformFinal().ToString();
 
 			REQUIRE(String == ActualString);
 		}

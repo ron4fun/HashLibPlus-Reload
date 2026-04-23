@@ -34,7 +34,7 @@ namespace ChecksumHashTests
 
 				string ExpectedString = lstrip(IntToHex(crc->GetCheckValue()), '0');
 
-				string ActualString = lstrip(crc->ComputeBytes(OneToNineBytes)->ToString(), '0');
+				string ActualString = lstrip(crc->ComputeBytes(OneToNineBytes).ToString(), '0');
 
 				REQUIRE(ExpectedString == ActualString);
 			} // end for
@@ -54,9 +54,9 @@ namespace ChecksumHashTests
 				crc->TransformString(OneToNine.substr(3, 3));
 				crc->TransformString(OneToNine.substr(6));
 
-				IHashResult res = crc->TransformFinal();
+				HashResult res = crc->TransformFinal();
 
-				string ActualString = lstrip(res->ToString(), '0');
+				string ActualString = lstrip(res.ToString(), '0');
 
 				REQUIRE(ExpectedString == ActualString);
 			} // end for

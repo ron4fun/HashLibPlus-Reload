@@ -157,6 +157,7 @@
 #include "MAC/Test_Blake2BMAC.h"
 #include "MAC/Test_Blake2SMAC.h"
 
+
 int main( int argc, char* argv[] )
 {
 	std::cout << "Running test vectors..." << std::endl;

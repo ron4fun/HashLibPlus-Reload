@@ -6,7 +6,7 @@
 
 // Function is contained in Test_KMAC128.h file
 //
-//void DoComputeKMAC(IHash hashInstance, const HashLibByteArray& data, const string& ExpectedString)
+//void DoComputeKMAC(IIHash hashInstance, const HashLibByteArray& data, const string& ExpectedString)
 //{
 //	hashInstance->Initialize();
 //	hashInstance->TransformBytes(data);
@@ -36,11 +36,11 @@ namespace MACTests
 
 		SECTION("ChangeKeyAndInitializeWorks")
 		{
-			ExpectedString = MacInstanceTwo->ComputeBytes(DefaultDataBytes)->ToString();
+			ExpectedString = MacInstanceTwo->ComputeBytes(DefaultDataBytes).ToString();
 			MacInstance->SetKey(OneToNineBytes);
 			MacInstance->Initialize();
 			MacInstance->TransformBytes(DefaultDataBytes);
-			ActualString = MacInstance->TransformFinal()->ToString();
+			ActualString = MacInstance->TransformFinal().ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}
@@ -48,7 +48,7 @@ namespace MACTests
 		SECTION("TestEmptyString")
 		{
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeString(EmptyData)->ToString();
+			string ActualString = HashInstance->ComputeString(EmptyData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -56,7 +56,7 @@ namespace MACTests
 		SECTION("TestDefaultData")
 		{
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->ComputeString(DefaultData)->ToString();
+			string ActualString = HashInstance->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -64,7 +64,7 @@ namespace MACTests
 		SECTION("TestOnetoNine")
 		{
 			string String = HashOfOnetoNine;
-			string ActualString = HashInstance->ComputeString(OneToNine)->ToString();
+			string ActualString = HashInstance->ComputeString(OneToNine).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -72,7 +72,7 @@ namespace MACTests
 		SECTION("TestBytesABCDE")
 		{
 			string String = HashOfABCDE;
-			string ActualString = HashInstance->ComputeBytes(BytesABCDE)->ToString();
+			string ActualString = HashInstance->ComputeBytes(BytesABCDE).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -97,10 +97,10 @@ namespace MACTests
 			Copy = Original->CloneMAC();
 
 			Original->TransformBytes(ChunkTwo);
-			string String = Original->TransformFinal()->ToString();
+			string String = Original->TransformFinal().ToString();
 
 			Copy->TransformBytes(ChunkTwo);
-			string ActualString = Copy->TransformFinal()->ToString();
+			string ActualString = Copy->TransformFinal().ToString();
 
 			REQUIRE(String == ActualString);
 		}

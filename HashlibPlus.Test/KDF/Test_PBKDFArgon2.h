@@ -12,7 +12,7 @@ void HashTestOthers(Argon2ParametersBuilder& a_Argon2ParametersBuilder,
 	IPBKDF_Argon2NotBuildIn generator;
 	string actual_string;
 	HashLibByteArray salt, password;
-	IArgon2Parameters argon2Parameter;
+	Argon2Parameters argon2Parameter;
 
 	salt = Converters::ConvertStringToBytes(a_Salt);
 	password = Converters::ConvertStringToBytes(a_Password);
@@ -33,7 +33,7 @@ void HashTestOthers(Argon2ParametersBuilder& a_Argon2ParametersBuilder,
 
 	actual_string = Converters::ConvertBytesToHexString(generator->GetBytes(a_OutputLength), false);
 
-	argon2Parameter->Clear();
+	argon2Parameter.Clear();
 	generator->Clear();
 
 	REQUIRE(a_ExpectedString == actual_string);
@@ -48,7 +48,7 @@ void HashTestFromInternetDraft(Argon2ParametersBuilder& a_Argon2ParametersBuilde
 	IPBKDF_Argon2NotBuildIn generator;
 	string actual_string;
 	HashLibByteArray additional, secret, salt, password;
-	IArgon2Parameters argon2Parameter;
+	Argon2Parameters argon2Parameter;
 
 	additional = Converters::ConvertHexStringToBytes(a_Additional);
 	secret = Converters::ConvertHexStringToBytes(a_Secret);
@@ -73,7 +73,7 @@ void HashTestFromInternetDraft(Argon2ParametersBuilder& a_Argon2ParametersBuilde
 
 	actual_string = Converters::ConvertBytesToHexString(generator->GetBytes(a_OutputLength), false);
 
-	argon2Parameter->Clear();
+	argon2Parameter.Clear();
 	generator->Clear();
 
 	REQUIRE(a_ExpectedString == actual_string);

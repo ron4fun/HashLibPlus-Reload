@@ -35,7 +35,7 @@ namespace XOFTests
 		SECTION("TestEmptyString")
 		{
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeString(EmptyData)->ToString();
+			string ActualString = HashInstance->ComputeString(EmptyData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -43,7 +43,7 @@ namespace XOFTests
 		SECTION("TestDefaultData")
 		{
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->ComputeString(DefaultData)->ToString();
+			string ActualString = HashInstance->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -51,7 +51,7 @@ namespace XOFTests
 		SECTION("TestOnetoNine")
 		{
 			string String = HashOfOnetoNine;
-			string ActualString = HashInstance->ComputeString(OneToNine)->ToString();
+			string ActualString = HashInstance->ComputeString(OneToNine).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -59,7 +59,7 @@ namespace XOFTests
 		SECTION("TestBytesABCDE")
 		{
 			string String = HashOfABCDE;
-			string ActualString = HashInstance->ComputeBytes(BytesABCDE)->ToString();
+			string ActualString = HashInstance->ComputeBytes(BytesABCDE).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -95,7 +95,7 @@ namespace XOFTests
 		SECTION("TestVeryLongXofOfEmptyData")
 		{
 			ExpectedString = XofOfEmptyData;
-			ActualString = XofInstance->ComputeBytes(EmptyBytes)->ToString();
+			ActualString = XofInstance->ComputeBytes(EmptyBytes).ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}
@@ -177,7 +177,7 @@ namespace XOFTests
 			XofInstance->Initialize();
 			XofInstance->TransformBytes(ZeroToOneHundredAndNinetyNineBytes);
 
-			IXOF xofInstanceClone = XofInstance->CloneXOF();	
+			IXOF xofInstanceClone = XofInstance->CloneXOF();
 
 			HashLibByteArray result(XofInstance->GetXOFSizeInBits() >> 3);
 			HashLibByteArray resultClone(xofInstanceClone->GetXOFSizeInBits() >> 3);

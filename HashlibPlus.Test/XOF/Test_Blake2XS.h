@@ -48,7 +48,7 @@ namespace XOFTests
 
 				ActualString =
 					HashFactory::XOF::CreateBlake2XS(key, (UInt64)((vector[1].size() >> 1) * 8))
-					->ComputeBytes(data)->ToString();
+					->ComputeBytes(data).ToString();
 				ExpectedString = vector[1];
 
 				REQUIRE(Converters::toUpper(ExpectedString) == ActualString);
@@ -58,7 +58,7 @@ namespace XOFTests
 		SECTION("TestEmptyString")
 		{
 			string String = HashOfEmptyData;
-			string ActualString = HashInstance->ComputeString(EmptyData)->ToString();
+			string ActualString = HashInstance->ComputeString(EmptyData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -66,7 +66,7 @@ namespace XOFTests
 		SECTION("TestDefaultData")
 		{
 			string String = HashOfDefaultData;
-			string ActualString = HashInstance->ComputeString(DefaultData)->ToString();
+			string ActualString = HashInstance->ComputeString(DefaultData).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -74,7 +74,7 @@ namespace XOFTests
 		SECTION("TestOnetoNine")
 		{
 			string String = HashOfOnetoNine;
-			string ActualString = HashInstance->ComputeString(OneToNine)->ToString();
+			string ActualString = HashInstance->ComputeString(OneToNine).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -82,7 +82,7 @@ namespace XOFTests
 		SECTION("TestBytesABCDE")
 		{
 			string String = HashOfABCDE;
-			string ActualString = HashInstance->ComputeBytes(BytesABCDE)->ToString();
+			string ActualString = HashInstance->ComputeBytes(BytesABCDE).ToString();
 
 			REQUIRE(String == ActualString);
 		}
@@ -111,10 +111,10 @@ namespace XOFTests
 
 		SECTION("TestSettingOutOfRangeSaltThrowsCorrectException")
 		{
-			IBlake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
+			Blake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
 
 			REQUIRE_THROWS_AS(
-				config->SetSalt(HashLibByteArray(9)),
+				config.SetSalt(HashLibByteArray(9)),
 				ArgumentOutOfRangeHashLibException);
 
 			/*HashFactory::XOF::CreateBlake2XS(
@@ -123,20 +123,20 @@ namespace XOFTests
 
 		SECTION("TestSettingEmptySaltDoesNotThrow")
 		{
-			IBlake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
-			config->SetSalt(EmptyBytes);
+			Blake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
+			config.SetSalt(EmptyBytes);
 
 			REQUIRE_NOTHROW(
 				HashFactory::XOF::CreateBlake2XS(
-					Blake2XSConfig::CreateBlake2XSConfig(config, nullptr), 256));
+					Blake2XSConfig::CreateBlake2XSConfig(config, Blake2STreeConfig(true)), 256));
 		}
 
 		SECTION("TestSettingOutOfRangePersonalizationThrowsCorrectException")
 		{
-			IBlake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
+			Blake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
 
 			REQUIRE_THROWS_AS(
-				config->SetPersonalization(HashLibByteArray(9)),
+				config.SetPersonalization(HashLibByteArray(9)),
 				ArgumentOutOfRangeHashLibException);
 
 			/*HashFactory::XOF::CreateBlake2XS(
@@ -145,12 +145,12 @@ namespace XOFTests
 
 		SECTION("TestSettingEmptyPersonalizationDoesNotThrowsException")
 		{
-			IBlake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
-			config->SetPersonalization(EmptyBytes);
+			Blake2SConfig config = Blake2SConfig::CreateBlake2SConfig(HashSize);
+			config.SetPersonalization(EmptyBytes);
 
 			REQUIRE_NOTHROW(
 				HashFactory::XOF::CreateBlake2XS(
-					Blake2XSConfig::CreateBlake2XSConfig(config, nullptr), 256));
+					Blake2XSConfig::CreateBlake2XSConfig(config, Blake2STreeConfig()), 256));
 		}
 
 		SECTION("TestSettingInvalidSizeThrowsCorrectException")
@@ -174,7 +174,7 @@ namespace XOFTests
 		SECTION("TestVeryLongXofOfEmptyData")
 		{
 			ExpectedString = XofOfEmptyData;
-			ActualString = XofInstance->ComputeBytes(EmptyBytes)->ToString();
+			ActualString = XofInstance->ComputeBytes(EmptyBytes).ToString();
 
 			REQUIRE(ExpectedString == ActualString);
 		}
