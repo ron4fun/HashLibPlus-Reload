@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -44,7 +44,7 @@ public:
 		_v1 ^= GetMagicXor();
 	}
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		UInt64 finalBlock = ProcessFinalBlock();
 		_v3 ^= finalBlock;
@@ -59,13 +59,13 @@ public:
 		CompressTimes(_fr);
 		Converters::ReadUInt64AsBytesLE(_v0 ^ _v1 ^ _v2 ^ _v3, buffer, 8);
 		
-		IHashResult result = make_shared<HashResult>(buffer);
+		HashResult result = HashResult(buffer);
 		Initialize();
 		return result;
 	}
 };
 
-class SipHash128_2_4 : public SipHash128
+class SipHash128_2_4 final : public SipHash128
 {
 public:
 	SipHash128_2_4() : 
@@ -91,7 +91,7 @@ public:
 		
 		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<SipHash128_2_4>(HashInstance);
+		return IHash(new SipHash128_2_4(HashInstance));
 	}
 
 	virtual IHashWithKey CloneHashWithKey() const
@@ -111,6 +111,6 @@ public:
 
 		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<SipHash128_2_4>(HashInstance);
+		return IHashWithKey(new SipHash128_2_4(HashInstance));
 	}
 };
