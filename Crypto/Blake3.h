@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -648,7 +648,7 @@ public:
 		}
 	}
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		HashLibByteArray tempRes;
 
@@ -658,7 +658,7 @@ public:
 
 		InternalDoOutput(tempRes, 0, (UInt64)tempRes.size());
 
-		IHashResult result = make_shared<HashResult>(tempRes);
+		HashResult result = HashResult(tempRes);
 
 		Initialize();
 
@@ -679,7 +679,7 @@ public:
 		result.Used = Used;
 		result.SetBufferSize(GetBufferSize());
 
-		return make_shared<Blake3>(result);
+		return IHash(new Blake3(result));
 	}
 
 	// maximum size in bytes this digest output reader can produce
@@ -791,6 +791,7 @@ public:
 		_finalized = false;
 		Blake3::Initialize();
 	} //
+
 	Blake3XOF Copy() const
 	{
 		Blake3XOF result = Blake3XOF(GetHashSize(), {});
@@ -813,13 +814,13 @@ public:
 	} //
 
 	virtual IHash Clone() const
-	{		
-		return make_shared<Blake3XOF>(*this);
+	{	
+		return IHash(new Blake3XOF(*this));
 	}
 
 	virtual IXOF CloneXOF() const
 	{
-		return make_shared<Blake3XOF>(*this);
+		return IXOF(new Blake3XOF(*this));
 	}
 	
 	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
@@ -831,13 +832,13 @@ public:
 		Blake3::TransformBytes(a_data, a_index, a_length);
 	} //
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		HashLibByteArray buffer = GetResult();
 
 		Initialize();
 
-		IHashResult result = make_shared<HashResult>(buffer);
+		HashResult result = HashResult(buffer);
 
 		return result;
 	}

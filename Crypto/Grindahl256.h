@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class Grindahl256 final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class Grindahl256 final : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	Grindahl256()
@@ -38,16 +38,16 @@ public:
 		_state.resize(13);
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Grindahl256* HashInstance = new Grindahl256();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Grindahl256 HashInstance = Grindahl256();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Grindahl256(HashInstance));
 	}
 
 	void Initialize() override

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class RadioGatun64 final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class RadioGatun64 final : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	RadioGatun64()
@@ -41,17 +41,17 @@ public:
 
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		RadioGatun64* HashInstance = new RadioGatun64();
-		HashInstance->_mill = _mill;
-		HashInstance->_belt = _belt;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		RadioGatun64 HashInstance = RadioGatun64();
+		HashInstance._mill = _mill;
+		HashInstance._belt = _belt;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new RadioGatun64(HashInstance));
 	}
 
 	void Initialize() override

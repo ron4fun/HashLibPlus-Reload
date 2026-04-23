@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -28,7 +28,7 @@
 #include "../Utils/Utils.h"
 
 
-class GOST3411_2012 : public Hash, public ICryptoNotBuildIn, public ITransformBlock
+class GOST3411_2012 : public Hash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	void Initialize() override
@@ -76,7 +76,7 @@ public:
 
 	}
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		HashLibByteArray tempRes;
 		size_t lenM, i;
@@ -106,11 +106,11 @@ public:
 		tempRes.resize(64);
 		memmove(&tempRes[0], &_tmp[0], 64 * sizeof(byte));
 
-		HashResult* result = new HashResult(tempRes);
+		HashResult result = HashResult(tempRes);
 
 		Initialize();
 
-		return *result;
+		return result;
 	}
 
 protected:
@@ -1615,42 +1615,37 @@ public:
 		_name = __func__;
 	}
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		GOST3411_2012_256* HashInstance = new GOST3411_2012_256();
-		HashInstance->_iv = _iv;
-		HashInstance->_n = _n;
-		HashInstance->_sigma = _sigma;
-		HashInstance->_ki = _ki;
-		HashInstance->_m = _m;
-		HashInstance->_h = _h;
-		HashInstance->_tmp = _tmp;
-		HashInstance->_block = _block;
-		HashInstance->_bOff = _bOff;
+		GOST3411_2012_256 HashInstance = GOST3411_2012_256();
+		HashInstance._iv = _iv;
+		HashInstance._n = _n;
+		HashInstance._sigma = _sigma;
+		HashInstance._ki = _ki;
+		HashInstance._m = _m;
+		HashInstance._h = _h;
+		HashInstance._tmp = _tmp;
+		HashInstance._block = _block;
+		HashInstance._bOff = _bOff;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new GOST3411_2012_256(HashInstance));
 	}
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		HashLibByteArray output, tempRes;
 
-		IHashResult* r1 = nullptr;
-		*r1 = GOST3411_2012::TransformFinal();
-
-		output = r1->GetBytes();
-
-		delete r1;
+		output = GOST3411_2012::TransformFinal().GetBytes();
 
 		tempRes.resize(_hash_size);
 
 		memmove(&tempRes[0], &output[32], 32 * sizeof(byte));
 
-		IHashResult* result = new HashResult(tempRes);
+		HashResult result = HashResult(tempRes);
 
-		return *result;
+		return result;
 	}
 
 private:
@@ -1674,22 +1669,22 @@ public:
 		_name = __func__;
 	}
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		GOST3411_2012_512* HashInstance = new GOST3411_2012_512();
-		HashInstance->_iv = _iv;
-		HashInstance->_n = _n;
-		HashInstance->_sigma = _sigma;
-		HashInstance->_ki = _ki;
-		HashInstance->_m = _m;
-		HashInstance->_h = _h;
-		HashInstance->_tmp = _tmp;
-		HashInstance->_block = _block;
-		HashInstance->_bOff = _bOff;
+		GOST3411_2012_512 HashInstance = GOST3411_2012_512();
+		HashInstance._iv = _iv;
+		HashInstance._n = _n;
+		HashInstance._sigma = _sigma;
+		HashInstance._ki = _ki;
+		HashInstance._m = _m;
+		HashInstance._h = _h;
+		HashInstance._tmp = _tmp;
+		HashInstance._block = _block;
+		HashInstance._bOff = _bOff;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new GOST3411_2012_512(HashInstance));
 	}
 
 private:

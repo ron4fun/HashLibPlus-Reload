@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -33,13 +33,13 @@ public:
 	virtual IHash Clone() const
 	{
 		Tiger HashInstance = Tiger(_hash_size, GetHashRound(rounds));
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<Tiger>(HashInstance);
+		return IHash(new Tiger(HashInstance));
 	}
 
 	virtual void Initialize()
@@ -975,31 +975,31 @@ public:
 	virtual IHash Clone() const
 	{
 		Tiger_Base HashInstance = Tiger_Base(GetHashSize(), GetHashRound(rounds));
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->_hash = _hash;
+		HashInstance._hash = _hash;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<Tiger_Base>(HashInstance);
+		return IHash(new Tiger_Base(HashInstance));
 	} // end function Clone
 }; // end class Tiger_Base
 
-class Tiger_128 : public Tiger
+class Tiger_128 final : public Tiger
 {
 public:
 	virtual IHash Clone() const
 	{
 		Tiger_128 HashInstance = Tiger_128(HashSize128, GetHashRound(rounds));
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->_hash = _hash;
+		HashInstance._hash = _hash;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<Tiger_128>(HashInstance);
+		return IHash(new Tiger_128(HashInstance));
 	} // end function Clone
 
 	Tiger_128(const HashSize& a_hash_size, const HashRounds& a_rounds)
@@ -1008,34 +1008,34 @@ public:
 
 	static IHash CreateRound3()
 	{
-		return make_shared<Tiger_128>(HashSize128, Rounds3);
+		return IHash(new Tiger_128(HashSize128, Rounds3));
 	}
 
 	static IHash CreateRound4()
 	{
-		return make_shared<Tiger_128>(HashSize128, Rounds4);
+		return IHash(new Tiger_128(HashSize128, Rounds4));
 	}
 
 	static IHash CreateRound5()
 	{
-		return make_shared<Tiger_128>(HashSize128, Rounds5);
+		return IHash(new Tiger_128(HashSize128, Rounds5));
 	}
 }; // end class Tiger_128
 
-class Tiger_160 : public Tiger
+class Tiger_160 final : public Tiger
 {
 public:
 	virtual IHash Clone() const
 	{
 		Tiger_160 HashInstance = Tiger_160(HashSize160, GetHashRound(rounds));
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->_hash = _hash;
+		HashInstance._hash = _hash;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<Tiger_160>(HashInstance);
+		return IHash(new Tiger_160(HashInstance));
 	} // end function Clone
 
 	Tiger_160(const HashSize& a_hash_size, const HashRounds& a_rounds)
@@ -1044,34 +1044,34 @@ public:
 
 	static IHash CreateRound3()
 	{
-		return make_shared<Tiger_160>(HashSize160, Rounds3);
+		return IHash(new Tiger_160(HashSize160, Rounds3));
 	}
 
 	static IHash CreateRound4()
 	{
-		return make_shared<Tiger_160>(HashSize160, Rounds4);
+		return IHash(new Tiger_160(HashSize160, Rounds4));
 	}
 
 	static IHash CreateRound5()
 	{
-		return make_shared<Tiger_160>(HashSize160, Rounds5);
+		return IHash(new Tiger_160(HashSize160, Rounds5));
 	}
 }; // end class Tiger_160
 
-class Tiger_192 : public Tiger
+class Tiger_192 final : public Tiger
 {
 public:
 	virtual IHash Clone() const
 	{
 		Tiger_192 HashInstance = Tiger_192(HashSize192, GetHashRound(rounds));
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->_hash = _hash;
+		HashInstance._hash = _hash;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<Tiger_192>(HashInstance);
+		return IHash(new Tiger_192(HashInstance));
 	} // end function Clone
 
 	Tiger_192(const HashSize& a_hash_size, const HashRounds& a_rounds)
@@ -1080,16 +1080,16 @@ public:
 
 	static IHash CreateRound3()
 	{
-		return make_shared<Tiger_192>(HashSize192, Rounds3);
+		return IHash(new Tiger_192(HashSize192, Rounds3));
 	}
 
 	static IHash CreateRound4()
 	{
-		return make_shared<Tiger_192>(HashSize192, Rounds4);
+		return IHash(new Tiger_192(HashSize192, Rounds4));
 	}
 
 	static IHash CreateRound5()
 	{
-		return make_shared<Tiger_192>(HashSize192, Rounds5);
+		return IHash(new Tiger_192(HashSize192, Rounds5));
 	}
 }; // end class Tiger_192

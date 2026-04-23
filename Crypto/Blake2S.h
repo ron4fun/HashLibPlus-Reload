@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -37,11 +37,11 @@
 #include "../Utils/ArrayUtils.h"
 
 
-class Blake2S : public Hash, public ICryptoNotBuildIn, public ITransformBlock
+class Blake2S : public Hash, public IICryptoNotBuildIn, public IITransformBlock
 {
 public:
 	Blake2S() 
-		: _treeConfig(Blake2BTreeConfig(true))
+		: _treeConfig(Blake2STreeConfig(true))
 	{}
 
 	Blake2S(const Blake2SConfig& a_Config, const Blake2STreeConfig& a_TreeConfig,
@@ -100,10 +100,9 @@ public:
 		return result;
 	}
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Blake2S* hash = new Blake2S(CloneInternal());
-		return *hash;
+		return IHash(new Blake2S(CloneInternal()));
 	}
 
 	void Initialize() override
@@ -116,10 +115,10 @@ public:
 	
 		if (_doTransformKeyBlock)
 		{
-			if (!_config->GetKey().empty())
+			if (!_config.GetKey().empty())
 			{
 				Block = HashLibByteArray(BlockSizeInBytes);
-				memmove(&Block[0], &_config->GetKey()[0], _config->GetKey().size() * sizeof(byte));
+				memmove(&Block[0], &_config.GetKey()[0], _config.GetKey().size() * sizeof(byte));
 			}
 		}
 				
@@ -196,7 +195,7 @@ public:
 
 	}
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		HashLibByteArray tempRes;
 
@@ -206,7 +205,7 @@ public:
 
 		Converters::le32_copy(&_state[0], 0, &tempRes[0], 0, (Int32)tempRes.size());
 
-		HashResult* result = new <HashResult>(tempRes);
+		HashResult result = HashResult(tempRes);
 
 		Initialize();
 
@@ -218,22 +217,22 @@ public:
 		return Utils::string_format("%s_%u", _name.c_str(), GetHashSize() * 8);
 	}
 
-	IBlake2SConfig GetConfig() const
-	{
-		return _config->Clone();
-	}
-
-	IBlake2STreeConfig GetTreeConfig() const
-	{
-		return _treeConfig ? _treeConfig->Clone() : nullptr;
-	}
-
-	IBlake2SConfig GetConfig()
+	Blake2SConfig GetConfig() const
 	{
 		return _config;
 	}
 
-	IBlake2STreeConfig GetTreeConfig()
+	Blake2STreeConfig GetTreeConfig() const
+	{
+		return _treeConfig;
+	}
+
+	Blake2SConfig& GetConfig()
+	{
+		return _config;
+	}
+
+	Blake2STreeConfig& GetTreeConfig()
 	{
 		return _treeConfig;
 	}
@@ -1457,7 +1456,7 @@ protected:
 
 		_finalizationFlag0 = UINT32_MAX;
 
-		if (_treeConfig != nullptr && _treeConfig->GetIsLastNode())
+		if (_treeConfig.GetIsLastNode())
 			_finalizationFlag1 = UINT32_MAX;
 
 		count = (Int32)_buffer.size() - _filledBufferCount;
@@ -1475,8 +1474,8 @@ protected:
 	Int32 _filledBufferCount = 0;
 	UInt32 _counter0 = 0, _counter1 = 0, _finalizationFlag0 = 0, _finalizationFlag1 = 0;
 
-	IBlake2STreeConfig _treeConfig = nullptr;
-	IBlake2SConfig _config = nullptr;
+	Blake2STreeConfig _treeConfig;
+	Blake2SConfig _config;
 
 private:
 	bool _doTransformKeyBlock = false;
@@ -1501,7 +1500,7 @@ protected:
 const char* Blake2S::InvalidConfigLength = "Config length must be 8 words";
 
 
-class Blake2XS final : public Blake2S, public IXOF
+class Blake2XS final : public Blake2S, public virtual IIXOF
 {
 protected:
 	static const char* InvalidXofSize;
@@ -1554,7 +1553,7 @@ private:
 	}
 	
 public:
-	virtual string GetName() const
+	string GetName() const override
 	{
 		return Utils::string_format("%s_%s_%u", _name.c_str(), "XOFSizeInBytes",
 			dynamic_cast<const IIXOF*>(&(*this))->GetXOFSizeInBits() >> 3);
@@ -1605,14 +1604,14 @@ public:
 		{
 			if ((_digestPosition & Blake2SHashSize - 1) == 0)
 			{
-				_outputConfig->GetConfig()->SetHashSize(ComputeStepLength());
-				_outputConfig->GetTreeConfig()->SetInnerHashSize(Blake2SHashSize);
+				_outputConfig.GetConfig().SetHashSize(ComputeStepLength());
+				_outputConfig.GetTreeConfig().SetInnerHashSize(Blake2SHashSize);
 
-				_xofBuffer = (Blake2S(_outputConfig->GetConfig(),
-					_outputConfig->GetTreeConfig())).ComputeBytes(_rootHashDigest)
-					->GetBytes();
-				_outputConfig->GetTreeConfig()->SetNodeOffset(
-					_outputConfig->GetTreeConfig()->GetNodeOffset() + 1);
+				_xofBuffer = (Blake2S(_outputConfig.GetConfig(),
+					_outputConfig.GetTreeConfig())).ComputeBytes(_rootHashDigest)
+					.GetBytes();
+				_outputConfig.GetTreeConfig().SetNodeOffset(
+					_outputConfig.GetTreeConfig().GetNodeOffset() + 1);
 			}
 
 			UInt64 blockOffset = _digestPosition & (Blake2SHashSize - 1);
@@ -1630,7 +1629,7 @@ public:
 
 	}
 
-	Blake2XS(const IBlake2XSConfig config)
+	Blake2XS(const Blake2XSConfig& config)
 		: Blake2S(CreateConfig(config), CreateTreeConfig(config))
 	{
 		_name = __func__;
@@ -1638,15 +1637,12 @@ public:
 		_xofBuffer.resize(Blake2SHashSize);
 
 		// Create initial config for output hashes.
-		IBlake2SConfig tempC = ::move(config->GetConfig());
+		Blake2SConfig tempC = config.GetConfig();
 
-		if (tempC == nullptr)
-			tempC = make_shared<Blake2SConfig>();
-
-		IBlake2SConfig temp = make_shared<Blake2SConfig>();
-		temp->SetSalt(tempC->GetSalt());
-		temp->SetPersonalization(tempC->GetPersonalization());
-
+		Blake2SConfig temp = Blake2SConfig();
+		temp.SetSalt(tempC.GetSalt());
+		temp.SetPersonalization(tempC.GetPersonalization());
+		
 		_outputConfig = Blake2XSConfig::CreateBlake2XSConfig(temp, Blake2STreeConfig::GetDefaultTreeConfig());
 	}
 
@@ -1656,10 +1652,10 @@ public:
 		
 		xofSizeInBytes = _xofSizeInBits >> 3;
 
-		_treeConfig->SetNodeOffset(
+		_treeConfig.SetNodeOffset(
 			NodeOffsetWithXOFDigestLength(xofSizeInBytes));
 
-		_outputConfig->GetTreeConfig()->SetNodeOffset(
+		_outputConfig.GetTreeConfig().SetNodeOffset(
 			NodeOffsetWithXOFDigestLength(xofSizeInBytes));
 
 		_rootHashDigest.clear();
@@ -1673,40 +1669,40 @@ public:
 	Blake2XS Copy() const
 	{
 		// Xof Cloning
-		Blake2XS HashInstance = Blake2XS(make_shared<Blake2XSConfig>(_config, _treeConfig));
-		HashInstance->SetXOFSizeInBits(GetXOFSizeInBits());
+		Blake2XS HashInstance = Blake2XS(Blake2XSConfig(_config, _treeConfig));
+		HashInstance.SetXOFSizeInBits(GetXOFSizeInBits());
 
 		// Blake2XS Cloning
-		HashInstance->_digestPosition = _digestPosition;
-		HashInstance->_outputConfig = _outputConfig->Clone();
-		HashInstance->_rootHashDigest = _rootHashDigest;
-		HashInstance->_xofBuffer = _xofBuffer;
-		HashInstance->_finalized = _finalized;
+		HashInstance._digestPosition = _digestPosition;
+		HashInstance._outputConfig = _outputConfig;
+		HashInstance._rootHashDigest = _rootHashDigest;
+		HashInstance._xofBuffer = _xofBuffer;
+		HashInstance._finalized = _finalized;
 
 		// Internal Blake2S Cloning
-		HashInstance->_m = _m;
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer;
+		HashInstance._m = _m;
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer;
 
-		HashInstance->_filledBufferCount = _filledBufferCount;
-		HashInstance->_counter0 = _counter0;
-		HashInstance->_counter1 = _counter1;
-		HashInstance->_finalizationFlag0 = _finalizationFlag0;
-		HashInstance->_finalizationFlag1 = _finalizationFlag1;
+		HashInstance._filledBufferCount = _filledBufferCount;
+		HashInstance._counter0 = _counter0;
+		HashInstance._counter1 = _counter1;
+		HashInstance._finalizationFlag0 = _finalizationFlag0;
+		HashInstance._finalizationFlag1 = _finalizationFlag1;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
 		return HashInstance;
 	} //
 
 	virtual IHash Clone() const
 	{	
-		return make_shared<Blake2XS>(Copy());
+		return IHash(new Blake2XS(Copy()));
 	}
 
 	virtual IXOF CloneXOF() const
 	{
-		return make_shared<Blake2XS>(Copy());
+		return IXOF(new Blake2XS(Copy()));
 	}
 
 	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
@@ -1717,27 +1713,28 @@ public:
 		Blake2S::TransformBytes(a_data, a_index, a_length);
 	}
 	
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		HashLibByteArray buffer = GetResult();
 		
 		Initialize();
 
-		return make_shared<HashResult>(buffer);
+		HashResult result = HashResult(buffer);
+		return result;
 	}
 
 private:
-	static IBlake2SConfig CreateConfig(const IBlake2XSConfig config) {
-		return config->GetConfig() ? config->GetConfig() : Blake2SConfig::GetDefaultConfig();
+	static Blake2SConfig CreateConfig(const Blake2XSConfig& config) {
+		return config.GetConfig();
 	}
 
-	static IBlake2STreeConfig CreateTreeConfig(const IBlake2XSConfig config) {
-		return config->GetTreeConfig() ? config->GetTreeConfig() : Blake2STreeConfig::GetSequentialTreeConfig();
+	static Blake2STreeConfig CreateTreeConfig(const Blake2XSConfig& config) {
+		return config.GetTreeConfig().IsNull() ? Blake2STreeConfig::GetSequentialTreeConfig() : config.GetTreeConfig();
 	}
 	
 private:
 	UInt64 _digestPosition, _xofSizeInBits;
-	IBlake2XSConfig _outputConfig = nullptr;
+	Blake2XSConfig _outputConfig;
 	HashLibByteArray _rootHashDigest, _xofBuffer;
 	bool _finalized;
 

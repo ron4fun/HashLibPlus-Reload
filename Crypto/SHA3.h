@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -35,7 +35,7 @@ enum HashMode
 	hmCShake = 0x04
 }; // end enum HashMode
 
-class SHA3 : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class SHA3 : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	void Initialize() override
@@ -65,7 +65,7 @@ protected:
 		case hmShake:
 		case hmCShake:
 			return Utils::string_format("%s_%s_%u", _name.c_str(), "XOFSizeInBytes", 
-				dynamic_cast<const IXOF*>(&(*this))->GetXOFSizeInBits() >> 3);
+				dynamic_cast<const IIXOF*>(&(*this))->GetXOFSizeInBits() >> 3);
 		default:
 			throw ArgumentInvalidHashLibException(
 				Utils::string_format(InvalidHashMode, "hmKeccak, hmSHA3, hmShake, hmCShake"));
@@ -419,16 +419,16 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		SHA3_224* HashInstance = new SHA3_224();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		SHA3_224 HashInstance = SHA3_224();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new SHA3_224(HashInstance));
 	}
 
 }; // end class SHA3_224
@@ -442,16 +442,16 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		SHA3_256* HashInstance = new SHA3_256();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		SHA3_256 HashInstance = SHA3_256();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new SHA3_256(HashInstance));
 	}
 
 }; // end class SHA3_256
@@ -465,16 +465,16 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		SHA3_384* HashInstance = new SHA3_384();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		SHA3_384 HashInstance = SHA3_384();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new SHA3_384(HashInstance));
 	}
 
 }; // end class SHA3_384
@@ -488,16 +488,16 @@ public:
 		_name = __func__;
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		SHA3_512* HashInstance = new SHA3_512();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		SHA3_512 HashInstance = SHA3_512();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new SHA3_512(HashInstance));
 	}
 
 }; // end class SHA3_512
@@ -529,16 +529,16 @@ public:
 	{} // end constructor
 
 protected:
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Keccak_224* HashInstance = new Keccak_224();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Keccak_224 HashInstance = Keccak_224();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Keccak_224(HashInstance));
 	}
 
 }; // end class Keccak_224
@@ -550,16 +550,16 @@ public:
 		: Keccak(HashSize::HashSize256)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Keccak_256* HashInstance = new Keccak_256();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Keccak_256 HashInstance = Keccak_256();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Keccak_256(HashInstance));
 	}
 
 }; // end class Keccak_256
@@ -571,16 +571,16 @@ public:
 		: Keccak(HashSize::HashSize288)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Keccak_288* HashInstance = new Keccak_288();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Keccak_288 HashInstance = Keccak_288();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Keccak_288(HashInstance));
 	}
 
 }; // end class Keccak_288
@@ -592,16 +592,16 @@ public:
 		: Keccak(HashSize::HashSize384)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Keccak_384* HashInstance = new Keccak_384();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Keccak_384 HashInstance = Keccak_384();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Keccak_384(HashInstance));
 	}
 
 }; // end class Keccak_384
@@ -613,16 +613,16 @@ public:
 		: Keccak(HashSize::HashSize512)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Keccak_512* HashInstance = new Keccak_512();
-		HashInstance->_state = _state;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Keccak_512 HashInstance = Keccak_512();
+		HashInstance._state = _state;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Keccak_512(HashInstance));
 	}
 
 }; // end class Keccak_512
@@ -632,7 +632,7 @@ public:
 
 #pragma region Shake Family
 
-class Shake : public SHA3, public IXOF
+class Shake : public SHA3, public virtual IIXOF
 {
 protected:
 	HashMode GetHashMode() const override
@@ -659,15 +659,13 @@ public:
 		SHA3::Initialize();
 	} // end function Initialize
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		HashLibByteArray temp = GetResult();
 
 		Initialize();
 
-		HashResult* result = new HashResult(temp);
-
-		return *result;
+		return HashResult(temp);
 	} // end function TransformFinal
 
 	UInt64 GetXOFSizeInBits() const override
@@ -769,6 +767,49 @@ protected:
 
 }; // end class Shake
 
+class Shake_256 final : public Shake
+{
+public:
+	Shake_256() :
+		Shake((Int32)HashSize::HashSize256)
+	{ } // end constructor
+
+	IHash Clone() const override
+	{
+		return IHash(new Shake_256(Copy()));
+	} // end function Clone
+
+	IXOF CloneXOF() const override
+	{
+		return IXOF(new Shake_256(Copy()));
+	} // end function CloneXOF
+
+private:
+	Shake_256 Copy() const
+	{
+		// Xof Cloning
+		Shake_256 HashInstance = Shake_256();
+		HashInstance.SetXOFSizeInBits(GetXOFSizeInBits());
+
+		// Shake_256 Cloning
+		HashInstance._buffer_pos = _buffer_pos;
+		HashInstance._digest_pos = _digest_pos;
+		HashInstance._finalized = _finalized;
+
+		HashInstance._shake_buffer = _shake_buffer;
+
+		// Internal SHA3 Cloning
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
+
+		HashInstance._state = _state;
+
+		HashInstance.SetBufferSize(GetBufferSize());
+
+		return HashInstance;
+	} // end function Copy
+}; // end class Shake_256
+
 class Shake_128 final  : public Shake
 {
 public:
@@ -776,11 +817,15 @@ public:
 		Shake((Int32)HashSize::HashSize128)
 	{ } // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		IHash* hash = new Shake_128(Copy());
-		return *hash;
+		return IHash(new Shake_128(Copy()));
 	} // end function Clone
+
+	IXOF CloneXOF() const override
+	{
+		return IXOF(new Shake_128(Copy()));
+	} // end function CloneXOF
 
 private:
 	Shake_128 Copy() const
@@ -809,44 +854,6 @@ private:
 
 }; // end class Shake_128
 
-class Shake_256 final : public Shake
-{
-public:
-	Shake_256() :
-		Shake((Int32)HashSize::HashSize256)
-	{ } // end constructor
-
-	IHash& Clone() const override
-	{
-		IHash* hash = new Shake_256(Copy());
-		return *hash;
-	} // end function Clone
-
-private:
-	Shake_256 Copy() const
-	{
-		// Xof Cloning
-		Shake_256 HashInstance = Shake_256();
-		HashInstance.SetXOFSizeInBits(GetXOFSizeInBits());
-
-		// Shake_256 Cloning
-		HashInstance._buffer_pos = _buffer_pos;
-		HashInstance._digest_pos = _digest_pos;
-		HashInstance._finalized = _finalized;
-
-		HashInstance._shake_buffer = _shake_buffer;
-
-		// Internal SHA3 Cloning
-		HashInstance._buffer = _buffer.Clone();
-		HashInstance._processed_bytes = _processed_bytes;
-
-		HashInstance._state = _state;
-
-		HashInstance.SetBufferSize(GetBufferSize());
-
-		return HashInstance;
-	} // end function Copy
-}; // end class Shake_256
 
 #pragma endregion
 
@@ -976,17 +983,22 @@ public:
 		CShake((Int32)HashSize::HashSize128, N, S)
 	{ } // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		IHash* hash = new CShake_128(Copy());
+		return IHash(new CShake_128(Copy()));
 	} // end function Clone
+
+	IXOF CloneXOF() const override
+	{
+		return IXOF(new CShake_128(Copy()));
+	} // end function CloneXOF
 
 private:
 	CShake_128 Copy() const
 	{
 		// Xof Cloning
 		CShake_128 HashInstance = CShake_128(_fn, _fs);
-		HashInstance.SetXOFSizeInBits(GetXOFSizeInBits());
+		GetXOFSizeInBits() == 0 ? NULL : HashInstance.SetXOFSizeInBits(GetXOFSizeInBits());
 
 		// CShake_128 Cloning
 		HashInstance._initBlock = _initBlock;
@@ -1017,10 +1029,15 @@ public:
 		CShake((Int32)HashSize::HashSize256, N, S)
 	{ } // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		IHash* hash = new CShake_256(Copy());
+		return IHash(new CShake_256(Copy()));
 	} // end function Clone
+
+	IXOF CloneXOF() const override
+	{
+		return IXOF(new CShake_256(Copy()));
+	} // end function CloneXOF
 
 private:
 	CShake_256 Copy() const

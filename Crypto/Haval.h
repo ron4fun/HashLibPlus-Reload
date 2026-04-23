@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -28,7 +28,7 @@
 #include "../Enum/HashRounds.h"
 #include "../Utils/Utils.h"
 
-class Haval : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class Haval : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	void Initialize() override
@@ -1915,18 +1915,18 @@ public:
 		: Haval3(HashSize128)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_3_128* HashInstance = new Haval_3_128();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_3_128 HashInstance = Haval_3_128();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_3_128(HashInstance));
 	}
 
 }; // end class Haval_3_128
@@ -1939,18 +1939,18 @@ public:
 		: Haval4(HashSize128)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_4_128* HashInstance = new Haval_4_128();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_4_128 HashInstance = Haval_4_128();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 		
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_4_128(HashInstance));
 	}
 
 }; // end class Haval_4_128
@@ -1963,18 +1963,18 @@ public:
 		: Haval5(HashSize128)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_5_128* HashInstance = new Haval_5_128();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_5_128 HashInstance = Haval_5_128();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_5_128(HashInstance));
 	}
 
 }; // end class Haval_5_128
@@ -1987,18 +1987,18 @@ public:
 		: Haval3(HashSize160)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_3_160* HashInstance = new Haval_3_160();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_3_160 HashInstance = Haval_3_160();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_3_160(HashInstance));
 	}
 
 }; // end class Haval_3_160
@@ -2011,18 +2011,18 @@ public:
 		: Haval4(HashSize160)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_4_160* HashInstance = new Haval_4_160();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_4_160 HashInstance = Haval_4_160();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_4_160(HashInstance));
 	}
 
 }; // end class Haval_4_160
@@ -2035,18 +2035,18 @@ public:
 		: Haval5(HashSize160)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_5_160* HashInstance = new Haval_5_160();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_5_160 HashInstance = Haval_5_160();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_5_160(HashInstance));
 	}
 
 }; // end class Haval_5_160
@@ -2059,18 +2059,18 @@ public:
 		: Haval3(HashSize192)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_3_192* HashInstance = new Haval_3_192();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_3_192 HashInstance = Haval_3_192();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_3_192(HashInstance));
 	}
 
 }; // end class Haval_3_192
@@ -2083,18 +2083,18 @@ public:
 		: Haval4(HashSize192)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_4_192* HashInstance = new Haval_4_192();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_4_192 HashInstance = Haval_4_192();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_4_192(HashInstance));
 	}
 
 }; // end class Haval_4_192
@@ -2107,18 +2107,18 @@ public:
 		: Haval5(HashSize192)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_5_192* HashInstance = new Haval_5_192();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_5_192 HashInstance = Haval_5_192();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_5_192(HashInstance));
 	}
 
 }; // end class Haval_5_192
@@ -2131,18 +2131,18 @@ public:
 		: Haval3(HashSize224)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_3_224* HashInstance = new Haval_3_224();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_3_224 HashInstance = Haval_3_224();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_3_224(HashInstance));
 	}
 
 }; // end class Haval_3_224
@@ -2155,18 +2155,18 @@ public:
 		: Haval4(HashSize224)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_4_224* HashInstance = new Haval_4_224();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_4_224 HashInstance = Haval_4_224();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_4_224(HashInstance));
 	}
 
 }; // end class Haval_4_224
@@ -2179,18 +2179,18 @@ public:
 		: Haval5(HashSize224)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_5_224* HashInstance = new Haval_5_224();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_5_224 HashInstance = Haval_5_224();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_5_224(HashInstance));
 	}
 
 }; // end class Haval_5_224
@@ -2203,18 +2203,18 @@ public:
 		: Haval3(HashSize256)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_3_256* HashInstance = new Haval_3_256();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_3_256 HashInstance = Haval_3_256();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_3_256(HashInstance));
 	}
 
 }; // end class Haval_3_256
@@ -2227,18 +2227,18 @@ public:
 		: Haval4(HashSize256)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_4_256* HashInstance = new Haval_4_256();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_4_256 HashInstance = Haval_4_256();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_4_256(HashInstance));
 	}
 
 }; // end class Haval_4_256
@@ -2251,18 +2251,18 @@ public:
 		: Haval5(HashSize256)
 	{} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Haval_5_256* HashInstance = new Haval_5_256();
-		HashInstance->_rounds = _rounds;
-		HashInstance->SetHashSize(GetHashSize());
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		Haval_5_256 HashInstance = Haval_5_256();
+		HashInstance._rounds = _rounds;
+		HashInstance.SetHashSize(GetHashSize());
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new Haval_5_256(HashInstance));
 	}
 
 }; // end class Haval_5_256

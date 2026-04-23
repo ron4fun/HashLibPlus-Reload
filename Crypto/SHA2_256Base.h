@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class SHA2_256Base : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class SHA2_256Base : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 protected:
 	SHA2_256Base() {}

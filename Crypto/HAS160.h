@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class HAS160 final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class HAS160 final : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	HAS160()
@@ -36,16 +36,16 @@ public:
 		_hash.resize(5);		
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		HAS160* HashInstance = new HAS160();
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		HAS160 HashInstance = HAS160();
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new HAS160(HashInstance));
 	}
 
 	void Initialize() override

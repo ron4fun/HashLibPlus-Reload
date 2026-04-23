@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class MD2 final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class MD2 final : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	MD2()
@@ -37,17 +37,17 @@ public:
 		_checksum.resize(16);
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		MD2* HashInstance = new MD2();
-		HashInstance->_state = _state;
-		HashInstance->_checksum = _checksum;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		MD2 HashInstance = MD2();
+		HashInstance._state = _state;
+		HashInstance._checksum = _checksum;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return*HashInstance;
+		return IHash(new MD2(HashInstance));
 	}
 
 	void Initialize() override

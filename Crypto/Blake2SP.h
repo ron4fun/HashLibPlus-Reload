@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -57,17 +57,17 @@ public:
 	virtual IHash Clone() const
 	{
 		Blake2SP HashInstance = Blake2SP(GetHashSize());
-		HashInstance->_key = _key;
+		HashInstance._key = _key;
 
-		HashInstance->_rootHash = _rootHash;
+		HashInstance._rootHash = _rootHash;
 		
-		HashInstance->_leafHashes = _leafHashes;
-		HashInstance->_buffer = _buffer;
-		HashInstance->_bufferLength = _bufferLength;
+		HashInstance._leafHashes = _leafHashes;
+		HashInstance._buffer = _buffer;
+		HashInstance._bufferLength = _bufferLength;
 	
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<Blake2SP>(HashInstance);
+		return IHash(new Blake2SP(HashInstance));
 	}
 
 	virtual void Initialize()
@@ -129,11 +129,11 @@ public:
 		_bufferLength = size_t(left) + UInt32(dataLength);
 	}
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		Int32 i;
 		UInt64 left;
-		
+
 		HashLibMatrixByteArray _hash = HashLibMatrixByteArray(ParallelismDegree);
 		
 		for (i = 0; i < _hash.size(); i++)
@@ -152,16 +152,16 @@ public:
 				_leafHashes[i].TransformBytes(_buffer, i * BlockSizeInBytes, Int32(left));
 			}
 
-			_hash[i] = _leafHashes[i].TransformFinal()->GetBytes();
+			_hash[i] = _leafHashes[i].TransformFinal().GetBytes();
 		}
 
 		for (i = 0; i < ParallelismDegree; i++)
 			_rootHash.TransformBytes(_hash[i], 0, OutSizeInBytes);
 
-		IHashResult result = _rootHash.TransformFinal();
+		HashResult result = _rootHash.TransformFinal();
 
 		Initialize();
-		
+
 		return result;
 	}
 
@@ -182,43 +182,43 @@ private:
 	/// of these instances is given by <c>Blake2STreeConfig.InnerSize</c>
 	/// instead. <br />
 	/// </summary>
-	Blake2S Blake2SPCreateLeafParam(const IBlake2SConfig a_Blake2SConfig, const IBlake2STreeConfig a_Blake2STreeConfig) const
+	Blake2S Blake2SPCreateLeafParam(const Blake2SConfig& a_Blake2SConfig, const Blake2STreeConfig& a_Blake2STreeConfig) const
 	{
 		return Blake2S(a_Blake2SConfig, a_Blake2STreeConfig);
 	}
 
 	Blake2S Blake2SPCreateLeaf(const UInt64 a_Offset) const
 	{
-		IBlake2SConfig blake2SConfig = make_shared<Blake2SConfig>(GetHashSize());
-		blake2SConfig->SetKey(_key);
+		Blake2SConfig blake2SConfig = Blake2SConfig(GetHashSize());
+		blake2SConfig.SetKey(_key);
 
-		IBlake2STreeConfig blake2STreeConfig = make_shared<Blake2STreeConfig>();
-		blake2STreeConfig->SetFanOut(ParallelismDegree);
-		blake2STreeConfig->SetMaxDepth(2);
-		blake2STreeConfig->SetNodeDepth(0);
-		blake2STreeConfig->SetLeafSize(0);
-		blake2STreeConfig->SetNodeOffset(a_Offset);
-		blake2STreeConfig->SetInnerHashSize(OutSizeInBytes);
+		Blake2STreeConfig blake2STreeConfig = Blake2STreeConfig();
+		blake2STreeConfig.SetFanOut(ParallelismDegree);
+		blake2STreeConfig.SetMaxDepth(2);
+		blake2STreeConfig.SetNodeDepth(0);
+		blake2STreeConfig.SetLeafSize(0);
+		blake2STreeConfig.SetNodeOffset(a_Offset);
+		blake2STreeConfig.SetInnerHashSize(OutSizeInBytes);
 
 		if (a_Offset == (ParallelismDegree - 1))
-			blake2STreeConfig->SetIsLastNode(true);
+			blake2STreeConfig.SetIsLastNode(true);
 
 		return Blake2SPCreateLeafParam(blake2SConfig, blake2STreeConfig);
 	}
 
 	Blake2S Blake2SPCreateRoot() const
 	{
-		IBlake2SConfig blake2SConfig = make_shared<Blake2SConfig>(GetHashSize());
-		blake2SConfig->SetKey(_key);
+		Blake2SConfig blake2SConfig = Blake2SConfig(GetHashSize());
+		blake2SConfig.SetKey(_key);
 
-		IBlake2STreeConfig blake2STreeConfig = make_shared<Blake2STreeConfig>();
-		blake2STreeConfig->SetFanOut(ParallelismDegree);
-		blake2STreeConfig->SetMaxDepth(2);
-		blake2STreeConfig->SetNodeDepth(1);
-		blake2STreeConfig->SetLeafSize(0);
-		blake2STreeConfig->SetNodeOffset(0);
-		blake2STreeConfig->SetInnerHashSize(OutSizeInBytes);
-		blake2STreeConfig->SetIsLastNode(true);
+		Blake2STreeConfig blake2STreeConfig = Blake2STreeConfig();
+		blake2STreeConfig.SetFanOut(ParallelismDegree);
+		blake2STreeConfig.SetMaxDepth(2);
+		blake2STreeConfig.SetNodeDepth(1);
+		blake2STreeConfig.SetLeafSize(0);
+		blake2STreeConfig.SetNodeOffset(0);
+		blake2STreeConfig.SetInnerHashSize(OutSizeInBytes);
+		blake2STreeConfig.SetIsLastNode(true);
 
 		return Blake2S(blake2SConfig, blake2STreeConfig, false);
 	}

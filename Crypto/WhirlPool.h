@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,7 +25,7 @@
 
 #include "../Base/HashCryptoNotBuildIn.h"
 
-class WhirlPool final : public BlockHash, public ICryptoNotBuildIn, public ITransformBlock
+class WhirlPool final : public BlockHash, public virtual IICryptoNotBuildIn, public virtual IITransformBlock
 {
 public:
 	WhirlPool()
@@ -36,16 +36,16 @@ public:
 		_hash.resize(8);
 	} // end constructor
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		WhirlPool* HashInstance = new WhirlPool();
-		HashInstance->_hash = _hash;
-		HashInstance->_buffer = _buffer.Clone();
-		HashInstance->_processed_bytes = _processed_bytes;
+		WhirlPool HashInstance = WhirlPool();
+		HashInstance._hash = _hash;
+		HashInstance._buffer = _buffer.Clone();
+		HashInstance._processed_bytes = _processed_bytes;
 
-		HashInstance->SetBufferSize(GetBufferSize());
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		return *HashInstance;
+		return IHash(new WhirlPool(HashInstance));
 	}
 
 	void Initialize() override

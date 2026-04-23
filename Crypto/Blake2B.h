@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -36,7 +36,7 @@
 #include "../Utils/Utils.h"
 #include "../Utils/ArrayUtils.h"
 
-class Blake2B : public Hash, public ICryptoNotBuildIn, public ITransformBlock
+class Blake2B : public Hash, public IICryptoNotBuildIn, public IITransformBlock
 {
 protected:
 	Blake2B CloneInternal() const
@@ -99,10 +99,9 @@ public:
 		_name = blake2.GetName();
 	}
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{
-		Blake2B* hash = new Blake2B(CloneInternal());
-		return *hash;
+		return IHash(new Blake2B(CloneInternal()));
 	}
 
 	void Initialize() override
@@ -196,7 +195,7 @@ public:
 
 	}
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		HashLibByteArray tempRes;
 
@@ -206,11 +205,11 @@ public:
 
 		Converters::le64_copy(&_state[0], 0, &tempRes[0], 0, (Int32)tempRes.size());
 
-		HashResult* result = new HashResult(tempRes);
+		HashResult result = HashResult(tempRes);
 
 		Initialize();
 
-		return *result;
+		return result;
 	}
 
 	string GetName() const override
@@ -224,6 +223,16 @@ public:
 	}
 
 	Blake2BTreeConfig GetTreeConfig() const
+	{
+		return _treeConfig;
+	}
+
+	Blake2BConfig& GetConfig()
+	{
+		return _config;
+	}
+
+	Blake2BTreeConfig& GetTreeConfig()
 	{
 		return _treeConfig;
 	}
@@ -1705,7 +1714,7 @@ protected:
 const char* Blake2B::InvalidConfigLength = "Config length must be 8 words";
 
 
-class Blake2XB final : public Blake2B, public IXOF
+class Blake2XB final : public Blake2B, public virtual IIXOF
 {
 private:
 	void SetXOFSizeInBitsInternal(const UInt64 a_XofSizeInBits)
@@ -1771,7 +1780,7 @@ public:
 	string GetName() const override
 	{
 		return Utils::string_format("%s_%s_%u", _name.c_str(), "XOFSizeInBytes",
-			dynamic_cast<const IXOF*>(&(*this))->GetXOFSizeInBits() >> 3);
+			dynamic_cast<const IIXOF*>(&(*this))->GetXOFSizeInBits() >> 3);
 	}
 
 	void Initialize() override
@@ -1794,29 +1803,9 @@ public:
 		Blake2B::Initialize();
 	}
 
-	Blake2XB(const Blake2XB& blake2)
+	virtual IXOF CloneXOF() const
 	{
-		SetXOFSizeInBits(blake2.GetXOFSizeInBits());
-
-		// Blake2XB Cloning
-		_digestPosition = blake2._digestPosition;
-		_outputConfig = blake2._outputConfig;
-		_rootHashDigest = blake2._rootHashDigest;
-		_xofBuffer = blake2._xofBuffer;
-		_finalized = blake2._finalized;
-
-		// Internal Blake2B Cloning
-		_m = blake2._m;
-		_state = blake2._state;
-		_buffer = blake2._buffer;
-
-		_filledBufferCount = blake2._filledBufferCount;
-		_counter0 = blake2._counter0;
-		_counter1 = blake2._counter1;
-		_finalizationFlag0 = blake2._finalizationFlag0;
-		_finalizationFlag1 = blake2._finalizationFlag1;
-
-		SetBufferSize(blake2.GetBufferSize());
+		return IXOF(new Blake2XB(Copy()));
 	}
 
 	Blake2XB Copy() const
@@ -1848,10 +1837,9 @@ public:
 		return HashInstance;
 	} //
 
-	IHash& Clone() const override
+	IHash Clone() const override
 	{	
-		IHash* hash = new Blake2XB(Copy());
-		return *hash;
+		return IHash(new Blake2XB(Copy()));
 	}
 
 	void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length) override
@@ -1862,15 +1850,15 @@ public:
 		Blake2B::TransformBytes(a_data, a_index, a_length);
 	}
 
-	IHashResult& TransformFinal() override
+	HashResult TransformFinal() override
 	{
 		HashLibByteArray buffer = GetResult();
 
 		Initialize();
 
-		HashResult* result = new HashResult(buffer);
+		HashResult result = HashResult(buffer);
 
-		return *result;
+		return result;
 	}
 
 	virtual UInt64 GetXOFSizeInBits() const override
@@ -1921,14 +1909,9 @@ public:
 				_outputConfig.GetConfig().SetHashSize(ComputeStepLength());
 				_outputConfig.GetTreeConfig().SetInnerHashSize(Blake2BHashSize);
 
-				IHashResult* res;
-				*res = (Blake2B(_outputConfig.GetConfig(),
-					_outputConfig.GetTreeConfig())).ComputeBytes(_rootHashDigest);
-
-				_xofBuffer = res->GetBytes();
-
-				delete res;
-
+				_xofBuffer = (Blake2B(_outputConfig.GetConfig(),
+					_outputConfig.GetTreeConfig())).ComputeBytes(_rootHashDigest).GetBytes();
+				
 				_outputConfig.GetTreeConfig().SetNodeOffset(
 					_outputConfig.GetTreeConfig().GetNodeOffset() + 1);
 			}
@@ -1949,12 +1932,14 @@ public:
 	}
 
 private:
-	static Blake2BConfig CreateConfig(const Blake2XBConfig& config) {
+	static Blake2BConfig CreateConfig(const Blake2XBConfig& config) 
+	{
 		return config.GetConfig();
 	}
 
-	static Blake2BTreeConfig CreateTreeConfig(const Blake2XBConfig& config) {
-		return config.GetTreeConfig();
+	static Blake2BTreeConfig CreateTreeConfig(const Blake2XBConfig& config) 
+	{
+		return config.GetTreeConfig().IsNull() ? Blake2BTreeConfig::GetSequentialTreeConfig() : config.GetTreeConfig();
 	}
 
 protected:	
