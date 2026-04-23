@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -45,7 +45,7 @@ public:
 
 	virtual IHashWithKey CloneHashWithKey() const
 	{
-		IHashWithKey _hash = make_shared<XXHash32>(Copy());
+		IHashWithKey _hash = IHashWithKey(new XXHash32(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 
 		return _hash;
@@ -53,9 +53,8 @@ public:
 
 	virtual IHash Clone() const
 	{
-		IHash _hash = make_shared<XXHash32>(Copy());
+		IHash _hash = IHash(new XXHash32(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
-
 		return _hash;
 	}
 
@@ -141,7 +140,7 @@ public:
 		} // end if
 	} // end function TransformBytes
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		byte *ptrEnd, *ptrBuffer;
 		
@@ -176,7 +175,7 @@ public:
 		_hash = _hash * PRIME32_3;
 		_hash = _hash ^ (_hash >> 16);
 
-		IHashResult result = make_shared<HashResult>(_hash);
+		HashResult result = HashResult(_hash);
 			
 		Initialize();
 		

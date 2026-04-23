@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -45,15 +45,13 @@ public:
 		Jenkins3 HashInstance = Jenkins3();
 		HashInstance._initialValue = _initialValue;
 		HashInstance._buffer = _buffer;
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		IHash _hash = make_shared<Jenkins3>(HashInstance);
-		_hash->SetBufferSize(GetBufferSize());
-
-		return _hash;
+		return IHash(new Jenkins3(HashInstance));
 	}
 
 protected:
-	virtual IHashResult ComputeAggregatedBytes(const HashLibByteArray &a_data)
+	virtual HashResult ComputeAggregatedBytes(const HashLibByteArray &a_data)
 	{
 		Int32 length, currentIndex, i1, i2, i3, i4;
 		UInt32 a, b, c;
@@ -64,7 +62,9 @@ protected:
 		b = a;
 		c = b;
 
-		if (length == 0) return make_shared<HashResult>(c);
+		if (length == 0) {
+			return HashResult(c);
+		}
 
 		currentIndex = 0;
 		while (length > 12)
@@ -381,7 +381,7 @@ protected:
 		c = c ^ b;
 		c = c - Bits::RotateLeft32(b, 24);
 
-		return make_shared<HashResult>(c);
+		return HashResult(c);
 	} // end function ComputeAggregatedBytes
 
 }; // end class Jenkins3

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -44,7 +44,7 @@ public:
 
 	virtual IHashWithKey CloneHashWithKey() const
 	{
-		IHashWithKey _hash = make_shared<MurmurHash3_x86_32>(Copy());
+		IHashWithKey _hash = IHashWithKey(new MurmurHash3_x86_32(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 
 		return _hash;
@@ -52,9 +52,8 @@ public:
 
 	virtual IHash Clone() const
 	{
-		IHash _hash = make_shared<MurmurHash3_x86_32>(Copy());
+		IHash _hash = IHash(new MurmurHash3_x86_32(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
-
 		return _hash;
 	}
 
@@ -123,11 +122,11 @@ public:
 
 	} // end function TransformBytes
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		Finish();
 
-		IHashResult result = make_shared<HashResult>(_h);
+		HashResult result = HashResult(_h);
 
 		Initialize();
 

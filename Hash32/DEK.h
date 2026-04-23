@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -39,23 +39,21 @@ public:
 	virtual IHash Clone() const
 	{
 		DEK HashInstance = DEK();
-
 		HashInstance._buffer = _buffer;
-
 		HashInstance.SetBufferSize(GetBufferSize());
 
-		return make_shared<DEK>(HashInstance);
+		return IHash(new DEK(HashInstance));
 	}
 
 protected:
-	virtual IHashResult ComputeAggregatedBytes(const HashLibByteArray& a_data)
+	virtual HashResult ComputeAggregatedBytes(const HashLibByteArray& a_data)
 	{
 		UInt32 _hash = UInt32(a_data.size());
 
 		for (UInt32 i = 0; i < a_data.size(); i++)
 			_hash = Bits::RotateLeft32(_hash, 5) ^ a_data[i];
 
-		return make_shared<HashResult>(_hash);
+		return HashResult(_hash);
 	} // end function ComputeAggregatedBytes
 
 }; // end class DEK

@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -41,11 +41,9 @@ public:
 	{
 		ShiftAndXor HashInstance = ShiftAndXor();
 		HashInstance._hash = _hash;
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		IHash _hash = make_shared<ShiftAndXor>(HashInstance);
-		_hash->SetBufferSize(GetBufferSize());
-
-		return _hash;
+		return IHash(new ShiftAndXor(HashInstance));
 	}
 
 	virtual void Initialize()
@@ -53,9 +51,9 @@ public:
 		_hash = 0;
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
-		IHashResult result = make_shared<HashResult>(_hash);
+		HashResult result = HashResult(_hash);
 
 		Initialize();
 

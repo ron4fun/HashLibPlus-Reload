@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -40,23 +40,20 @@ public:
 	{
 		SuperFast HashInstance = SuperFast();
 		HashInstance._buffer = _buffer;
+		HashInstance.SetBufferSize(GetBufferSize());
 
-		IHash _hash = make_shared<SuperFast>(HashInstance);
-		_hash->SetBufferSize(GetBufferSize());
-
-		return _hash;
+		return IHash(new SuperFast(HashInstance));
 	}
 
 protected:
-	virtual IHashResult ComputeAggregatedBytes(const HashLibByteArray &a_data)
+	virtual HashResult ComputeAggregatedBytes(const HashLibByteArray &a_data)
 	{
 		UInt32 _hash, tmp, u1;
 		Int32 Length, currentIndex, i1, i2;
 		
 		Length = (Int32)a_data.size();
 
-		if (Length == 0)
-			return make_shared<HashResult>(Int32(0));
+		if (Length == 0) return HashResult(Int32(0));
 		
 		_hash = UInt32(Length);
 		currentIndex = 0;
@@ -115,7 +112,7 @@ protected:
 		_hash = _hash ^ (_hash << 25);
 		_hash = _hash + (_hash >> 6);
 
-		return make_shared<HashResult>(_hash);
+		return HashResult(_hash);
 	} // end function ComputeAggregatedBytes
 
 }; // end class SuperFast
