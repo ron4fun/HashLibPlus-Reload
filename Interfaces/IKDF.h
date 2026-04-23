@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,11 +25,17 @@
 
 #include "../Utils/HashLibTypes.h"
 
-class IKDF
+class IIKDF;
+
+// wrap hash to support reference 
+// counting and auto freeing of memory.
+typedef shared_ptr<IIKDF> IKDF;
+
+class IIKDF
 {
-	friend ostream& operator<<(ostream& output, const IKDF& hash)
+	friend ostream& operator<<(ostream& output, const IKDF _hash)
 	{
-		output << hash.GetName();
+		output << _hash->GetName().c_str();
 		return output;
 	}
 
@@ -47,4 +53,4 @@ public:
 
 	virtual string GetName() const = 0;
 
-}; // end class IKDF
+}; // end class IIKDF

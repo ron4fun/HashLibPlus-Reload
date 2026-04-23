@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -25,12 +25,17 @@
 
 #include "IHash.h"
 
+class IICRC;
 
-class ICRC : public virtual IHash
+// wrap hash to support reference 
+// counting and auto freeing of memory.
+typedef shared_ptr<IICRC> ICRC;
+
+class IICRC : public virtual IIHash
 {
-	friend ostream& operator<<(ostream& output, const ICRC& _hash)
+	friend ostream& operator<<(ostream& output, const ICRC _hash)
 	{
-		output << _hash.GetName();
+		output << _hash->GetName().c_str();
 		return output;
 	}
 
@@ -44,4 +49,4 @@ public:
 	virtual UInt64 GetXOROut() const = 0;
 	virtual UInt64 GetCheckValue() const = 0;
 	
-}; // end class ICRC
+}; // end class IICRC
