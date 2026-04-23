@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -48,14 +48,14 @@ public:
 	
 	virtual IHash Clone() const
 	{
-		IHash _hash = make_shared<Murmur2_64>(Copy());
+		IHash _hash = IHash(new Murmur2_64(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 		return _hash;
 	}
 
 	virtual IHashWithKey CloneHashWithKey() const
 	{
-		IHashWithKey _hash = make_shared<Murmur2_64>(Copy());
+		IHashWithKey _hash = IHashWithKey(new Murmur2_64(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 		return _hash;
 	}
@@ -89,13 +89,12 @@ public:
 	} // end function SetKey
 
 protected:
-	virtual IHashResult ComputeAggregatedBytes(const HashLibByteArray& a_data)
+	virtual HashResult ComputeAggregatedBytes(const HashLibByteArray& a_data)
 	{
 		Int32 Length, current_index;
 		UInt64 k, h;
 				
-		if (a_data.empty())
-			return make_shared<HashResult>(UInt64(0));
+		if (a_data.empty()) return HashResult(UInt64(0));
 
 		Length = (Int32)a_data.size();
 
@@ -210,7 +209,8 @@ protected:
 		h = h * _m;
 		h = h ^ (h >> R);
 
-		return make_shared<HashResult>(h);
+		HashResult* result = new HashResult(h);
+		return *result;
 	} // end function ComputeAggregatedBytes
 
 private:

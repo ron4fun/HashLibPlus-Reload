@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -145,7 +145,7 @@ public:
 	
 	} // end function TransformBytes
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		UInt64 finalBlock = ProcessFinalBlock();
 		_v3 ^= finalBlock;
@@ -156,7 +156,7 @@ public:
 
 		HashLibByteArray buffer = HashLibByteArray(GetHashSize());
 		Converters::ReadUInt64AsBytesLE(_v0 ^ _v1 ^ _v2 ^ _v3, buffer, 0);
-		IHashResult result = make_shared<HashResult>(buffer);
+		HashResult result = HashResult(buffer);
 		Initialize();
 		return result;
 	} // end function TransformFinal
@@ -359,7 +359,7 @@ const char* SipHash::InvalidKeyLength = "KeyLength must be equal to %u";
 class SipHash64 : public SipHash
 {
 public:
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		UInt64 finalBlock = ProcessFinalBlock();
 		_v3 ^= finalBlock;
@@ -370,7 +370,7 @@ public:
 
 		HashLibByteArray buffer = HashLibByteArray(GetHashSize());
 		Converters::ReadUInt64AsBytesLE(_v0 ^ _v1 ^ _v2 ^ _v3, buffer, 0);
-		IHashResult result = make_shared<HashResult>(buffer);
+		HashResult result = HashResult(buffer);
 		Initialize();
 		return result;
 	} // end function TransformFinal
@@ -390,7 +390,7 @@ protected:
 /// <summary>
 /// SipHash64 2 - 4 algorithm.
 /// <summary>
-class SipHash64_2_4 : public SipHash64
+class SipHash64_2_4 final : public SipHash64
 {
 public:
 	SipHash64_2_4()
@@ -401,14 +401,14 @@ public:
 	
 	virtual IHash Clone() const
 	{
-		IHash _hash = make_shared<SipHash64_2_4>(Copy());
+		IHash _hash = IHash(new SipHash64_2_4(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 		return _hash;
 	}
 
 	virtual IHashWithKey CloneHashWithKey() const
 	{
-		IHashWithKey _hash = make_shared<SipHash64_2_4>(Copy());
+		IHashWithKey _hash = IHashWithKey(new SipHash64_2_4(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 		return _hash;
 	}

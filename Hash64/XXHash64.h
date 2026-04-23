@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -40,16 +40,16 @@ public:
 		_state.memory.resize(32);
 	} // end constructor
 	
-	virtual IHash Clone() const
+	virtual IHash Clone() const override
 	{
-		IHash _hash = make_shared<XXHash64>(Copy());
+		IHash _hash = IHash(new XXHash64(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 		return _hash;
 	}
 
-	virtual IHashWithKey CloneHashWithKey() const
+	virtual IHashWithKey CloneHashWithKey() const 
 	{
-		IHashWithKey _hash = make_shared<XXHash64>(Copy());
+		IHashWithKey _hash = IHashWithKey(new XXHash64(Copy()));
 		_hash->SetBufferSize(GetBufferSize());
 		return _hash;
 	}
@@ -140,7 +140,7 @@ public:
 		
 	} // end function TransformBytes
 
-	virtual IHashResult TransformFinal() override
+	virtual HashResult TransformFinal() override
 	{
 		UInt64 _v1, _v2, _v3, _v4;
 		byte* ptrEnd, *ptrBuffer, *bPtr;
@@ -204,11 +204,11 @@ public:
 		_hash = _hash ^ (_hash >> 32);
 		
 
-		IHashResult result = make_shared<HashResult>(_hash);
+		HashResult* result = new HashResult(_hash);
 
 		Initialize();
 
-		return result;
+		return *result;
 	} // end function TransformFinal
 
 	virtual NullableInteger GetKeyLength() const override
