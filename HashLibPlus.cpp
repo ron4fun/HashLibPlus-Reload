@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -30,10 +30,12 @@
 #include <chrono>
 #include <random>
 #include <iomanip>
+#include <memory>
 
 #include "Base/HashFactory.h"
 
 using namespace std;
+
 
 string Calculate(IHash hash, Int32 size = 65536)
 {
@@ -90,47 +92,69 @@ string Calculate(IHash hash, Int32 size = 65536)
 void DoBenchmark(HashLibStringArray& stringList)
 {
 	stringList.clear(); //
-
 	//
-	stringList.push_back(Calculate(HashFactory::Checksum::CreateAdler32()));
+	IHash a_hash;
+	
+	a_hash = HashFactory::Checksum::CreateAdler32();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Checksum::CreateCRC(CRCStandard::CRC32)));
+	a_hash = HashFactory::Checksum::CreateCRC32_PKZIP();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Checksum::CreateCRC32_PKZIP()));
+	a_hash = HashFactory::Checksum::CreateCRC(CRCStandard::CRC32);
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Hash32::CreateMurmurHash3_x86_32()));
+	a_hash = HashFactory::Hash32::CreateMurmurHash3_x86_32();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Hash32::CreateXXHash32()));
+	a_hash = HashFactory::Hash32::CreateXXHash32();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Hash64::CreateSipHash64_2_4()));
+	a_hash = HashFactory::Hash64::CreateSipHash64_2_4();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Hash64::CreateXXHash64()));
+	a_hash = HashFactory::Hash64::CreateXXHash64();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Hash128::CreateMurmurHash3_x86_128()));
+	a_hash = HashFactory::Hash128::CreateMurmurHash3_x86_128();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Hash128::CreateMurmurHash3_x64_128()));
+	a_hash = HashFactory::Hash128::CreateMurmurHash3_x64_128();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateMD5()));
+	
+	a_hash = HashFactory::Crypto::CreateMD5();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateSHA1()));
+	a_hash = HashFactory::Crypto::CreateSHA1();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateSHA2_256()));
+	a_hash = HashFactory::Crypto::CreateSHA2_256();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateSHA2_512()));
+	a_hash = HashFactory::Crypto::CreateSHA2_512();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateSHA3_256()));
+	a_hash = HashFactory::Crypto::CreateSHA3_256();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateSHA3_512()));
+	a_hash = HashFactory::Crypto::CreateSHA3_512();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateBlake2B_256()));
+	a_hash = HashFactory::Crypto::CreateBlake2B_256();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateBlake2B_512()));
+	a_hash = HashFactory::Crypto::CreateBlake2B_512();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateBlake2S_128()));
+	a_hash = HashFactory::Crypto::CreateBlake2S_128();
+	stringList.push_back(Calculate(a_hash));
 
-	stringList.push_back(Calculate(HashFactory::Crypto::CreateBlake2S_256()));
+	a_hash = HashFactory::Crypto::CreateBlake2S_256();
+	stringList.push_back(Calculate(a_hash));
 
 } // !DoBenchmark
+
 
 int main()
 {
