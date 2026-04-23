@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 /// SharpHash Library
-/// Copyright(c) 2021 Mbadiwe Nnaemeka Ronald
+/// Copyright(c) 2021 - 2026 Mbadiwe Nnaemeka Ronald
 /// Github Repository <https://github.com/ron4fun/HashLibPlus>
 ///
 /// The contents of this file are subject to the
@@ -68,10 +68,8 @@ public:
 	{
 		NullDigest HashInstance = NullDigest();
 		HashInstance._out << _out.str();
-
 		HashInstance.SetBufferSize(GetBufferSize());
-
-		return make_shared<NullDigest>(HashInstance);
+		return IHash(new NullDigest(HashInstance));
 	}
 
 	virtual void Initialize()
@@ -80,7 +78,7 @@ public:
 		_out.str(string()); // Reset stream
 	} // end function Initialize
 
-	virtual IHashResult TransformFinal()
+	virtual HashResult TransformFinal()
 	{
 		HashLibByteArray res;
 
@@ -99,7 +97,7 @@ public:
 		
 		Initialize();
 				
-		return make_shared<HashResult>(res);
+		return HashResult(res);
 	} // end function TransformFinal
 
 	virtual void TransformBytes(const HashLibByteArray& a_data, const Int32 a_index, const Int32 a_length)
